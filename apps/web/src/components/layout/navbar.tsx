@@ -33,7 +33,11 @@ const mobileNavLinks = [
   { href: '/contact', label: 'Contact' },
 ];
 
-export function Navbar() {
+interface NavbarProps {
+  variant?: 'light' | 'dark';
+}
+
+export function Navbar({ variant = 'light' }: NavbarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -47,14 +51,23 @@ export function Navbar() {
     setMobileOpen(false);
   }
 
+  const isDark = variant === 'dark';
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header
+      className={cn(
+        'sticky top-0 z-50 w-full border-b backdrop-blur supports-[backdrop-filter]',
+        isDark
+          ? 'border-white/10 bg-[#0a0f1a]/80'
+          : 'border-border bg-background/95 supports-[backdrop-filter]:bg-background/60'
+      )}
+    >
       <div className="container flex h-16 items-center justify-between px-4">
         {/* Left: Logo + Desktop Nav */}
         <div className="flex items-center gap-8">
           <Link href="/" className="flex items-center gap-2 font-bold text-xl">
             <span className="text-primary">Easy</span>
-            <span>Fund</span>
+            <span className={isDark ? 'text-white' : 'text-foreground'}>Fund</span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-6">
@@ -64,7 +77,9 @@ export function Navbar() {
                 href={link.href}
                 className={cn(
                   'text-sm font-medium transition-colors hover:text-primary',
-                  pathname === link.href ? 'text-primary' : 'text-muted-foreground'
+                  pathname === link.href
+                    ? 'text-primary'
+                    : isDark ? 'text-gray-300' : 'text-muted-foreground'
                 )}
               >
                 {link.label}
@@ -75,7 +90,7 @@ export function Navbar() {
 
         {/* Right: Actions */}
         <div className="flex items-center gap-3">
-          <Button variant="ghost" size="icon" className="hidden md:flex" asChild>
+          <Button variant="ghost" size="icon" className={cn('hidden md:flex', isDark && 'text-gray-300 hover:text-white')} asChild>
             <Link href="/explore">
               <Search className="h-5 w-5" />
             </Link>
@@ -85,7 +100,7 @@ export function Navbar() {
 
           {isAuthenticated ? (
             <>
-              <Button variant="ghost" size="icon" className="hidden md:flex relative" asChild>
+              <Button variant="ghost" size="icon" className={cn('hidden md:flex relative', isDark && 'text-gray-300 hover:text-white')} asChild>
                 <Link href="/dashboard/notifications">
                   <Bell className="h-5 w-5" />
                 </Link>
@@ -143,16 +158,16 @@ export function Navbar() {
             </>
           ) : (
             <div className="hidden md:flex items-center gap-2">
-              <Button variant="ghost" asChild>
+              <Button variant="ghost" asChild className={isDark ? 'text-gray-300 hover:text-white' : ''}>
                 <Link href="/auth/login">Log In</Link>
               </Button>
-              <Button asChild>
+              <Button asChild className={isDark ? 'bg-[#10B981] hover:bg-[#059669] text-white' : ''}>
                 <Link href="/auth/register">Sign Up</Link>
               </Button>
             </div>
           )}
 
-          <Button asChild className="hidden md:flex">
+          <Button asChild className={cn('hidden md:flex', isDark ? 'bg-white text-[#0a0f1a] hover:bg-white/90' : '')}>
             <Link href="/campaigns/new">Start a Campaign</Link>
           </Button>
 
@@ -163,7 +178,7 @@ export function Navbar() {
                 <Menu className="h-5 w-5" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-80">
+            <SheetContent side="right" className={cn('w-80', isDark ? 'bg-[#0a0f1a]' : '')}>
               <div className="flex flex-col gap-4 mt-8">
                 {mobileNavLinks.map((link) => (
                   <Link
@@ -172,7 +187,7 @@ export function Navbar() {
                     onClick={() => setMobileOpen(false)}
                     className={cn(
                       'text-lg font-medium transition-colors hover:text-primary py-2',
-                      pathname === link.href ? 'text-primary' : 'text-foreground'
+                      pathname === link.href ? 'text-primary' : isDark ? 'text-white' : 'text-foreground'
                     )}
                   >
                     {link.label}
@@ -184,7 +199,7 @@ export function Navbar() {
                     <Link
                       href="/dashboard"
                       onClick={() => setMobileOpen(false)}
-                      className="text-lg font-medium py-2"
+                      className={cn('text-lg font-medium py-2', isDark ? 'text-white' : '')}
                     >
                       Dashboard
                     </Link>
@@ -194,19 +209,19 @@ export function Navbar() {
                   </>
                 ) : (
                   <>
-                    <Button asChild variant="outline" className="w-full">
+                    <Button asChild variant="outline" className={cn('w-full', isDark ? 'border-white/20 text-white hover:bg-white/10' : '')}>
                       <Link href="/auth/login" onClick={() => setMobileOpen(false)}>
                         Log In
                       </Link>
                     </Button>
-                    <Button asChild className="w-full">
+                    <Button asChild className={cn('w-full', isDark ? 'bg-[#10B981] hover:bg-[#059669] text-white' : '')}>
                       <Link href="/auth/register" onClick={() => setMobileOpen(false)}>
                         Sign Up
                       </Link>
                     </Button>
                   </>
                 )}
-                <Button asChild className="w-full mt-2">
+                <Button asChild className={cn('w-full mt-2', isDark ? 'bg-white text-[#0a0f1a] hover:bg-white/90' : '')}>
                   <Link href="/campaigns/new" onClick={() => setMobileOpen(false)}>
                     Start a Campaign
                   </Link>
