@@ -32,6 +32,7 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
   },
+  transpilePackages: ['three', '@react-three/fiber', '@react-three/drei'],
   headers: async () => [
     {
       source: '/api/:path*',
