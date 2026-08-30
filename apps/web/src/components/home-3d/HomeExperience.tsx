@@ -25,19 +25,22 @@ export function HomeExperience() {
     setShowCanvas(true);
   }, []);
 
-  const canvasOpacity = Math.max(0, 1 - (scrollProgress - 0.7) / 0.2);
+  const show3D = showCanvas && scrollProgress < 0.95;
+  const canvasOpacity = Math.max(0, 1 - (scrollProgress - 0.8) / 0.1);
 
   return (
     <div className="relative">
       <ScrollProgress />
 
       {/* 3D Canvas — fixed behind hero + story arc */}
-      <div
-        className="fixed inset-0 z-0 transition-opacity duration-500"
-        style={{ opacity: Math.min(1, canvasOpacity) }}
-      >
-        {showCanvas && <HeroCanvas scrollProgress={scrollProgress} />}
-      </div>
+      {show3D && (
+        <div
+          className="fixed inset-0 z-0 transition-opacity duration-700"
+          style={{ opacity: Math.min(1, canvasOpacity) }}
+        >
+          <HeroCanvas scrollProgress={scrollProgress} />
+        </div>
+      )}
 
       {/* Scrollable content */}
       <div className="relative z-10">

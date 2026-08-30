@@ -60,7 +60,7 @@ export function HeroText() {
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
         >
-          <span className="text-xs uppercase tracking-widest">Scroll to explore</span>
+          <span className="text-xs uppercase tracking-widest">Scroll to begin</span>
           <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
           </svg>
