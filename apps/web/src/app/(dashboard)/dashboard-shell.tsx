@@ -14,6 +14,10 @@ import {
   Menu,
   LogOut,
   Bookmark,
+  Shield,
+  ArrowDownToLine,
+  BarChart3,
+  Users,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -25,6 +29,7 @@ const donorLinks = [
   { href: '/dashboard', label: 'Overview', icon: LayoutDashboard },
   { href: '/dashboard/donations', label: 'My Donations', icon: Heart },
   { href: '/dashboard/saved', label: 'Saved Campaigns', icon: Bookmark },
+  { href: '/dashboard/following', label: 'Following', icon: Users },
   { href: '/dashboard/notifications', label: 'Notifications', icon: Bell },
   { href: '/dashboard/settings', label: 'Settings', icon: Settings },
 ];
@@ -32,8 +37,13 @@ const donorLinks = [
 const fundraiserLinks = [
   { href: '/dashboard', label: 'Overview', icon: LayoutDashboard },
   { href: '/dashboard/campaigns', label: 'My Campaigns', icon: Megaphone },
+  { href: '/dashboard/campaigns/new', label: 'Create Campaign', icon: Megaphone },
+  { href: '/dashboard/fundraiser/donations', label: 'Donations Received', icon: Heart },
+  { href: '/dashboard/fundraiser/analytics', label: 'Analytics', icon: BarChart3 },
   { href: '/dashboard/withdrawals', label: 'Withdrawals', icon: DollarSign },
+  { href: '/dashboard/withdrawals/request', label: 'Request Withdrawal', icon: ArrowDownToLine },
   { href: '/dashboard/updates', label: 'Post Update', icon: Bell },
+  { href: '/dashboard/verification', label: 'Verification', icon: Shield },
   { href: '/dashboard/notifications', label: 'Notifications', icon: Bell },
   { href: '/dashboard/settings', label: 'Settings', icon: Settings },
 ];
@@ -120,6 +130,15 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
 
 export function DashboardShell({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const pathname = usePathname();
+  const { user } = useAuth();
+
+  const mobileLinks =
+    user?.role === 'admin'
+      ? adminLinks.slice(0, 4)
+      : user?.role === 'fundraiser'
+      ? fundraiserLinks.slice(0, 4)
+      : donorLinks.slice(0, 4);
 
   return (
     <div className="flex min-h-[calc(100vh-4rem)]">
@@ -141,7 +160,29 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
       </Sheet>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-y-auto">{children}</main>
+      <main className="flex-1 overflow-y-auto pb-20 lg:pb-0">{children}</main>
+
+      {/* Mobile Bottom Nav */}
+      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t bg-card lg:hidden" role="navigation" aria-label="Dashboard navigation">
+        <div className="flex items-center justify-around py-2">
+          {mobileLinks.map((link) => {
+            const isActive = pathname === link.href;
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`flex flex-col items-center gap-1 px-3 py-1 text-xs ${
+                  isActive ? 'text-primary' : 'text-muted-foreground'
+                }`}
+                aria-current={isActive ? 'page' : undefined}
+              >
+                <link.icon className="h-5 w-5" />
+                <span>{link.label}</span>
+              </Link>
+            );
+          })}
+        </div>
+      </nav>
     </div>
   );
 }

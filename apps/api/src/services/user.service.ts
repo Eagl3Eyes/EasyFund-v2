@@ -46,6 +46,13 @@ export class UserService {
       role: data.role || 'user',
       verified: false,
       verificationLevel: 'none',
+      emailVerified: false,
+      notificationPreferences: {
+        emailNotifications: true,
+        donationAlerts: true,
+        campaignUpdates: true,
+        marketingEmails: false,
+      },
       campaignCount: 0,
       totalRaised: 0,
       totalDonated: 0,
@@ -122,5 +129,20 @@ export class UserService {
 
   async getMonthlyStats(year: number) {
     return this.userRepo.getMonthlyStats(year);
+  }
+
+  async setEmailVerificationToken(userId: string, token: string, expiresAt: string): Promise<void> {
+    await this.userRepo.setEmailVerificationToken(userId, token, expiresAt);
+  }
+
+  async verifyEmail(token: string): Promise<UserDocument | null> {
+    return this.userRepo.verifyEmail(token);
+  }
+
+  async updateNotificationPreferences(
+    userId: string,
+    preferences: Partial<UserDocument['notificationPreferences']>
+  ): Promise<UserDocument | null> {
+    return this.userRepo.updateNotificationPreferences(userId, preferences);
   }
 }

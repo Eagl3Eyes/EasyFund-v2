@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Menu, X, Search, Bell, ChevronDown, Heart, LogOut, LayoutDashboard, Settings, User } from 'lucide-react';
@@ -17,10 +17,12 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useAuth } from '@/providers/auth-provider';
 import { cn } from '@/lib/utils';
+import { getApiUrl } from '@/lib/config';
 
 const navLinks = [
   { href: '/explore', label: 'Explore' },
   { href: '/categories', label: 'Categories' },
+  { href: '/organizations', label: 'Organizations' },
   { href: '/how-it-works', label: 'How It Works' },
 ];
 
@@ -28,6 +30,7 @@ const mobileNavLinks = [
   { href: '/', label: 'Home' },
   { href: '/explore', label: 'Explore' },
   { href: '/categories', label: 'Categories' },
+  { href: '/organizations', label: 'Organizations' },
   { href: '/how-it-works', label: 'How It Works' },
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
@@ -41,9 +44,18 @@ export function Navbar({ variant = 'light' }: NavbarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
   const { user, loading, logout } = useAuth();
 
   const isAuthenticated = !loading && user !== null;
+
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    fetch(`${getApiUrl()}/api/auth/notifications/unread-count`, { credentials: 'include' })
+      .then((res) => res.json())
+      .then((data) => { if (data.success) setUnreadCount(data.data?.count || 0); })
+      .catch(() => {});
+  }, [isAuthenticated, pathname]);
 
   async function handleLogout() {
     await logout();
@@ -103,6 +115,11 @@ export function Navbar({ variant = 'light' }: NavbarProps) {
               <Button variant="ghost" size="icon" className={cn('hidden md:flex relative', isDark && 'text-gray-300 hover:text-white')} asChild>
                 <Link href="/dashboard/notifications">
                   <Bell className="h-5 w-5" />
+                  {unreadCount > 0 && (
+                    <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-medium text-white">
+                      {unreadCount > 9 ? '9+' : unreadCount}
+                    </span>
+                  )}
                 </Link>
               </Button>
 
@@ -168,7 +185,7 @@ export function Navbar({ variant = 'light' }: NavbarProps) {
           )}
 
           <Button asChild className={cn('hidden md:flex', isDark ? 'bg-white text-[#0a0f1a] hover:bg-white/90' : '')}>
-            <Link href="/campaigns/new">Start a Campaign</Link>
+            <Link href="/dashboard/campaigns/new">Start a Campaign</Link>
           </Button>
 
           {/* Mobile menu */}
@@ -222,7 +239,7 @@ export function Navbar({ variant = 'light' }: NavbarProps) {
                   </>
                 )}
                 <Button asChild className={cn('w-full mt-2', isDark ? 'bg-white text-[#0a0f1a] hover:bg-white/90' : '')}>
-                  <Link href="/campaigns/new" onClick={() => setMobileOpen(false)}>
+                  <Link href="/dashboard/campaigns/new" onClick={() => setMobileOpen(false)}>
                     Start a Campaign
                   </Link>
                 </Button>

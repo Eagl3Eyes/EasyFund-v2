@@ -4,6 +4,7 @@ import { CategoryRepository } from '../repositories/category.repository';
 import { NotFoundError, ForbiddenError, ConflictError } from '../utils/errors';
 import { generateSlug } from '../utils/slug';
 import { paginate, type PaginationOptions } from '../utils/paginate';
+import { riskService } from './risk.service';
 
 export class CampaignService {
   private campaignRepo = new CampaignRepository();
@@ -71,6 +72,21 @@ export class CampaignService {
       await this.categoryRepo.incrementCampaignCount(category._id!);
     }
 
+    // Run risk assessment
+    const risk = await riskService.assessCampaign({
+      fundraiserId: data.fundraiserId,
+      title: data.title,
+      description: data.description,
+      story: data.story,
+      goal: data.goal,
+      category: data.category,
+      beneficiaryType: data.beneficiaryType,
+    });
+
+    // Auto-transition: submitted -> under_review for low/medium risk
+    // High risk campaigns stay submitted for manual triage
+    const initialStatus = risk.level === 'high' ? 'submitted' : 'under_review';
+
     return this.campaignRepo.create({
       slug,
       title: data.title,
@@ -80,7 +96,7 @@ export class CampaignService {
       gallery: data.gallery || [],
       category: data.category,
       location: data.location,
-      status: 'submitted',
+      status: initialStatus,
       goal: data.goal,
       amountRaised: 0,
       supportersCount: 0,
@@ -95,7 +111,7 @@ export class CampaignService {
       milestones: data.milestones || [],
       updatesCount: 0,
       commentsCount: 0,
-      riskScore: 0,
+      riskScore: risk.score,
       reportCount: 0,
       featured: false,
       trending: false,

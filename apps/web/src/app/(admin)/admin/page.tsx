@@ -108,6 +108,10 @@ export default function AdminPage() {
     { href: '/admin/campaigns', label: 'Review Campaigns', icon: Megaphone },
     { href: '/admin/verification', label: 'Verification Requests', icon: CheckCircle },
     { href: '/admin/withdrawals', label: 'Withdrawal Requests', icon: DollarSign },
+    { href: '/admin/risk', label: 'Risk Assessment', icon: AlertTriangle },
+    { href: '/admin/payments', label: 'Payment History', icon: TrendingUp },
+    { href: '/admin/reports', label: 'Reports', icon: AlertTriangle },
+    { href: '/admin/audit-logs', label: 'Audit Logs', icon: Clock },
   ];
 
   return (

@@ -109,13 +109,20 @@ export async function verifyFundraiser(req: Request, _res: Response, next: NextF
     throw new UnauthorizedError('Authentication required');
   }
 
-  const user = await users().findOne({ _id: new ObjectId(req.user.userId) });
+  try {
+    const user = await users().findOne({ _id: new ObjectId(req.user.userId) });
 
-  if (!user || (user.role !== 'fundraiser' && user.role !== 'admin')) {
-    throw new ForbiddenError('Fundraiser access required');
+    if (!user || (user.role !== 'fundraiser' && user.role !== 'admin')) {
+      throw new ForbiddenError('Fundraiser access required');
+    }
+
+    next();
+  } catch (error) {
+    if (error instanceof ForbiddenError || error instanceof UnauthorizedError) {
+      throw error;
+    }
+    throw new UnauthorizedError('Invalid user credentials');
   }
-
-  next();
 }
 
 // Check if user is a regular user (donor)

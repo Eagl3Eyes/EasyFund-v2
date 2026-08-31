@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { verifyJWT } from '../middleware/auth';
+import { verifyJWT, verifyFundraiser } from '../middleware/auth';
 import { paymentLimiter } from '../middleware/rateLimiter';
 import { withdrawalController } from '../controllers/withdrawal.controller';
 import { validateBody } from '../middleware/validate';
@@ -10,8 +10,8 @@ const router = Router();
 router.use(verifyJWT);
 
 router.get('/balance', withdrawalController.getBalance);
-router.get('/', withdrawalController.getMyWithdrawals);
-router.post('/', paymentLimiter, validateBody(createWithdrawalSchema), withdrawalController.create);
-router.patch('/:id/cancel', withdrawalController.cancel);
+router.get('/', verifyFundraiser, withdrawalController.getMyWithdrawals);
+router.post('/', verifyFundraiser, paymentLimiter, validateBody(createWithdrawalSchema), withdrawalController.create);
+router.patch('/:id/cancel', verifyFundraiser, withdrawalController.cancel);
 
 export { router as withdrawalRoutes };

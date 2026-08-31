@@ -37,6 +37,20 @@ export class NotificationService {
     const user = await users().findOne({ _id: userId } as any);
     if (!user || !user.email) return;
 
+    // Check notification preferences
+    const prefs = user.notificationPreferences;
+    if (prefs) {
+      // If email notifications are disabled globally, skip
+      if (prefs.emailNotifications === false) return;
+
+      // Check specific preference based on notification type
+      if (type === 'donation' && prefs.donationAlerts === false) return;
+      if (type === 'campaign_update' && prefs.campaignUpdates === false) return;
+      if (type === 'campaign_status' && prefs.campaignUpdates === false) return;
+      if (type === 'verification' && prefs.campaignUpdates === false) return;
+      if (type === 'withdrawal' && prefs.donationAlerts === false) return;
+    }
+
     let html = '';
 
     switch (type) {

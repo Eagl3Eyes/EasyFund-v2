@@ -61,7 +61,7 @@ export default function MyCampaignsPage() {
           <h1 className="text-3xl font-bold text-foreground">My Campaigns</h1>
           <p className="mt-1 text-muted-foreground">Manage your fundraising campaigns</p>
         </div>
-        <Link href="/campaigns/new">
+        <Link href="/dashboard/campaigns/new">
           <Button>
             <Plus className="mr-2 h-4 w-4" />
             New Campaign
@@ -79,7 +79,7 @@ export default function MyCampaignsPage() {
         <div className="rounded-xl border bg-card p-12 text-center">
           <p className="text-lg font-medium text-foreground">No campaigns yet</p>
           <p className="mt-2 text-muted-foreground">Create your first campaign to start raising funds</p>
-          <Link href="/campaigns/new">
+          <Link href="/dashboard/campaigns/new">
             <Button className="mt-4">
               <Plus className="mr-2 h-4 w-4" />
               Create Campaign

@@ -15,10 +15,20 @@ export interface UserDocument {
   socialLinks?: Record<string, string>;
   verified: boolean;
   verificationLevel: 'none' | 'email' | 'identity' | 'address' | 'full';
+  emailVerified: boolean;
+  emailVerificationToken?: string;
+  emailVerificationExpires?: string;
+  notificationPreferences: {
+    emailNotifications: boolean;
+    donationAlerts: boolean;
+    campaignUpdates: boolean;
+    marketingEmails: boolean;
+  };
   campaignCount: number;
   totalRaised: number;
   totalDonated: number;
   savedCampaigns: string[];
+  stripeConnectedAccountId?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -165,6 +175,60 @@ export class UserRepository extends BaseRepository<UserDocument> {
         $set: { updatedAt: new Date().toISOString() },
       }
     );
+  }
+
+  async updateNotificationPreferences(
+    userId: string,
+    preferences: Partial<UserDocument['notificationPreferences']>
+  ): Promise<UserDocument | null> {
+    const updateFields: any = { updatedAt: new Date().toISOString() };
+    if (preferences.emailNotifications !== undefined) updateFields['notificationPreferences.emailNotifications'] = preferences.emailNotifications;
+    if (preferences.donationAlerts !== undefined) updateFields['notificationPreferences.donationAlerts'] = preferences.donationAlerts;
+    if (preferences.campaignUpdates !== undefined) updateFields['notificationPreferences.campaignUpdates'] = preferences.campaignUpdates;
+    if (preferences.marketingEmails !== undefined) updateFields['notificationPreferences.marketingEmails'] = preferences.marketingEmails;
+
+    return this.updateById(userId, { $set: updateFields } as any);
+  }
+
+  async setEmailVerificationToken(
+    userId: string,
+    token: string,
+    expiresAt: string
+  ): Promise<void> {
+    await this.collection.updateOne(
+      { _id: userId } as any,
+      {
+        $set: {
+          emailVerificationToken: token,
+          emailVerificationExpires: expiresAt,
+          updatedAt: new Date().toISOString(),
+        },
+      }
+    );
+  }
+
+  async verifyEmail(token: string): Promise<UserDocument | null> {
+    const user = await this.findOne({
+      emailVerificationToken: token,
+      emailVerificationExpires: { $gt: new Date().toISOString() },
+    } as any);
+
+    if (!user) return null;
+
+    await this.collection.updateOne(
+      { _id: user._id } as any,
+      {
+        $set: {
+          emailVerified: true,
+          verificationLevel: 'email',
+          emailVerificationToken: undefined,
+          emailVerificationExpires: undefined,
+          updatedAt: new Date().toISOString(),
+        },
+      }
+    );
+
+    return this.findById(user._id!.toString());
   }
 
   async getStats() {

@@ -1,17 +1,16 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import {
   ArrowLeft,
   ArrowRight,
   Check,
   Loader2,
-  Upload,
   Plus,
   X,
+  Save,
+  ImageIcon,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -69,6 +68,8 @@ export function CampaignWizard() {
   const { user } = useAuth();
   const [step, setStep] = useState(0);
   const [submitting, setSubmitting] = useState(false);
+  const [savingDraft, setSavingDraft] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [formData, setFormData] = useState<CampaignFormData>({
     title: '',
     description: '',
@@ -84,6 +85,7 @@ export function CampaignWizard() {
 
   const updateField = (field: keyof CampaignFormData, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    if (errors[field]) setErrors(prev => { const n = { ...prev }; delete n[field]; return n; });
   };
 
   const addMilestone = () => {
@@ -109,26 +111,52 @@ export function CampaignWizard() {
     }));
   };
 
-  const canProceed = () => {
+  const validateStep = useCallback(() => {
+    const errs: Record<string, string> = {};
     switch (step) {
       case 0:
-        return formData.title && formData.description && formData.category;
+        if (!formData.title) errs.title = 'Title is required';
+        if (!formData.description) errs.description = 'Description is required';
+        if (!formData.category) errs.category = 'Select a category';
+        break;
       case 1:
-        return formData.story && formData.story.length > 50;
+        if (!formData.story || formData.story.length < 50) errs.story = 'Story must be at least 50 characters';
+        break;
       case 2:
-        return formData.goal > 0 && formData.deadline;
-      default:
-        return true;
+        if (!formData.goal || formData.goal <= 0) errs.goal = 'Goal must be greater than $0';
+        if (!formData.deadline) errs.deadline = 'Deadline is required';
+        else if (new Date(formData.deadline) <= new Date()) errs.deadline = 'Deadline must be in the future';
+        break;
+    }
+    setErrors(errs);
+    return Object.keys(errs).length === 0;
+  }, [step, formData]);
+
+  const canProceed = () => {
+    switch (step) {
+      case 0: return formData.title && formData.description && formData.category;
+      case 1: return formData.story && formData.story.length > 50;
+      case 2: return formData.goal > 0 && formData.deadline;
+      default: return true;
     }
   };
 
-  const handleSubmit = async () => {
+  const handleNext = () => {
+    if (validateStep()) setStep(s => s + 1);
+  };
+
+  const handleSubmit = async (asDraft = false) => {
     if (!user) {
       toast.error('Please log in to create a campaign');
       return;
     }
 
-    setSubmitting(true);
+    if (asDraft) {
+      setSavingDraft(true);
+    } else {
+      setSubmitting(true);
+    }
+
     try {
       const res = await fetch(`${getApiUrl()}/api/campaigns`, {
         method: 'POST',
@@ -137,13 +165,14 @@ export function CampaignWizard() {
         body: JSON.stringify({
           ...formData,
           goal: Number(formData.goal),
+          status: asDraft ? 'draft' : 'submitted',
         }),
       });
 
       const data = await res.json();
 
       if (data.success) {
-        toast.success('Campaign created! It will be reviewed before going live.');
+        toast.success(asDraft ? 'Draft saved!' : 'Campaign created! It will be reviewed before going live.');
         router.push('/dashboard');
       } else {
         toast.error(data.error?.message || 'Failed to create campaign');
@@ -152,6 +181,7 @@ export function CampaignWizard() {
       toast.error('An error occurred. Please try again.');
     } finally {
       setSubmitting(false);
+      setSavingDraft(false);
     }
   };
 
@@ -207,7 +237,9 @@ export function CampaignWizard() {
                 value={formData.title}
                 onChange={(e) => updateField('title', e.target.value)}
                 maxLength={100}
+                className={errors.title ? 'border-red-500' : ''}
               />
+              {errors.title && <p className="text-xs text-red-500">{errors.title}</p>}
               <p className="text-xs text-muted-foreground">
                 {formData.title.length}/100 characters
               </p>
@@ -222,7 +254,9 @@ export function CampaignWizard() {
                 onChange={(e) => updateField('description', e.target.value)}
                 maxLength={200}
                 rows={2}
+                className={errors.description ? 'border-red-500' : ''}
               />
+              {errors.description && <p className="text-xs text-red-500">{errors.description}</p>}
               <p className="text-xs text-muted-foreground">
                 {formData.description.length}/200 characters
               </p>
@@ -242,6 +276,7 @@ export function CampaignWizard() {
                   </Badge>
                 ))}
               </div>
+              {errors.category && <p className="text-xs text-red-500">{errors.category}</p>}
             </div>
 
             <div className="space-y-2">
@@ -293,7 +328,9 @@ export function CampaignWizard() {
                 value={formData.story}
                 onChange={(e) => updateField('story', e.target.value)}
                 rows={10}
+                className={errors.story ? 'border-red-500' : ''}
               />
+              {errors.story && <p className="text-xs text-red-500">{errors.story}</p>}
               <p className="text-xs text-muted-foreground">
                 {formData.story.length} characters (minimum 50)
               </p>
@@ -310,6 +347,16 @@ export function CampaignWizard() {
               <p className="text-xs text-muted-foreground">
                 Paste a URL to your campaign image
               </p>
+              {formData.image && (
+                <div className="mt-2 overflow-hidden rounded-lg border">
+                  <img
+                    src={formData.image}
+                    alt="Campaign preview"
+                    className="h-40 w-full object-cover"
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                  />
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -334,9 +381,10 @@ export function CampaignWizard() {
                   placeholder="10000"
                   value={formData.goal || ''}
                   onChange={(e) => updateField('goal', Number(e.target.value))}
-                  className="pl-8"
+                  className={`pl-8 ${errors.goal ? 'border-red-500' : ''}`}
                 />
               </div>
+              {errors.goal && <p className="text-xs text-red-500">{errors.goal}</p>}
             </div>
 
             <div className="space-y-2">
@@ -347,7 +395,9 @@ export function CampaignWizard() {
                 min={new Date().toISOString().split('T')[0]}
                 value={formData.deadline}
                 onChange={(e) => updateField('deadline', e.target.value)}
+                className={errors.deadline ? 'border-red-500' : ''}
               />
+              {errors.deadline && <p className="text-xs text-red-500">{errors.deadline}</p>}
             </div>
 
             <Separator />
@@ -480,29 +530,56 @@ export function CampaignWizard() {
             Previous
           </Button>
 
-          {step < steps.length - 1 ? (
-            <Button
-              onClick={() => setStep(s => s + 1)}
-              disabled={!canProceed()}
-            >
-              Next
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          ) : (
-            <Button
-              onClick={handleSubmit}
-              disabled={submitting}
-            >
-              {submitting ? (
-                <>
+          <div className="flex gap-2">
+            {step < steps.length - 1 && (
+              <Button
+                variant="ghost"
+                onClick={() => handleSubmit(true)}
+                disabled={savingDraft}
+              >
+                {savingDraft ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Submitting...
-                </>
-              ) : (
-                'Submit Campaign'
-              )}
-            </Button>
-          )}
+                ) : (
+                  <Save className="mr-2 h-4 w-4" />
+                )}
+                Save Draft
+              </Button>
+            )}
+
+            {step < steps.length - 1 ? (
+              <Button
+                onClick={handleNext}
+                disabled={!canProceed()}
+              >
+                Next
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            ) : (
+              <>
+                <Button
+                  variant="outline"
+                  onClick={() => handleSubmit(true)}
+                  disabled={savingDraft}
+                >
+                  <Save className="mr-2 h-4 w-4" />
+                  Save Draft
+                </Button>
+                <Button
+                  onClick={() => handleSubmit(false)}
+                  disabled={submitting}
+                >
+                  {submitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Submitting...
+                    </>
+                  ) : (
+                    'Submit Campaign'
+                  )}
+                </Button>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </div>

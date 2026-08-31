@@ -14,9 +14,16 @@ router.post('/logout', authController.logout);
 router.post('/refresh', authController.refreshToken);
 router.get('/me', verifyJWT, authController.getMe);
 router.patch('/profile', verifyJWT, validateBody(updateProfileSchema), authController.updateProfile);
+
+// Email verification
+router.post('/verify-email', verifyJWT, authController.sendEmailVerification);
+router.get('/verify-email/:token', authController.verifyEmail);
+
+// Notification preferences
 router.get('/notifications', verifyJWT, authController.getNotifications);
 router.get('/notifications/unread-count', verifyJWT, authController.getUnreadCount);
 router.patch('/notifications/:id/read', verifyJWT, authController.markNotificationRead);
 router.patch('/notifications/read-all', verifyJWT, authController.markAllNotificationsRead);
+router.patch('/notification-preferences', verifyJWT, authController.updateNotificationPreferences);
 
 export { router as authRoutes };

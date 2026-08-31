@@ -1,32 +1,50 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useAuth } from '@/providers/auth-provider';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { Search, Shield, Ban, CheckCircle, Mail } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Search, Shield, CheckCircle, XCircle, Users as UsersIcon, Megaphone } from 'lucide-react';
 import { getApiUrl } from '@/lib/config';
 
-interface User {
+interface UserRecord {
   _id: string;
   name: string;
   email: string;
   role: string;
-  verified: boolean;
+  emailVerified?: boolean;
+  identityVerified?: boolean;
+  totalDonated?: number;
+  campaignsCount?: number;
   createdAt: string;
 }
 
 export default function AdminUsersPage() {
   const { user, loading } = useAuth();
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<UserRecord[]>([]);
   const [search, setSearch] = useState('');
+  const [roleFilter, setRoleFilter] = useState('all');
   const [isDataLoading, setIsDataLoading] = useState(true);
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
+  useEffect(() => { fetchUsers(); }, []);
+
+  const stats = useMemo(() => {
+    const byRole: Record<string, number> = {};
+    users.forEach((u) => { byRole[u.role] = (byRole[u.role] || 0) + 1; });
+    return { total: users.length, byRole };
+  }, [users]);
+
+  const filtered = useMemo(() => {
+    return users.filter((u) => {
+      const matchSearch = u.name.toLowerCase().includes(search.toLowerCase()) || u.email.toLowerCase().includes(search.toLowerCase());
+      const matchRole = roleFilter === 'all' || u.role === roleFilter;
+      return matchSearch && matchRole;
+    });
+  }, [users, search, roleFilter]);
 
   if (loading) {
     return (
@@ -36,13 +54,17 @@ export default function AdminUsersPage() {
     );
   }
 
-  if (!user) {
-    return null;
+  if (!user || user?.role !== 'admin') {
+    return (
+      <div className="flex min-h-[50vh] items-center justify-center">
+        <p className="text-muted-foreground">Access Denied</p>
+      </div>
+    );
   }
 
   async function fetchUsers() {
     try {
-      const res = await fetch(`${getApiUrl()}/api/admin/users?limit=50`, { credentials: 'include' });
+      const res = await fetch(`${getApiUrl()}/api/admin/users?limit=100`, { credentials: 'include' });
       const data = await res.json();
       setUsers(data.data?.users || []);
     } catch (error) {
@@ -52,14 +74,13 @@ export default function AdminUsersPage() {
     }
   }
 
-  async function toggleRole(userId: string, currentRole: string) {
-    const newRole = currentRole === 'admin' ? 'donor' : 'admin';
+  async function updateRole(userId: string, role: string) {
     try {
       await fetch(`${getApiUrl()}/api/admin/users/${userId}/role`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ role: newRole }),
+        body: JSON.stringify({ role }),
       });
       fetchUsers();
     } catch (error) {
@@ -67,39 +88,86 @@ export default function AdminUsersPage() {
     }
   }
 
-  const filtered = users.filter(
-    (u) =>
-      u.name.toLowerCase().includes(search.toLowerCase()) ||
-      u.email.toLowerCase().includes(search.toLowerCase())
-  );
-
-  if (user?.role !== 'admin') {
-    return (
-      <div className="flex min-h-[50vh] items-center justify-center">
-        <p className="text-muted-foreground">Access Denied</p>
-      </div>
-    );
-  }
-
   return (
     <div className="p-6 space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">Users</h1>
-          <p className="text-muted-foreground">Manage platform users</p>
+      <div>
+        <h1 className="text-3xl font-bold">Users</h1>
+        <p className="text-muted-foreground">Manage platform users</p>
+      </div>
+
+      {/* Stats */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <UsersIcon className="h-8 w-8 text-primary" />
+              <div>
+                <p className="text-2xl font-bold">{stats.total}</p>
+                <p className="text-sm text-muted-foreground">Total Users</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <Megaphone className="h-8 w-8 text-blue-500" />
+              <div>
+                <p className="text-2xl font-bold">{stats.byRole['fundraiser'] || 0}</p>
+                <p className="text-sm text-muted-foreground">Fundraisers</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <CheckCircle className="h-8 w-8 text-green-500" />
+              <div>
+                <p className="text-2xl font-bold">{stats.byRole['donor'] || 0}</p>
+                <p className="text-sm text-muted-foreground">Donors</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <Shield className="h-8 w-8 text-purple-500" />
+              <div>
+                <p className="text-2xl font-bold">{stats.byRole['admin'] || 0}</p>
+                <p className="text-sm text-muted-foreground">Admins</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Toolbar */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+        <div className="relative max-w-sm">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            placeholder="Search users..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="pl-9"
+          />
         </div>
+        <Select value={roleFilter} onValueChange={setRoleFilter}>
+          <SelectTrigger className="w-[160px]">
+            <SelectValue placeholder="Filter by role" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Roles</SelectItem>
+            <SelectItem value="donor">Donor</SelectItem>
+            <SelectItem value="fundraiser">Fundraiser</SelectItem>
+            <SelectItem value="admin">Admin</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
-      <div className="relative max-w-sm">
-        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-        <Input
-          placeholder="Search users..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="pl-9"
-        />
-      </div>
-
+      {/* Table */}
       {isDataLoading ? (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {[1, 2, 3, 4, 5, 6].map((i) => (
@@ -111,51 +179,83 @@ export default function AdminUsersPage() {
       ) : filtered.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
+            <UsersIcon className="h-12 w-12 text-muted-foreground mb-4" />
             <p className="text-muted-foreground">No users found</p>
           </CardContent>
         </Card>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((u) => (
-            <Card key={u._id}>
-              <CardHeader className="pb-2">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <CardTitle className="text-lg">{u.name}</CardTitle>
-                    <p className="text-sm text-muted-foreground">{u.email}</p>
-                  </div>
-                  <Badge variant={u.role === 'admin' ? 'default' : 'secondary'}>
-                    {u.role}
-                  </Badge>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
-                  <span>Joined {new Date(u.createdAt).toLocaleDateString()}</span>
-                  {u.verified && (
-                    <Badge variant="outline" className="text-green-600">
-                      <CheckCircle className="mr-1 h-3 w-3" /> Verified
+        <Card>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>User</TableHead>
+                <TableHead>Role</TableHead>
+                <TableHead>Verified</TableHead>
+                <TableHead>Donated</TableHead>
+                <TableHead>Campaigns</TableHead>
+                <TableHead>Joined</TableHead>
+                <TableHead>Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filtered.map((u) => (
+                <TableRow key={u._id}>
+                  <TableCell>
+                    <div>
+                      <p className="font-medium">{u.name}</p>
+                      <p className="text-xs text-muted-foreground">{u.email}</p>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant={u.role === 'admin' ? 'default' : u.role === 'fundraiser' ? 'secondary' : 'outline'}>
+                      {u.role}
                     </Badge>
-                  )}
-                </div>
-                <div className="flex gap-2">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => toggleRole(u._id, u.role)}
-                  >
-                    <Shield className="mr-1 h-3 w-3" />
-                    {u.role === 'admin' ? 'Demote' : 'Make Admin'}
-                  </Button>
-                  <Button size="sm" variant="outline">
-                    <Mail className="mr-1 h-3 w-3" />
-                    Email
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                  </TableCell>
+                  <TableCell>
+                    {u.emailVerified ? (
+                      <Badge variant="outline" className="text-green-600 border-green-200">
+                        <CheckCircle className="mr-1 h-3 w-3" /> Verified
+                      </Badge>
+                    ) : (
+                      <Badge variant="outline" className="text-muted-foreground">
+                        <XCircle className="mr-1 h-3 w-3" /> Unverified
+                      </Badge>
+                    )}
+                  </TableCell>
+                  <TableCell>${(u.totalDonated || 0).toLocaleString()}</TableCell>
+                  <TableCell>{u.campaignsCount || 0}</TableCell>
+                  <TableCell className="text-sm text-muted-foreground">
+                    {new Date(u.createdAt).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex gap-1">
+                      {u.role !== 'admin' && (
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="h-8 px-2 text-xs"
+                          onClick={() => updateRole(u._id, 'admin')}
+                        >
+                          <Shield className="mr-1 h-3 w-3" /> Make Admin
+                        </Button>
+                      )}
+                      {u.role === 'admin' && u._id !== user?._id && (
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="h-8 px-2 text-xs"
+                          onClick={() => updateRole(u._id, 'donor')}
+                        >
+                          Demote
+                        </Button>
+                      )}
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Card>
       )}
     </div>
   );

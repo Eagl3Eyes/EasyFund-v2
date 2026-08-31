@@ -12,6 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { loginSchema, type LoginInput } from '@/lib/validations';
 import { useAuth } from '@/providers/auth-provider';
+import { toast } from 'sonner';
 
 function LoginForm() {
   const searchParams = useSearchParams();
@@ -34,7 +35,16 @@ function LoginForm() {
       await login(data.email, data.password);
       window.location.href = callbackUrl;
     } catch (error: any) {
-      console.error('Login failed:', error);
+      const code = error?.code || '';
+      if (code.includes('wrong-password') || code.includes('invalid-credential') || code.includes('user-not-found')) {
+        toast.error('Invalid email or password');
+      } else if (code.includes('too-many-requests')) {
+        toast.error('Too many failed attempts. Please try again later.');
+      } else if (code.includes('user-disabled')) {
+        toast.error('This account has been disabled.');
+      } else {
+        toast.error('Login failed. Please try again.');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -47,6 +57,7 @@ function LoginForm() {
       window.location.href = callbackUrl;
     } catch (error: any) {
       console.error('Google login failed:', error);
+      toast.error('Google login failed. Please try again.');
     } finally {
       setIsLoading(false);
     }

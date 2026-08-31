@@ -194,6 +194,35 @@ export class AuthController {
       next(error);
     }
   }
+
+  // Email verification
+  async sendEmailVerification(req: Request, res: Response, next: NextFunction) {
+    try {
+      await authService.sendEmailVerification(req.user!.userId);
+      res.json({ success: true, data: { message: 'Verification email sent' } });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async verifyEmail(req: Request, res: Response, next: NextFunction) {
+    try {
+      const result = await authService.verifyEmail(req.params.token);
+      res.json({ success: true, data: result });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  // Notification preferences
+  async updateNotificationPreferences(req: Request, res: Response, next: NextFunction) {
+    try {
+      const preferences = await authService.updateNotificationPreferences(req.user!.userId, req.body);
+      res.json({ success: true, data: preferences });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export const authController = new AuthController();

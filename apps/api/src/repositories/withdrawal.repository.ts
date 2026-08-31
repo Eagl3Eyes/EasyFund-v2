@@ -1,5 +1,5 @@
 import { BaseRepository, type QueryOptions, type PaginatedResult } from './base.repository';
-import { withdrawals } from '../config/database';
+import { withdrawals, campaigns, donations } from '../config/database';
 
 export interface WithdrawalDocument {
   _id?: any;
@@ -43,6 +43,19 @@ export interface WithdrawalFilters {
 }
 
 export class WithdrawalRepository extends BaseRepository<WithdrawalDocument> {
+  // Allowed status transitions
+  static readonly VALID_TRANSITIONS: Record<string, string[]> = {
+    requested: ['risk_check', 'approved', 'rejected', 'cancelled'],
+    risk_check: ['under_review', 'rejected', 'cancelled'],
+    under_review: ['approved', 'rejected'],
+    approved: ['processing', 'rejected'],
+    processing: ['completed', 'failed'],
+    completed: [],
+    rejected: [],
+    failed: ['requested'], // Allow retry
+    cancelled: ['requested'], // Allow re-request
+  };
+
   constructor() {
     super(withdrawals);
   }
@@ -99,6 +112,15 @@ export class WithdrawalRepository extends BaseRepository<WithdrawalDocument> {
     paymentReference?: string,
     failureReason?: string
   ): Promise<WithdrawalDocument | null> {
+    // Validate status transition
+    const current = await this.findById(withdrawalId);
+    if (!current) return null;
+
+    const allowed = WithdrawalRepository.VALID_TRANSITIONS[current.status] || [];
+    if (!allowed.includes(status)) {
+      throw new Error(`Cannot transition from '${current.status}' to '${status}'`);
+    }
+
     const update: any = {
       status,
       updatedAt: new Date().toISOString(),
@@ -117,13 +139,25 @@ export class WithdrawalRepository extends BaseRepository<WithdrawalDocument> {
   }
 
   async getAvailableBalance(fundraiserId: string): Promise<number> {
-    const pipeline = [
-      { $match: { fundraiserId, status: { $in: ['completed'] } } },
+    // Find all campaigns owned by this fundraiser
+    const fundraiserCampaigns = await campaigns()
+      .find({ fundraiserId } as any, { projection: { _id: 1 } })
+      .toArray();
+    const campaignIds = fundraiserCampaigns.map((c: any) => c._id?.toString() || c._id);
+
+    if (campaignIds.length === 0) return 0;
+
+    // Sum completed donations for all campaigns owned by this fundraiser
+    const donationPipeline = [
+      { $match: { campaignId: { $in: campaignIds }, status: 'completed' } },
       { $group: { _id: null, totalRaised: { $sum: '$amount' } } },
     ];
-    const result = await this.aggregate<{ _id: null; totalRaised: number }>(pipeline);
-    const totalRaised = result[0]?.totalRaised || 0;
+    const donationResult = await donations()
+      .aggregate<{ _id: null; totalRaised: number }>(donationPipeline)
+      .toArray();
+    const totalRaised = donationResult[0]?.totalRaised || 0;
 
+    // Sum withdrawals that have been approved, processing, or completed
     const withdrawnPipeline = [
       { $match: { fundraiserId, status: { $in: ['approved', 'processing', 'completed'] } } },
       { $group: { _id: null, totalWithdrawn: { $sum: '$amount' } } },
@@ -131,7 +165,7 @@ export class WithdrawalRepository extends BaseRepository<WithdrawalDocument> {
     const withdrawnResult = await this.aggregate<{ _id: null; totalWithdrawn: number }>(withdrawnPipeline);
     const totalWithdrawn = withdrawnResult[0]?.totalWithdrawn || 0;
 
-    return totalRaised - totalWithdrawn;
+    return Math.max(0, totalRaised - totalWithdrawn);
   }
 
   async getTotalWithdrawnByFundraiser(fundraiserId: string): Promise<number> {

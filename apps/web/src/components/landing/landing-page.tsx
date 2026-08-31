@@ -157,7 +157,7 @@ export default function LandingPage() {
               <a href="/auth/login" className="rounded-xl border border-white/12 px-4 py-[7px] text-[13px] font-medium transition hover:bg-white/10">
                 Log in
               </a>
-              <a href="/campaigns/new" className="rounded-xl bg-[#0ef695] px-5 py-2 text-[13px] font-bold text-[#060e1e] shadow-lg shadow-[#0ef695]/20 transition hover:-translate-y-0.5 hover:bg-[#38f9a8]">
+              <a href="/dashboard/campaigns/new" className="rounded-xl bg-[#0ef695] px-5 py-2 text-[13px] font-bold text-[#060e1e] shadow-lg shadow-[#0ef695]/20 transition hover:-translate-y-0.5 hover:bg-[#38f9a8]">
                 Start a Campaign
               </a>
             </div>
@@ -181,7 +181,7 @@ export default function LandingPage() {
                 ))}
                 <div className="mt-3 grid grid-cols-2 gap-2">
                   <a href="/auth/login" className="rounded-xl border border-white/10 py-2.5 text-center text-sm font-medium">Log in</a>
-                  <a href="/campaigns/new" className="rounded-xl bg-[#0ef695] py-2.5 text-center text-sm font-bold text-[#060e1e]">Start Campaign</a>
+                  <a href="/dashboard/campaigns/new" className="rounded-xl bg-[#0ef695] py-2.5 text-center text-sm font-bold text-[#060e1e]">Start Campaign</a>
                 </div>
               </div>
             </motion.div>
@@ -233,7 +233,7 @@ export default function LandingPage() {
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </a>
                 <a
-                  href="/campaigns/new"
+                  href="/dashboard/campaigns/new"
                   className="inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-white/[0.04] px-6 py-3.5 text-[14px] font-bold backdrop-blur transition hover:bg-white/10 sm:px-7 sm:py-4"
                 >
                   Start a Campaign
@@ -518,7 +518,7 @@ export default function LandingPage() {
               </Reveal>
               <Reveal delay={0.18}>
                 <div className="mt-8 flex flex-wrap gap-3">
-                  <a href="/campaigns/new" className="rounded-2xl bg-[#0ef695] px-6 py-3.5 text-sm font-bold text-[#060e1e] shadow-lg shadow-[#0ef695]/20 transition hover:-translate-y-0.5 hover:bg-[#38f9a8]">
+                  <a href="/dashboard/campaigns/new" className="rounded-2xl bg-[#0ef695] px-6 py-3.5 text-sm font-bold text-[#060e1e] shadow-lg shadow-[#0ef695]/20 transition hover:-translate-y-0.5 hover:bg-[#38f9a8]">
                     Start a Campaign
                   </a>
                   <a href="/explore" className="rounded-2xl border border-white/15 bg-white/[0.04] px-6 py-3.5 text-sm font-bold backdrop-blur transition hover:bg-white/10">
@@ -553,7 +553,7 @@ export default function LandingPage() {
 
             {/* Columns */}
             {[
-              { title: 'Platform', links: [['Explore', '/explore'], ['How It Works', '/how-it-works'], ['Create Campaign', '/campaigns/new']] },
+              { title: 'Platform', links: [['Explore', '/explore'], ['How It Works', '/how-it-works'], ['Create Campaign', '/dashboard/campaigns/new']] },
               { title: 'Support', links: [['Help Center', '/contact'], ['Contact Us', '/contact'], ['Terms of Service', '/about']] },
               { title: 'Company', links: [['About Us', '/about'], ['Careers', '/about'], ['Privacy Policy', '/about']] },
             ].map((col) => (

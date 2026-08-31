@@ -22,9 +22,12 @@ export interface User {
   bio?: string;
   location?: string;
   payoutAccountId?: string;
+  stripeConnectedAccountId?: string;
   followersCount: number;
   campaignsCount: number;
   totalDonated: number;
+  totalRaised: number;
+  savedCampaigns?: string[];
   createdAt: string;
   updatedAt: string;
 }

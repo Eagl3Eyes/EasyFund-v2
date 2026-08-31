@@ -176,12 +176,45 @@ async function migrate() {
     await campaignsCollection.createIndex({ createdAt: -1 });
     await campaignsCollection.createIndex({ goal: 1 });
     await campaignsCollection.createIndex({ amountRaised: -1 });
+    await campaignsCollection.createIndex({ fundraiserId: 1 });
+    await campaignsCollection.createIndex({ title: 'text', description: 'text', story: 'text' });
 
     await donationsCollection.createIndex({ userEmail: 1 });
     await donationsCollection.createIndex({ campaignId: 1 });
     await donationsCollection.createIndex({ createdAt: -1 });
+    await donationsCollection.createIndex({ userId: 1 });
+    await donationsCollection.createIndex({ status: 1 });
 
     await db.collection('users').createIndex({ email: 1 }, { unique: true });
+    await db.collection('users').createIndex({ firebaseUid: 1 });
+    await db.collection('users').createIndex({ role: 1 });
+
+    await db.collection('withdrawals').createIndex({ fundraiserId: 1 });
+    await db.collection('withdrawals').createIndex({ status: 1 });
+    await db.collection('withdrawals').createIndex({ createdAt: -1 });
+
+    await db.collection('comments').createIndex({ campaignId: 1 });
+    await db.collection('comments').createIndex({ parentCommentId: 1 });
+
+    await db.collection('campaign_updates').createIndex({ campaignId: 1 });
+
+    await db.collection('follows').createIndex({ followerId: 1 });
+    await db.collection('follows').createIndex({ followingId: 1 });
+
+    await db.collection('notifications').createIndex({ userId: 1, read: 1 });
+    await db.collection('notifications').createIndex({ createdAt: -1 });
+
+    await db.collection('saved_campaigns').createIndex({ userId: 1, campaignId: 1 }, { unique: true });
+
+    await db.collection('verification_requests').createIndex({ userId: 1 });
+
+    await db.collection('reports').createIndex({ reporterId: 1 });
+    await db.collection('reports').createIndex({ status: 1 });
+
+    await db.collection('audit_logs').createIndex({ action: 1 });
+    await db.collection('audit_logs').createIndex({ createdAt: -1 });
+
+    await db.collection('payment_webhooks').createIndex({ stripeEventId: 1 }, { unique: true });
 
     console.log('Indexes created');
 

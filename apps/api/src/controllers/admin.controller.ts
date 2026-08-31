@@ -121,7 +121,7 @@ export class AdminController {
     try {
       const { status } = req.body;
       const user = (req as any).user;
-      await adminService.resolveReport(req.params.id, status, user._id);
+      await adminService.resolveReport(req.params.id, status, user.userId);
       res.json({ success: true, message: 'Report updated' });
     } catch (error) {
       next(error);

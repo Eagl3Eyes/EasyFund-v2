@@ -8,6 +8,7 @@ import { env } from '../config/env';
 import { stripe } from '../config/stripe';
 import { notificationService } from './notification.service';
 import { paymentWebhooks } from '../config/database';
+import logger from '../utils/logger';
 
 export class DonationService {
   private donationRepo = new DonationRepository();
@@ -102,6 +103,7 @@ export class DonationService {
       message: data.message || '',
       status: 'pending',
       transactionId: stripeSession.id,
+      stripePaymentIntentId: stripeSession.payment_intent as string || undefined,
       createdAt: new Date().toISOString(),
     });
 
@@ -115,7 +117,7 @@ export class DonationService {
   async handleStripeWebhook(event: any): Promise<void> {
     const existingWebhook = await paymentWebhooks().findOne({ stripeEventId: event.id } as any);
     if (existingWebhook) {
-      console.log(`Duplicate webhook event: ${event.id}`);
+      logger.info({ eventId: event.id }, 'Duplicate webhook event');
       return;
     }
 
@@ -143,7 +145,7 @@ export class DonationService {
               donation.amount
             );
           } catch (error) {
-            console.error('Failed to send donation notification:', error);
+            logger.error({ err: error }, 'Failed to send donation notification');
           }
         }
         break;
@@ -175,7 +177,7 @@ export class DonationService {
         break;
       }
       default:
-        console.log(`Unhandled webhook event type: ${event.type}`);
+        logger.info({ eventType: event.type }, 'Unhandled webhook event type');
     }
   }
 

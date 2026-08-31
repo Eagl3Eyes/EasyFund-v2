@@ -1,6 +1,7 @@
 import { type Request, type Response, type NextFunction } from 'express';
 import { CampaignService } from '../services/campaign.service';
 import { paginate } from '../utils/paginate';
+import { campaigns } from '../config/database';
 
 const campaignService = new CampaignService();
 
@@ -129,10 +130,26 @@ export class CampaignController {
   async getSaved(req: Request, res: Response, next: NextFunction) {
     try {
       const user = req.user!;
-      const result = await campaignService.getByFundraiser(user.userId, {
-        page: Number(req.query.page) || 1,
-        limit: Number(req.query.limit) || 20,
-      });
+      const { users } = await import('../config/database');
+      const { ObjectId } = await import('mongodb');
+
+      const userDoc = await users().findOne({ _id: new ObjectId(user.userId) });
+      const savedIds = userDoc?.savedCampaigns || [];
+
+      if (savedIds.length === 0) {
+        return res.json({ success: true, data: [], pagination: { page: 1, limit: 20, total: 0, totalPages: 0 } });
+      }
+
+      const { paginateWithCount } = await import('../utils/paginate');
+      const page = Number(req.query.page) || 1;
+      const limit = Number(req.query.limit) || 20;
+
+      const result = await paginateWithCount(
+        { page, limit },
+        () => campaigns().countDocuments({ _id: { $in: savedIds.map((id: string) => new ObjectId(id)) } } as any),
+        (skip, limit) => campaigns().find({ _id: { $in: savedIds.map((id: string) => new ObjectId(id)) } } as any).sort({ createdAt: -1 }).skip(skip).limit(limit).toArray()
+      );
+
       res.json({ success: true, data: result.data, pagination: result.pagination });
     } catch (error) {
       next(error);

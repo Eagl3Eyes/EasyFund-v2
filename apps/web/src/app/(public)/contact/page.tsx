@@ -1,23 +1,38 @@
 'use client';
 
-import type { Metadata } from 'next';
 import { useState } from 'react';
 import { Send, Mail, MessageSquare, MapPin, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { toast } from 'sonner';
+import { getApiUrl } from '@/lib/config';
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
-    // Simulate submission
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    setSubmitted(true);
-    setLoading(false);
+    try {
+      const res = await fetch(`${getApiUrl()}/api/support/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setSubmitted(true);
+      } else {
+        toast.error(data.error?.message || 'Failed to send message');
+      }
+    } catch {
+      toast.error('An error occurred. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -65,16 +80,16 @@ export default function ContactPage() {
               <div className="grid gap-6 sm:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor="name">Name</Label>
-                  <Input id="name" required placeholder="Your name" />
+                  <Input id="name" required placeholder="Your name" value={formData.name} onChange={(e) => setFormData(p => ({ ...p, name: e.target.value }))} />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" required placeholder="you@example.com" />
+                  <Input id="email" type="email" required placeholder="you@example.com" value={formData.email} onChange={(e) => setFormData(p => ({ ...p, email: e.target.value }))} />
                 </div>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="subject">Subject</Label>
-                <Input id="subject" required placeholder="How can we help?" />
+                <Input id="subject" required placeholder="How can we help?" value={formData.subject} onChange={(e) => setFormData(p => ({ ...p, subject: e.target.value }))} />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="message">Message</Label>
@@ -84,6 +99,8 @@ export default function ContactPage() {
                   rows={5}
                   placeholder="Tell us more..."
                   className="w-full rounded-md border bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  value={formData.message}
+                  onChange={(e) => setFormData(p => ({ ...p, message: e.target.value }))}
                 />
               </div>
               <Button type="submit" className="w-full" disabled={loading}>

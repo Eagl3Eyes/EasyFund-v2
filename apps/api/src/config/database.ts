@@ -1,5 +1,6 @@
 import { MongoClient, type Db, type Collection } from 'mongodb';
 import { env } from './env';
+import logger from '../utils/logger';
 
 let client: MongoClient | null = null;
 let db: Db | null = null;
@@ -18,7 +19,7 @@ export async function connectToDatabase(): Promise<Db> {
   await client.connect();
   db = client.db(env.MONGODB_DB_NAME);
 
-  console.log(`Connected to MongoDB: ${env.MONGODB_DB_NAME}`);
+  logger.info(`Connected to MongoDB: ${env.MONGODB_DB_NAME}`);
   return db;
 }
 
@@ -34,7 +35,7 @@ export async function closeDatabase(): Promise<void> {
     await client.close();
     client = null;
     db = null;
-    console.log('MongoDB connection closed');
+    logger.info('MongoDB connection closed');
   }
 }
 
@@ -53,10 +54,6 @@ export function categories(): Collection {
 
 export function donations(): Collection {
   return getDb().collection('donations');
-}
-
-export function transactions(): Collection {
-  return getDb().collection('transactions');
 }
 
 export function withdrawals(): Collection {

@@ -166,6 +166,26 @@ export class AdminService {
 
     await this.withdrawalRepo.updateStatus(withdrawalId, status, adminNote);
 
+    if (status === 'approved') {
+      try {
+        const { stripe } = await import('../config/stripe');
+        const user = await this.userService.getById(withdrawal.fundraiserId);
+        if (user?.stripeConnectedAccountId) {
+          const transfer = await stripe.transfers.create({
+            amount: Math.round(withdrawal.netAmount * 100),
+            currency: withdrawal.currency || 'usd',
+            destination: user.stripeConnectedAccountId,
+            metadata: { withdrawalId, fundraiserId: withdrawal.fundraiserId },
+          });
+          await this.withdrawalRepo.updateStatus(withdrawalId, 'processing', `Transfer ${transfer.id}`);
+        } else {
+          await this.withdrawalRepo.updateStatus(withdrawalId, 'processing', 'No Stripe Connect account — manual payout required');
+        }
+      } catch (err: any) {
+        await this.withdrawalRepo.updateStatus(withdrawalId, 'failed', `Stripe transfer failed: ${err.message}`);
+      }
+    }
+
     await this.notificationRepo.create({
       userId: withdrawal.fundraiserId,
       type: 'withdrawal',
@@ -202,7 +222,7 @@ export class AdminService {
     );
   }
 
-  async resolveReport(reportId: string, status: 'resolved' | 'dismissed', adminId: string) {
+  async resolveReport(reportId: string, status: 'resolved' | 'dismissed', adminId: string, action?: 'suspend' | 'warn' | 'none') {
     const { reports } = await import('../config/database');
     const report = await reports().findOne({ _id: reportId } as any);
     if (!report) throw new NotFoundError('Report not found');
@@ -212,13 +232,27 @@ export class AdminService {
       { $set: { status, resolvedBy: adminId, resolvedAt: new Date().toISOString() } }
     );
 
+    if (status === 'resolved' && action === 'suspend') {
+      const { targetType, targetId } = report;
+      if (targetType === 'campaign') {
+        const { campaigns } = await import('../config/database');
+        await campaigns().updateOne({ _id: targetId } as any, { $set: { status: 'suspended', suspendedAt: new Date().toISOString() } });
+      } else if (targetType === 'user') {
+        const { users } = await import('../config/database');
+        await users().updateOne({ _id: targetId } as any, { $set: { status: 'suspended', suspendedAt: new Date().toISOString() } });
+      } else if (targetType === 'comment') {
+        const { comments } = await import('../config/database');
+        await comments().updateOne({ _id: targetId } as any, { $set: { deleted: true, deletedAt: new Date().toISOString() } });
+      }
+    }
+
     const { auditLogs } = await import('../config/database');
     await auditLogs().insertOne({
       action: 'report_resolved',
       performedBy: adminId,
       targetType: 'report',
       targetId: reportId,
-      details: { status },
+      details: { status, action: action || 'none', reportedTargetType: report.targetType, reportedTargetId: report.targetId },
       createdAt: new Date().toISOString(),
     } as any);
 

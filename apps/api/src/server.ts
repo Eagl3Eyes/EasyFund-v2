@@ -1,29 +1,28 @@
 import app from './app';
 import { env } from './config/env';
 import { connectToDatabase, closeDatabase } from './config/database';
+import { startScheduledJobs, stopScheduledJobs } from './jobs/scheduled';
+import logger from './utils/logger';
 
 async function main() {
   try {
-    // Connect to MongoDB
     await connectToDatabase();
+    startScheduledJobs();
 
-    // Start server
     const server = app.listen(env.PORT, () => {
-      console.log(`EasyFund API running on port ${env.PORT} [${env.NODE_ENV}]`);
+      logger.info(`EasyFund API running on port ${env.PORT} [${env.NODE_ENV}]`);
     });
 
-    // Graceful shutdown
     const shutdown = async (signal: string) => {
-      console.log(`\n${signal} received. Shutting down gracefully...`);
+      logger.info(`${signal} received. Shutting down gracefully...`);
+      stopScheduledJobs();
       server.close(async () => {
         await closeDatabase();
-        console.log('Server closed');
+        logger.info('Server closed');
         process.exit(0);
       });
-
-      // Force shutdown after 10s
       setTimeout(() => {
-        console.error('Forced shutdown after timeout');
+        logger.error('Forced shutdown after timeout');
         process.exit(1);
       }, 10000);
     };
@@ -31,7 +30,7 @@ async function main() {
     process.on('SIGINT', () => shutdown('SIGINT'));
     process.on('SIGTERM', () => shutdown('SIGTERM'));
   } catch (error) {
-    console.error('Failed to start server:', error);
+    logger.error({ err: error }, 'Failed to start server');
     process.exit(1);
   }
 }

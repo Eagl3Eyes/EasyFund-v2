@@ -1,9 +1,11 @@
 import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
 import { UserService } from './user.service';
-import { UnauthorizedError, NotFoundError } from '../utils/errors';
+import { UnauthorizedError, NotFoundError, BadRequestError } from '../utils/errors';
 import { env } from '../config/env';
 import type { AuthUser } from '../middleware/auth';
 import { notifications } from '../config/database';
+import { sendEmail } from '../integrations/mail/mail.service';
 
 export class AuthService {
   private userService = new UserService();
@@ -154,6 +156,56 @@ export class AuthService {
       { userId, read: false },
       { $set: { read: true } }
     );
+  }
+
+  async sendEmailVerification(userId: string): Promise<void> {
+    const user = await this.userService.getById(userId);
+    if (user.emailVerified) {
+      throw new BadRequestError('Email already verified');
+    }
+
+    const token = crypto.randomBytes(32).toString('hex');
+    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(); // 24 hours
+
+    await this.userService.setEmailVerificationToken(userId, token, expiresAt);
+
+    const verificationUrl = `${env.FRONTEND_URL}/auth/verify-email?token=${token}`;
+
+    try {
+      await sendEmail({
+        to: user.email,
+        subject: 'Verify your EasyFund email',
+        html: `
+          <h2>Welcome to EasyFund!</h2>
+          <p>Please verify your email address by clicking the link below:</p>
+          <a href="${verificationUrl}" style="display:inline-block;padding:12px 24px;background:#0ef695;color:#06111f;text-decoration:none;border-radius:8px;font-weight:bold;">Verify Email</a>
+          <p>This link expires in 24 hours.</p>
+          <p>If you didn't create an account, please ignore this email.</p>
+        `,
+      });
+    } catch (error) {
+      console.error('Failed to send verification email:', error);
+    }
+  }
+
+  async verifyEmail(token: string): Promise<{ success: boolean }> {
+    const user = await this.userService.verifyEmail(token);
+    if (!user) {
+      throw new BadRequestError('Invalid or expired verification token');
+    }
+    return { success: true };
+  }
+
+  async updateNotificationPreferences(
+    userId: string,
+    preferences: {
+      emailNotifications?: boolean;
+      donationAlerts?: boolean;
+      campaignUpdates?: boolean;
+      marketingEmails?: boolean;
+    }
+  ) {
+    return this.userService.updateNotificationPreferences(userId, preferences);
   }
 
   private generateAccessToken(user: AuthUser): string {

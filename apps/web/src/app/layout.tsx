@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import { ThemeProvider } from '@/providers/theme-provider';
 import { QueryProvider } from '@/providers/query-provider';
 import { AuthProvider } from '@/providers/auth-provider';
+import { CommandPalette } from '@/components/command-palette';
 import { Toaster } from 'sonner';
 import '@/styles/globals.css';
 
@@ -40,7 +41,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <QueryProvider>
             <AuthProvider>
-              {children}
+              <a
+                href="#main-content"
+                className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[9999] focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground focus:outline-none"
+              >
+                Skip to content
+              </a>
+              <div id="main-content">
+                {children}
+              </div>
+              <CommandPalette />
               <Toaster position="top-right" richColors closeButton />
             </AuthProvider>
           </QueryProvider>

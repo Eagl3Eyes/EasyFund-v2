@@ -1,21 +1,26 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Heart, Clock, Users } from 'lucide-react';
+import { Heart, Clock, Users, UserPlus, UserCheck } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { formatCurrency, getDaysRemaining, getProgressPercentage, truncate } from '@/lib/utils';
+import { getApiUrl } from '@/lib/config';
 import type { Campaign } from '@/lib/types';
+import { toast } from 'sonner';
 
 interface CampaignCardProps {
   campaign: Campaign;
   onSave?: (id: string) => void;
   saved?: boolean;
+  following?: boolean;
+  onFollow?: (id: string) => void;
 }
 
-export function CampaignCard({ campaign, onSave, saved }: CampaignCardProps) {
+export function CampaignCard({ campaign, onSave, saved, following, onFollow }: CampaignCardProps) {
   const progress = getProgressPercentage(campaign.amountRaised, campaign.goal);
   const daysLeft = getDaysRemaining(campaign.deadline);
 
@@ -91,17 +96,31 @@ export function CampaignCard({ campaign, onSave, saved }: CampaignCardProps) {
           <span className="text-xs text-muted-foreground">
             Goal: {formatCurrency(campaign.goal)}
           </span>
-          {onSave && (
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                onSave(campaign._id);
-              }}
-              className="rounded-full p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
-            >
-              <Heart className={`h-4 w-4 ${saved ? 'fill-red-500 text-red-500' : ''}`} />
-            </button>
-          )}
+          <div className="flex items-center gap-1">
+            {onFollow && (
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  onFollow(campaign._id);
+                }}
+                className="rounded-full p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                title={following ? 'Unfollow fundraiser' : 'Follow fundraiser'}
+              >
+                {following ? <UserCheck className="h-4 w-4 text-primary" /> : <UserPlus className="h-4 w-4" />}
+              </button>
+            )}
+            {onSave && (
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  onSave(campaign._id);
+                }}
+                className="rounded-full p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+              >
+                <Heart className={`h-4 w-4 ${saved ? 'fill-red-500 text-red-500' : ''}`} />
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </Card>

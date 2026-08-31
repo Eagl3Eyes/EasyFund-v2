@@ -48,6 +48,40 @@ function ExploreContent() {
   const [sort, setSort] = useState(searchParams.get('sort') || 'newest');
   const [showFilters, setShowFilters] = useState(false);
 
+  const [savedIds, setSavedIds] = useState<Set<string>>(new Set());
+  const [followingIds, setFollowingIds] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    fetch(`${getApiUrl()}/api/users/saved/campaigns?limit=100`, { credentials: 'include' })
+      .then(r => r.json())
+      .then(d => { if (d.success) setSavedIds(new Set((d.data || []).map((c: Campaign) => c._id))); })
+      .catch(() => {});
+  }, []);
+
+  const handleSave = async (id: string) => {
+    const isSaved = savedIds.has(id);
+    setSavedIds(prev => { const next = new Set(prev); isSaved ? next.delete(id) : next.add(id); return next; });
+    try {
+      await fetch(`${getApiUrl()}/api/users/saved/campaigns`, {
+        method: isSaved ? 'DELETE' : 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ campaignId: id }),
+      });
+    } catch { setSavedIds(prev => { const next = new Set(prev); isSaved ? next.add(id) : next.delete(id); return next; }); }
+  };
+
+  const handleFollow = async (id: string) => {
+    const isFollowing = followingIds.has(id);
+    setFollowingIds(prev => { const next = new Set(prev); isFollowing ? next.delete(id) : next.add(id); return next; });
+    try {
+      await fetch(`${getApiUrl()}/api/follows/campaign/${id}`, {
+        method: isFollowing ? 'DELETE' : 'POST',
+        credentials: 'include',
+      });
+    } catch { setFollowingIds(prev => { const next = new Set(prev); isFollowing ? next.add(id) : next.delete(id); return next; }); }
+  };
+
   useEffect(() => {
     async function fetchCampaigns() {
       setLoading(true);
@@ -250,7 +284,14 @@ function ExploreContent() {
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {campaigns.map((campaign) => (
-            <CampaignCard key={campaign._id || campaign.slug} campaign={campaign} />
+            <CampaignCard
+              key={campaign._id || campaign.slug}
+              campaign={campaign}
+              saved={savedIds.has(campaign._id)}
+              onSave={handleSave}
+              following={followingIds.has(campaign._id)}
+              onFollow={handleFollow}
+            />
           ))}
         </div>
       )}
