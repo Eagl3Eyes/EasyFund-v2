@@ -176,7 +176,7 @@ export default function DashboardPage() {
         </Link>
 
         {isFundraiser ? (
-          <Link href="/dashboard/campaigns/new">
+          <Link href="/dashboard/fundraiser/campaigns/new">
             <Card className="cursor-pointer transition-colors hover:bg-muted/50">
               <CardContent className="flex items-center justify-between p-4">
                 <div className="flex items-center gap-3">
@@ -193,7 +193,7 @@ export default function DashboardPage() {
             </Card>
           </Link>
         ) : (
-          <Link href="/dashboard/campaigns/new">
+          <Link href="/dashboard/fundraiser/campaigns/new">
             <Card className="cursor-pointer transition-colors hover:bg-muted/50">
               <CardContent className="flex items-center justify-between p-4">
                 <div className="flex items-center gap-3">
@@ -217,7 +217,7 @@ export default function DashboardPage() {
         <div className="mt-8">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold text-foreground">My Campaigns</h2>
-            <Link href="/dashboard/campaigns" className="text-sm text-primary hover:underline">
+            <Link href="/dashboard/fundraiser/campaigns" className="text-sm text-primary hover:underline">
               View all
             </Link>
           </div>

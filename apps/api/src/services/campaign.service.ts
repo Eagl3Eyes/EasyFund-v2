@@ -169,6 +169,15 @@ export class CampaignService {
     return campaign;
   }
 
+  async activate(id: string, userId: string): Promise<CampaignDocument> {
+    const campaign = await this.campaignRepo.findById(id);
+    if (!campaign) throw new NotFoundError('Campaign not found');
+    if (campaign.fundraiserId !== userId) throw new ForbiddenError('Not your campaign');
+    const updated = await this.campaignRepo.updateStatus(id, 'active');
+    if (!updated) throw new NotFoundError('Campaign not found');
+    return updated;
+  }
+
   async toggleFeatured(id: string, featured: boolean): Promise<CampaignDocument> {
     const campaign = await this.campaignRepo.toggleFeatured(id, featured);
     if (!campaign) throw new NotFoundError('Campaign not found');

@@ -116,6 +116,17 @@ export class CampaignController {
     }
   }
 
+  async activate(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const user = req.user!;
+      const campaign = await campaignService.activate(id, user.userId);
+      res.json({ success: true, data: campaign });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async delete(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;

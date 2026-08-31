@@ -140,7 +140,7 @@ export default function UpdatesPage() {
           <CardContent className="flex flex-col items-center justify-center py-12">
             <Megaphone className="h-12 w-12 text-muted-foreground mb-4" />
             <p className="text-muted-foreground mb-4">You need an active campaign to post updates</p>
-            <Link href="/dashboard/campaigns/new">
+            <Link href="/dashboard/fundraiser/campaigns/new">
               <Button>Create Campaign</Button>
             </Link>
           </CardContent>

@@ -128,7 +128,7 @@ export const updateUserRoleSchema = z.object({
 
 export const updateCampaignStatusSchema = z.object({
   body: z.object({
-    status: z.enum(['active', 'approved', 'rejected', 'suspended', 'completed', 'needs_information']),
+    status: z.enum(['active', 'approved', 'published', 'rejected', 'suspended', 'completed', 'needs_information', 'cancelled']),
     reason: z.string().max(1000).optional(),
   }),
 });
@@ -144,5 +144,58 @@ export const reviewWithdrawalSchema = z.object({
   body: z.object({
     status: z.enum(['approved', 'rejected']),
     notes: z.string().max(1000).optional(),
+  }),
+});
+
+// Query parameter schemas
+export const paginationSchema = z.object({
+  query: z.object({
+    page: z.coerce.number().int().min(1).default(1),
+    limit: z.coerce.number().int().min(1).max(100).default(20),
+    sortBy: z.string().optional(),
+    sortOrder: z.enum(['asc', 'desc']).default('desc'),
+  }),
+});
+
+export const campaignFilterSchema = z.object({
+  query: z.object({
+    page: z.coerce.number().int().min(1).default(1),
+    limit: z.coerce.number().int().min(1).max(100).default(20),
+    category: z.string().optional(),
+    search: z.string().max(200).optional(),
+    status: z.enum(['draft', 'submitted', 'under_review', 'approved', 'published', 'active', 'needs_information', 'rejected', 'suspended', 'cancelled', 'completed']).optional(),
+    minGoal: z.coerce.number().min(0).optional(),
+    maxGoal: z.coerce.number().min(0).optional(),
+    sortBy: z.enum(['createdAt', 'amountRaised', 'goal', 'supportersCount', 'deadline', 'title']).optional(),
+    sortOrder: z.enum(['asc', 'desc']).default('desc'),
+  }),
+});
+
+export const idParamSchema = z.object({
+  params: z.object({
+    id: z.string().min(1, 'ID is required'),
+  }),
+});
+
+export const slugParamSchema = z.object({
+  params: z.object({
+    slug: z.string().min(1, 'Slug is required'),
+  }),
+});
+
+export const notificationPrefsSchema = z.object({
+  body: z.object({
+    emailNotifications: z.boolean().optional(),
+    donationAlerts: z.boolean().optional(),
+    campaignUpdates: z.boolean().optional(),
+    marketingEmails: z.boolean().optional(),
+  }),
+});
+
+export const resolveReportSchema = z.object({
+  body: z.object({
+    status: z.enum(['resolved', 'dismissed', 'escalated']),
+    action: z.enum(['suspend', 'warn', 'none']).optional(),
+    reason: z.string().max(1000).optional(),
   }),
 });

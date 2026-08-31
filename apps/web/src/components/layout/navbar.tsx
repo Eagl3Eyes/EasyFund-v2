@@ -102,17 +102,17 @@ export function Navbar({ variant = 'light' }: NavbarProps) {
 
         {/* Right: Actions */}
         <div className="flex items-center gap-3">
-          <Button variant="ghost" size="icon" className={cn('hidden md:flex', isDark && 'text-gray-300 hover:text-white')} asChild>
+          <Button variant="ghost" size="icon" className={cn('hidden md:flex', isDark && 'text-gray-300 hover:text-white')} asChild aria-label="Search">
             <Link href="/explore">
               <Search className="h-5 w-5" />
             </Link>
           </Button>
 
-          <ThemeToggle />
+          <ThemeToggle aria-label="Toggle theme" />
 
           {isAuthenticated ? (
             <>
-              <Button variant="ghost" size="icon" className={cn('hidden md:flex relative', isDark && 'text-gray-300 hover:text-white')} asChild>
+              <Button variant="ghost" size="icon" className={cn('hidden md:flex relative', isDark && 'text-gray-300 hover:text-white')} asChild aria-label={`Notifications${unreadCount > 0 ? ` (${unreadCount} unread)` : ''}`}>
                 <Link href="/dashboard/notifications">
                   <Bell className="h-5 w-5" />
                   {unreadCount > 0 && (
@@ -185,13 +185,13 @@ export function Navbar({ variant = 'light' }: NavbarProps) {
           )}
 
           <Button asChild className={cn('hidden md:flex', isDark ? 'bg-white text-[#0a0f1a] hover:bg-white/90' : '')}>
-            <Link href="/dashboard/campaigns/new">Start a Campaign</Link>
+            <Link href="/dashboard/fundraiser/campaigns/new">Start a Campaign</Link>
           </Button>
 
           {/* Mobile menu */}
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger asChild className="md:hidden">
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" aria-label="Open menu">
                 <Menu className="h-5 w-5" />
               </Button>
             </SheetTrigger>
@@ -239,7 +239,7 @@ export function Navbar({ variant = 'light' }: NavbarProps) {
                   </>
                 )}
                 <Button asChild className={cn('w-full mt-2', isDark ? 'bg-white text-[#0a0f1a] hover:bg-white/90' : '')}>
-                  <Link href="/dashboard/campaigns/new" onClick={() => setMobileOpen(false)}>
+                  <Link href="/dashboard/fundraiser/campaigns/new" onClick={() => setMobileOpen(false)}>
                     Start a Campaign
                   </Link>
                 </Button>

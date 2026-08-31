@@ -16,6 +16,7 @@ router.get('/saved', verifyJWT, campaignController.getSaved);
 router.get('/:slug', campaignController.getBySlug);
 router.post('/', verifyJWT, verifyFundraiser, campaignLimiter, validateBody(createCampaignSchema), campaignController.create);
 router.patch('/:id', verifyJWT, verifyFundraiser, validateBody(updateCampaignSchema), campaignController.update);
+router.patch('/:id/activate', verifyJWT, verifyFundraiser, campaignController.activate);
 router.delete('/:id', verifyJWT, verifyFundraiser, campaignController.delete);
 router.post('/:id/save', verifyJWT, async (req, res) => {
   const user = (req as any).user;

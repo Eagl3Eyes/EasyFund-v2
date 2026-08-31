@@ -104,7 +104,7 @@ export function CampaignCard({ campaign, onSave, saved, following, onFollow }: C
                   onFollow(campaign._id);
                 }}
                 className="rounded-full p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
-                title={following ? 'Unfollow fundraiser' : 'Follow fundraiser'}
+                aria-label={following ? 'Unfollow fundraiser' : 'Follow fundraiser'}
               >
                 {following ? <UserCheck className="h-4 w-4 text-primary" /> : <UserPlus className="h-4 w-4" />}
               </button>
@@ -116,6 +116,7 @@ export function CampaignCard({ campaign, onSave, saved, following, onFollow }: C
                   onSave(campaign._id);
                 }}
                 className="rounded-full p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                aria-label={saved ? 'Remove from saved' : 'Save campaign'}
               >
                 <Heart className={`h-4 w-4 ${saved ? 'fill-red-500 text-red-500' : ''}`} />
               </button>

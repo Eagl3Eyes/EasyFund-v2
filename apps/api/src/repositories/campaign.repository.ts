@@ -1,5 +1,6 @@
 import { BaseRepository, type QueryOptions, type PaginatedResult } from './base.repository';
 import { campaigns } from '../config/database';
+import { ValidationError } from '../utils/errors';
 
 export interface CampaignDocument {
   _id?: any;
@@ -54,8 +55,26 @@ export interface CampaignFilters {
 }
 
 export class CampaignRepository extends BaseRepository<CampaignDocument> {
+  public readonly VALID_TRANSITIONS: Record<CampaignDocument['status'], CampaignDocument['status'][]> = {
+    draft: ['submitted', 'cancelled'],
+    submitted: ['under_review', 'cancelled'],
+    under_review: ['approved', 'rejected', 'needs_information'],
+    approved: ['published', 'cancelled'],
+    published: ['active', 'cancelled'],
+    active: ['completed', 'suspended', 'cancelled'],
+    needs_information: ['submitted', 'cancelled'],
+    rejected: ['submitted', 'cancelled'],
+    suspended: ['active', 'cancelled'],
+    cancelled: [],
+    completed: [],
+  };
+
   constructor() {
     super(campaigns);
+  }
+
+  isValidTransition(from: CampaignDocument['status'], to: CampaignDocument['status']): boolean {
+    return this.VALID_TRANSITIONS[from]?.includes(to) ?? false;
   }
 
   async findBySlug(slug: string): Promise<CampaignDocument | null> {
@@ -172,8 +191,20 @@ export class CampaignRepository extends BaseRepository<CampaignDocument> {
 
   async updateStatus(
     campaignId: string,
-    status: CampaignDocument['status']
+    status: CampaignDocument['status'],
+    skipValidation = false
   ): Promise<CampaignDocument | null> {
+    if (!skipValidation) {
+      const current = await this.findById(campaignId);
+      if (!current) {
+        throw new ValidationError('Campaign not found');
+      }
+      if (!this.isValidTransition(current.status, status)) {
+        throw new ValidationError(
+          `Cannot transition campaign from "${current.status}" to "${status}"`
+        );
+      }
+    }
     return this.updateById(campaignId, {
       $set: { status, updatedAt: new Date().toISOString() },
     } as any);

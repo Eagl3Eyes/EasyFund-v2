@@ -68,7 +68,7 @@ export default function VerificationPage() {
       if (data.success) {
         toast.success('Verification request submitted');
         refreshUser?.();
-        router.push('/dashboard/settings');
+        router.push('/dashboard');
       } else {
         toast.error(data.error?.message || 'Failed to submit');
       }

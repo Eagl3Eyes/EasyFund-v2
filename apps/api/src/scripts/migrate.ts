@@ -177,6 +177,7 @@ async function migrate() {
     await campaignsCollection.createIndex({ goal: 1 });
     await campaignsCollection.createIndex({ amountRaised: -1 });
     await campaignsCollection.createIndex({ fundraiserId: 1 });
+    await campaignsCollection.createIndex({ fundraiserId: 1, status: 1 });
     await campaignsCollection.createIndex({ title: 'text', description: 'text', story: 'text' });
 
     await donationsCollection.createIndex({ userEmail: 1 });
@@ -184,6 +185,7 @@ async function migrate() {
     await donationsCollection.createIndex({ createdAt: -1 });
     await donationsCollection.createIndex({ userId: 1 });
     await donationsCollection.createIndex({ status: 1 });
+    await donationsCollection.createIndex({ transactionId: 1 });
 
     await db.collection('users').createIndex({ email: 1 }, { unique: true });
     await db.collection('users').createIndex({ firebaseUid: 1 });

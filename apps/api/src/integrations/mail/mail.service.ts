@@ -98,6 +98,50 @@ export function donationConfirmationEmail(data: {
   `;
 }
 
+export function withdrawalApprovedEmail(amount: number, campaignTitle: string) {
+  return `
+    <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+      <h2 style="color: #0ef695;">Withdrawal Approved</h2>
+      <p>Your withdrawal of <strong>$${amount}</strong> for "${campaignTitle}" has been approved and is being processed.</p>
+      <p>You should receive the funds within 3-5 business days.</p>
+      <br/>
+      <p>Thank you for using EasyFund!</p>
+    </div>
+  `;
+}
+
+export function withdrawalRejectedEmail(amount: number, campaignTitle: string, reason?: string) {
+  return `
+    <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+      <h2 style="color: #ef4444;">Withdrawal Not Approved</h2>
+      <p>Your withdrawal of <strong>$${amount}</strong> for "${campaignTitle}" was not approved.</p>
+      ${reason ? `<p><strong>Reason:</strong> ${reason}</p>` : ''}
+      <p>Please contact support if you have questions.</p>
+    </div>
+  `;
+}
+
+export function verificationApprovedEmail(level: string) {
+  return `
+    <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+      <h2 style="color: #0ef695;">Verification Approved</h2>
+      <p>Your <strong>${level}</strong> verification has been approved!</p>
+      <p>This helps build trust with donors on EasyFund.</p>
+    </div>
+  `;
+}
+
+export function verificationRejectedEmail(level: string, notes?: string) {
+  return `
+    <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+      <h2 style="color: #ef4444;">Verification Not Approved</h2>
+      <p>Your <strong>${level}</strong> verification was not approved.</p>
+      ${notes ? `<p><strong>Notes:</strong> ${notes}</p>` : ''}
+      <p>You can re-submit with additional information.</p>
+    </div>
+  `;
+}
+
 export function campaignApprovedEmail(data: {
   fundraiserName: string;
   campaignTitle: string;

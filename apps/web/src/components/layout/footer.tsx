@@ -9,7 +9,7 @@ const footerLinks = {
     { label: 'About Us', href: '/about' },
   ],
   fundraiser: [
-    { label: 'Start a Campaign', href: '/dashboard/campaigns/new' },
+    { label: 'Start a Campaign', href: '/dashboard/fundraiser/campaigns/new' },
     { label: 'Fundraiser Guide', href: '/how-it-works' },
     { label: 'Verification', href: '/how-it-works' },
     { label: 'Withdrawals', href: '/how-it-works' },

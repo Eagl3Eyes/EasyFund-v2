@@ -79,11 +79,11 @@ export default function EditCampaignPage() {
           });
         } else {
           toast.error('Campaign not found');
-          router.push('/dashboard/campaigns');
+          router.push('/dashboard/fundraiser/campaigns');
         }
       } catch {
         toast.error('Failed to load campaign');
-        router.push('/dashboard/campaigns');
+        router.push('/dashboard/fundraiser/campaigns');
       } finally {
         setLoading(false);
       }
@@ -128,7 +128,7 @@ export default function EditCampaignPage() {
       const data = await res.json();
       if (data.success) {
         toast.success('Campaign updated');
-        router.push('/dashboard/campaigns');
+        router.push('/dashboard/fundraiser/campaigns');
       } else {
         toast.error(data.error?.message || 'Failed to update');
       }
@@ -141,7 +141,7 @@ export default function EditCampaignPage() {
 
   return (
     <div className="p-6 lg:p-8">
-      <Link href="/dashboard/campaigns" className="mb-6 inline-flex items-center text-sm text-muted-foreground hover:text-foreground">
+      <Link href="/dashboard/fundraiser/campaigns" className="mb-6 inline-flex items-center text-sm text-muted-foreground hover:text-foreground">
         <ArrowLeft className="mr-2 h-4 w-4" /> Back to My Campaigns
       </Link>
 

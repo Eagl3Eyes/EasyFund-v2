@@ -85,7 +85,7 @@ export function CommandPalette() {
                   <Command.Group heading="Quick Actions">
                     {(user.role === 'fundraiser' || user.role === 'admin') && (
                       <Command.Item
-                        onSelect={() => navigate('/dashboard/campaigns/new')}
+                        onSelect={() => navigate('/dashboard/fundraiser/campaigns/new')}
                         className="flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-muted"
                       >
                         <Megaphone className="h-4 w-4" /> Start a Campaign

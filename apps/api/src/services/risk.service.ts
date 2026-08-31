@@ -1,4 +1,4 @@
-import { campaigns, users } from '../config/database';
+import { campaigns, users, withdrawals } from '../config/database';
 
 /**
  * Risk assessment service for campaigns.
@@ -95,6 +95,66 @@ export class RiskService {
     }
 
     // Calculate total score (capped at 100)
+    const totalScore = Math.min(100, signals.reduce((sum, s) => sum + s.score, 0));
+
+    let level: 'low' | 'medium' | 'high' = 'low';
+    if (totalScore > 60) level = 'high';
+    else if (totalScore > 30) level = 'medium';
+
+    return { score: totalScore, level, signals };
+  }
+
+  /**
+   * Calculate risk score for a withdrawal request.
+   */
+  async assessWithdrawal(data: {
+    fundraiserId: string;
+    amount: number;
+    campaignId: string;
+  }): Promise<{ score: number; level: 'low' | 'medium' | 'high'; signals: RiskSignal[] }> {
+    const signals: RiskSignal[] = [];
+
+    // Signal 1: Large withdrawal (>$10K)
+    if (data.amount > 10000) {
+      signals.push({ name: 'large_withdrawal', score: 20, reason: `Withdrawal of $${data.amount.toLocaleString()} exceeds $10K threshold` });
+    } else if (data.amount > 5000) {
+      signals.push({ name: 'elevated_withdrawal', score: 10, reason: `Withdrawal of $${data.amount.toLocaleString()} exceeds $5K threshold` });
+    }
+
+    // Signal 2: New account
+    const user = await users().findOne({ _id: data.fundraiserId } as any);
+    if (user) {
+      const accountAge = Date.now() - new Date(user.createdAt).getTime();
+      const daysSinceCreation = accountAge / (1000 * 60 * 60 * 24);
+      if (daysSinceCreation < 7) {
+        signals.push({ name: 'new_account', score: 15, reason: `Account created ${Math.floor(daysSinceCreation)} days ago` });
+      }
+    }
+
+    // Signal 3: Previous failed withdrawals
+    const failedWithdrawals = await withdrawals().countDocuments({
+      fundraiserId: data.fundraiserId,
+      status: 'failed',
+    } as any);
+    if (failedWithdrawals > 0) {
+      signals.push({ name: 'previous_failures', score: 15, reason: `${failedWithdrawals} previous failed withdrawal(s)` });
+    }
+
+    // Signal 4: Recent withdrawal (within 24 hours)
+    const recentWithdrawal = await withdrawals().findOne({
+      fundraiserId: data.fundraiserId,
+      createdAt: { $gte: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString() },
+    } as any);
+    if (recentWithdrawal) {
+      signals.push({ name: 'recent_withdrawal', score: 10, reason: 'Withdrawal requested within 24 hours of previous' });
+    }
+
+    // Signal 5: Withdrawal exceeds campaign raised amount
+    const campaign = await campaigns().findOne({ _id: data.campaignId } as any);
+    if (campaign && data.amount > campaign.amountRaised * 0.9) {
+      signals.push({ name: 'high_percentage', score: 10, reason: 'Withdrawal exceeds 90% of amount raised' });
+    }
+
     const totalScore = Math.min(100, signals.reduce((sum, s) => sum + s.score, 0));
 
     let level: 'low' | 'medium' | 'high' = 'low';

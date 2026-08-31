@@ -92,7 +92,7 @@ export default function WithdrawalRequestPage() {
       const data = await res.json();
       if (data.success) {
         toast.success('Withdrawal request submitted');
-        router.push('/dashboard/withdrawals');
+        router.push('/dashboard/fundraiser/withdrawals');
       } else {
         toast.error(data.error?.message || 'Failed to submit request');
       }
@@ -108,7 +108,7 @@ export default function WithdrawalRequestPage() {
 
   return (
     <div className="p-6 lg:p-8">
-      <Link href="/dashboard/withdrawals" className="mb-6 inline-flex items-center text-sm text-muted-foreground hover:text-foreground">
+      <Link href="/dashboard/fundraiser/withdrawals" className="mb-6 inline-flex items-center text-sm text-muted-foreground hover:text-foreground">
         <ArrowLeft className="mr-2 h-4 w-4" /> Back to Withdrawals
       </Link>
 

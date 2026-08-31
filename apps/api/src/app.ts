@@ -5,8 +5,10 @@ import cookieParser from 'cookie-parser';
 import { env } from './config/env';
 import { generalLimiter } from './middleware/rateLimiter';
 import { errorHandler } from './middleware/errorHandler';
-import { sanitizeInput, securityHeaders, detectSQLInjection } from './middleware/security';
-import { csrfProtection } from './middleware/csrf';
+import { sanitizeInput, securityHeaders, detectSQLInjection, requestSizeLimiter } from './middleware/security';
+import { csrfProtection, generateCSRFToken } from './middleware/csrf';
+import pino from 'pino';
+import pinoHttp from 'pino-http';
 import { authRoutes } from './routes/auth.routes';
 import { campaignRoutes } from './routes/campaign.routes';
 import { donationRoutes } from './routes/donation.routes';
@@ -21,12 +23,17 @@ import { analyticsRoutes } from './routes/analytics.routes';
 import { withdrawalRoutes } from './routes/withdrawal.routes';
 import { verificationRoutes } from './routes/verification.routes';
 import { reportRoutes } from './routes/report.routes';
+import { uploadRoutes } from './routes/upload.routes';
 
 const app = express();
 
 // Security headers
 app.use(helmet());
 app.use(securityHeaders);
+
+// Request logging
+const logger = pino({ name: 'easyfund-api', level: 'info' });
+app.use(pinoHttp({ logger, autoLogging: env.NODE_ENV !== 'test' }));
 
 // CORS
 app.use(
@@ -44,6 +51,9 @@ app.use('/api/webhooks/stripe', express.raw({ type: 'application/json' }));
 // Body parsing
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
+
+// Request size limiting
+app.use(requestSizeLimiter());
 
 // Cookie parsing
 app.use(cookieParser());
@@ -68,6 +78,17 @@ app.get('/api/health', (_req, res) => {
     version: '2.0.0',
     timestamp: new Date().toISOString(),
   });
+});
+
+// CSRF token endpoint
+app.get('/api/csrf-token', (_req, res) => {
+  const token = generateCSRFToken();
+  res.cookie('csrf_token', token, {
+    httpOnly: true,
+    secure: env.NODE_ENV === 'production',
+    sameSite: 'lax',
+  });
+  res.json({ success: true, data: { token } });
 });
 
 // Public platform stats (no auth required)
@@ -117,6 +138,7 @@ app.use('/api', analyticsRoutes);
 app.use('/api/withdrawals', withdrawalRoutes);
 app.use('/api/verification', verificationRoutes);
 app.use('/api/reports', reportRoutes);
+app.use('/api/upload', uploadRoutes);
 
 // 404 handler
 app.use((_req, res) => {

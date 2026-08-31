@@ -2,6 +2,7 @@ import { WithdrawalRepository, type WithdrawalDocument } from '../repositories/w
 import { CampaignRepository } from '../repositories/campaign.repository';
 import { NotFoundError, ForbiddenError, BadRequestError } from '../utils/errors';
 import { paginate, type PaginationOptions } from '../utils/paginate';
+import { riskService } from './risk.service';
 
 export class WithdrawalService {
   private withdrawalRepo = new WithdrawalRepository();
@@ -67,6 +68,30 @@ export class WithdrawalService {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     } as any);
+
+    // Auto risk-check
+    const risk = await riskService.assessWithdrawal({
+      fundraiserId: data.fundraiserId,
+      amount: data.amount,
+      campaignId: data.campaignId,
+    });
+
+    if (risk.level === 'high') {
+      // High risk: reject immediately
+      await this.withdrawalRepo.updateStatus(withdrawal._id!.toString(), 'risk_check');
+      await this.withdrawalRepo.updateStatus(withdrawal._id!.toString(), 'rejected');
+      withdrawal.status = 'rejected';
+    } else if (risk.level === 'medium') {
+      // Medium risk: flag for review
+      await this.withdrawalRepo.updateStatus(withdrawal._id!.toString(), 'risk_check');
+      await this.withdrawalRepo.updateStatus(withdrawal._id!.toString(), 'under_review');
+      withdrawal.status = 'under_review';
+    } else {
+      // Low risk: auto-approve
+      await this.withdrawalRepo.updateStatus(withdrawal._id!.toString(), 'risk_check');
+      await this.withdrawalRepo.updateStatus(withdrawal._id!.toString(), 'approved');
+      withdrawal.status = 'approved';
+    }
 
     return withdrawal;
   }

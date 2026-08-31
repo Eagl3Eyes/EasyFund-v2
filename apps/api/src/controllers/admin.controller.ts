@@ -119,7 +119,20 @@ export class AdminController {
 
   async resolveReport(req: Request, res: Response, next: NextFunction) {
     try {
-      const { status } = req.body;
+      const { status, action } = req.body;
+
+      const validStatuses = ['resolved', 'dismissed', 'escalated'];
+      if (!validStatuses.includes(status)) {
+        res.status(400).json({ success: false, error: `Invalid status. Must be one of: ${validStatuses.join(', ')}` });
+        return;
+      }
+
+      const validActions = ['suspend', 'warn', 'none'];
+      if (action !== undefined && !validActions.includes(action)) {
+        res.status(400).json({ success: false, error: `Invalid action. Must be one of: ${validActions.join(', ')}` });
+        return;
+      }
+
       const user = (req as any).user;
       await adminService.resolveReport(req.params.id, status, user.userId);
       res.json({ success: true, message: 'Report updated' });

@@ -1,6 +1,14 @@
 import { NotificationRepository, type NotificationDocument } from '../repositories/notification.repository';
 import { users } from '../config/database';
-import { sendEmail, donationConfirmationEmail, campaignApprovedEmail } from '../integrations/mail/mail.service';
+import {
+  sendEmail,
+  donationConfirmationEmail,
+  campaignApprovedEmail,
+  withdrawalApprovedEmail,
+  withdrawalRejectedEmail,
+  verificationApprovedEmail,
+  verificationRejectedEmail,
+} from '../integrations/mail/mail.service';
 
 export class NotificationService {
   private notificationRepo = new NotificationRepository();
@@ -71,6 +79,25 @@ export class NotificationService {
             amount: data.amount,
             transactionId: data.transactionId || '',
           });
+        }
+        break;
+      case 'withdrawal':
+        if (data?.amount !== undefined) {
+          const campaignTitle = data.campaignTitle || 'your campaign';
+          if (data.status === 'approved') {
+            html = withdrawalApprovedEmail(data.amount, campaignTitle);
+          } else if (data.status === 'rejected') {
+            html = withdrawalRejectedEmail(data.amount, campaignTitle, data.reason);
+          }
+        }
+        break;
+      case 'verification':
+        if (data?.level) {
+          if (data.status === 'approved') {
+            html = verificationApprovedEmail(data.level);
+          } else if (data.status === 'rejected') {
+            html = verificationRejectedEmail(data.level, data.notes);
+          }
         }
         break;
       default:

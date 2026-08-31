@@ -18,6 +18,7 @@ import {
   ArrowDownToLine,
   BarChart3,
   Users,
+  User,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -31,20 +32,22 @@ const donorLinks = [
   { href: '/dashboard/saved', label: 'Saved Campaigns', icon: Bookmark },
   { href: '/dashboard/following', label: 'Following', icon: Users },
   { href: '/dashboard/notifications', label: 'Notifications', icon: Bell },
+  { href: '/dashboard/profile', label: 'Profile', icon: User },
   { href: '/dashboard/settings', label: 'Settings', icon: Settings },
 ];
 
 const fundraiserLinks = [
   { href: '/dashboard', label: 'Overview', icon: LayoutDashboard },
-  { href: '/dashboard/campaigns', label: 'My Campaigns', icon: Megaphone },
-  { href: '/dashboard/campaigns/new', label: 'Create Campaign', icon: Megaphone },
+  { href: '/dashboard/fundraiser/campaigns', label: 'My Campaigns', icon: Megaphone },
+  { href: '/dashboard/fundraiser/campaigns/new', label: 'Create Campaign', icon: Megaphone },
   { href: '/dashboard/fundraiser/donations', label: 'Donations Received', icon: Heart },
   { href: '/dashboard/fundraiser/analytics', label: 'Analytics', icon: BarChart3 },
-  { href: '/dashboard/withdrawals', label: 'Withdrawals', icon: DollarSign },
-  { href: '/dashboard/withdrawals/request', label: 'Request Withdrawal', icon: ArrowDownToLine },
-  { href: '/dashboard/updates', label: 'Post Update', icon: Bell },
-  { href: '/dashboard/verification', label: 'Verification', icon: Shield },
+  { href: '/dashboard/fundraiser/withdrawals', label: 'Withdrawals', icon: DollarSign },
+  { href: '/dashboard/fundraiser/withdrawals/request', label: 'Request Withdrawal', icon: ArrowDownToLine },
+  { href: '/dashboard/fundraiser/updates', label: 'Post Update', icon: Bell },
+  { href: '/dashboard/fundraiser/verification', label: 'Verification', icon: Shield },
   { href: '/dashboard/notifications', label: 'Notifications', icon: Bell },
+  { href: '/dashboard/profile', label: 'Profile', icon: User },
   { href: '/dashboard/settings', label: 'Settings', icon: Settings },
 ];
 

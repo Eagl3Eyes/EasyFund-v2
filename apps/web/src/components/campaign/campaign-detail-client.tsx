@@ -344,7 +344,7 @@ export function CampaignDetailClient({ slug }: CampaignDetailClientProps) {
             )}
           </div>
 
-          <Button variant="ghost" className="w-full text-muted-foreground" onClick={handleReport}>
+          <Button variant="ghost" className="w-full text-muted-foreground" onClick={handleReport} aria-label="Report campaign">
             <Flag className="mr-2 h-4 w-4" />
             Report Campaign
           </Button>
