@@ -58,6 +58,16 @@ export class AdminService {
     return this.userService.list(filters, options);
   }
 
+  async listDonations(filters: any, options?: PaginationOptions) {
+    const donationFilters: any = {};
+    if (filters.status) donationFilters.status = filters.status;
+    if (filters.campaignId) donationFilters.campaignId = filters.campaignId;
+    if (filters.userId) donationFilters.userId = filters.userId;
+    if (filters.minAmount) donationFilters.minAmount = Number(filters.minAmount);
+    if (filters.maxAmount) donationFilters.maxAmount = Number(filters.maxAmount);
+    return this.donationService.list(donationFilters, options);
+  }
+
   async updateUserRole(userId: string, role: string) {
     const user = await this.userService.updateRole(userId, role as any);
     await auditService.log({

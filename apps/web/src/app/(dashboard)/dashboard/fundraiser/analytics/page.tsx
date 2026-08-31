@@ -70,7 +70,7 @@ export default function FundraiserAnalyticsPage() {
           <p className="mt-1 text-muted-foreground">Track your campaign performance</p>
         </div>
         <Select value={period} onValueChange={setPeriod}>
-          <SelectTrigger className="w-[140px]">
+          <SelectTrigger className="w-[140px]" aria-label="Select time period">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>

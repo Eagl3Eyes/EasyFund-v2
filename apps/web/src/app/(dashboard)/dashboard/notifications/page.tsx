@@ -118,6 +118,7 @@ export default function NotificationsPage() {
                     size="sm"
                     variant="ghost"
                     onClick={() => markAsRead(n._id)}
+                    aria-label="Mark as read"
                   >
                     <Check className="h-4 w-4" />
                   </Button>

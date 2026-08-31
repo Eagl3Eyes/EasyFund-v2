@@ -8,6 +8,7 @@ import {
   updateCampaignStatusSchema,
   reviewVerificationSchema,
   reviewWithdrawalSchema,
+  resolveReportSchema,
 } from '../validators/schemas';
 
 const router = Router();
@@ -25,6 +26,9 @@ router.patch('/users/:id/role', validateBody(updateUserRoleSchema), adminControl
 router.get('/campaigns', adminController.listCampaigns);
 router.patch('/campaigns/:id/status', validateBody(updateCampaignStatusSchema), adminController.updateCampaignStatus);
 
+// Donations
+router.get('/donations', adminController.listDonations);
+
 // Verification
 router.get('/verification', adminController.listVerification);
 router.patch('/verification/:id', validateBody(reviewVerificationSchema), adminController.reviewVerification);
@@ -35,7 +39,7 @@ router.patch('/withdrawals/:id', validateBody(reviewWithdrawalSchema), adminCont
 
 // Reports
 router.get('/reports', adminController.listReports);
-router.patch('/reports/:id', adminController.resolveReport);
+router.patch('/reports/:id', validateBody(resolveReportSchema), adminController.resolveReport);
 
 // Audit logs
 router.get('/audit-logs', adminController.listAuditLogs);

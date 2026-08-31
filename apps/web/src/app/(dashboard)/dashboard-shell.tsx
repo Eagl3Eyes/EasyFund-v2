@@ -78,7 +78,7 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
           EasyFund
         </Link>
         {onClose && (
-          <Button variant="ghost" size="sm" onClick={onClose}>
+          <Button variant="ghost" size="sm" onClick={onClose} aria-label="Close sidebar">
             <ChevronLeft className="h-4 w-4" />
           </Button>
         )}
@@ -153,7 +153,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
       {/* Mobile Sidebar */}
       <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
         <SheetTrigger asChild className="lg:hidden fixed top-20 left-4 z-40">
-          <Button variant="outline" size="icon">
+          <Button variant="outline" size="icon" aria-label="Open sidebar menu">
             <Menu className="h-4 w-4" />
           </Button>
         </SheetTrigger>

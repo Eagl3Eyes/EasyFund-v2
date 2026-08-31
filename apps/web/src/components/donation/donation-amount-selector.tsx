@@ -58,6 +58,7 @@ export function DonationAmountSelector({ value, onChange, currency = 'USD', disa
           min="1"
           step="0.01"
           placeholder="Custom amount"
+          aria-label="Custom donation amount in dollars"
           value={isCustom ? customInput : value > 0 && !PRESET_AMOUNTS.includes(value) ? value : ''}
           onChange={(e) => handleCustom(e.target.value)}
           disabled={disabled}

@@ -162,6 +162,7 @@ function ExploreContent() {
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 placeholder="Search campaigns..."
+                aria-label="Search campaigns"
                 value={search}
                 onChange={(e) => { setSearch(e.target.value); setPage(1); }}
                 className="pl-9"
@@ -224,7 +225,7 @@ function ExploreContent() {
             {search && (
               <Badge variant="secondary">
                 Search: {search}
-                <button onClick={() => { setSearch(''); setPage(1); }} className="ml-1">
+                <button onClick={() => { setSearch(''); setPage(1); }} className="ml-1" aria-label="Clear search filter">
                   <X className="h-3 w-3" />
                 </button>
               </Badge>
@@ -232,7 +233,7 @@ function ExploreContent() {
             {category && (
               <Badge variant="secondary">
                 Category: {categories.find(c => c.value === category)?.label}
-                <button onClick={() => { setCategory(''); setPage(1); }} className="ml-1">
+                <button onClick={() => { setCategory(''); setPage(1); }} className="ml-1" aria-label="Clear category filter">
                   <X className="h-3 w-3" />
                 </button>
               </Badge>
@@ -240,7 +241,7 @@ function ExploreContent() {
             {sort !== 'newest' && (
               <Badge variant="secondary">
                 Sort: {sortOptions.find(o => o.value === sort)?.label}
-                <button onClick={() => { setSort('newest'); setPage(1); }} className="ml-1">
+                <button onClick={() => { setSort('newest'); setPage(1); }} className="ml-1" aria-label="Clear sort filter">
                   <X className="h-3 w-3" />
                 </button>
               </Badge>
