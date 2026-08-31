@@ -213,7 +213,7 @@ export default function AdminUsersPage() {
                   </TableCell>
                   <TableCell>
                     {u.emailVerified ? (
-                      <Badge variant="outline" className="text-green-600 border-green-200">
+                      <Badge variant="outline" className="text-[#0ef695] border-[#0ef695]/30">
                         <CheckCircle className="mr-1 h-3 w-3" /> Verified
                       </Badge>
                     ) : (

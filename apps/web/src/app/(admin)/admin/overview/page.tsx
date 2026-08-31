@@ -66,14 +66,14 @@ export default function AdminOverviewPage() {
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {pendingItems.map((item) => (
-          <Card key={item.label} className="border-yellow-200 bg-yellow-50/50">
+          <Card key={item.label} className="border-[#f59e0b]/20 bg-[#f59e0b]/5">
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <item.icon className="h-4 w-4 text-yellow-600" />
-                  <p className="text-sm text-yellow-700">{item.label}</p>
+                  <item.icon className="h-4 w-4 text-[#f59e0b]" />
+                  <p className="text-sm text-[#f59e0b]">{item.label}</p>
                 </div>
-                <span className="text-lg font-bold text-yellow-700">{item.count}</span>
+                <span className="text-lg font-bold text-[#f59e0b]">{item.count}</span>
               </div>
             </CardContent>
           </Card>

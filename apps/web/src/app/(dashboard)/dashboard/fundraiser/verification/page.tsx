@@ -132,7 +132,7 @@ export default function VerificationPage() {
                     </div>
                   </div>
                   {isVerified ? (
-                    <Badge className="bg-green-100 text-green-700"><CheckCircle className="mr-1 h-3 w-3" /> Verified</Badge>
+                    <Badge className="bg-[#0ef695]/15 text-[#0ef695]"><CheckCircle className="mr-1 h-3 w-3" /> Verified</Badge>
                   ) : hasPending ? (
                     <Badge variant="outline" className="text-yellow-600">Pending</Badge>
                   ) : (

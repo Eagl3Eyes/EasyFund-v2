@@ -23,9 +23,9 @@ interface Report {
 }
 
 const STATUS_VARIANT: Record<string, string> = {
-  pending: 'bg-yellow-100 text-yellow-700',
-  resolved: 'bg-green-100 text-green-700',
-  dismissed: 'bg-gray-100 text-gray-600',
+  pending: 'bg-[#f59e0b]/15 text-[#f59e0b]',
+  resolved: 'bg-[#0ef695]/15 text-[#0ef695]',
+  dismissed: 'bg-white/10 text-white/50',
 };
 
 export default function AdminReportsPage() {
@@ -97,11 +97,11 @@ export default function AdminReportsPage() {
       </div>
 
       {pendingCount > 0 && (
-        <Card className="border-yellow-200 bg-yellow-50">
+        <Card className="border-[#f59e0b]/20 bg-[#f59e0b]/5">
           <CardContent className="p-4">
             <div className="flex items-center gap-2">
-              <AlertTriangle className="h-5 w-5 text-yellow-600" />
-              <p className="font-medium text-yellow-800">{pendingCount} pending report(s) requiring review</p>
+              <AlertTriangle className="h-5 w-5 text-[#f59e0b]" />
+              <p className="font-medium text-[#f59e0b]">{pendingCount} pending report(s) requiring review</p>
             </div>
           </CardContent>
         </Card>
@@ -178,7 +178,7 @@ export default function AdminReportsPage() {
                   <TableCell>
                     {r.status === 'pending' ? (
                       <div className="flex gap-1">
-                        <Button size="sm" variant="ghost" className="h-8 px-2 text-xs text-green-600" onClick={() => resolveReport(r._id, 'resolved')}>
+                        <Button size="sm" variant="ghost" className="h-8 px-2 text-xs text-[#0ef695]" onClick={() => resolveReport(r._id, 'resolved')}>
                           <CheckCircle className="mr-1 h-3 w-3" /> Resolve
                         </Button>
                         <Button size="sm" variant="ghost" className="h-8 px-2 text-xs" onClick={() => resolveReport(r._id, 'dismissed')}>

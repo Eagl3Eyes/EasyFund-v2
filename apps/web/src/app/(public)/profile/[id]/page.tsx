@@ -85,7 +85,7 @@ export default function PublicProfilePage() {
           <div className="flex items-center gap-2">
             <h1 className="text-2xl font-bold text-foreground">{profile.name}</h1>
             {profile.verificationLevel && profile.verificationLevel !== 'none' && (
-              <Badge variant="success" className="bg-green-100 text-green-700">
+              <Badge variant="success" className="bg-[#0ef695]/15 text-[#0ef695]">
                 <Shield className="mr-1 h-3 w-3" /> Verified
               </Badge>
             )}

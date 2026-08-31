@@ -69,7 +69,7 @@ export default function AdminPage() {
   if (user?.role !== 'admin') {
     return (
       <div className="p-6 lg:p-8 text-center">
-        <AlertTriangle className="mx-auto h-12 w-12 text-yellow-500" />
+        <AlertTriangle className="mx-auto h-12 w-12 text-[#f59e0b]" />
         <h1 className="mt-4 text-2xl font-bold text-foreground">Access Denied</h1>
         <p className="mt-2 text-muted-foreground">You don&apos;t have admin access.</p>
       </div>
@@ -139,10 +139,10 @@ export default function AdminPage() {
       </div>
 
       {stats?.totals.pendingWithdrawals ? (
-        <div className="mt-6 rounded-lg bg-yellow-50 border border-yellow-200 p-4">
+        <div className="mt-6 rounded-lg bg-[#f59e0b]/5 border border-[#f59e0b]/20 p-4">
           <div className="flex items-center gap-2">
-            <AlertTriangle className="h-5 w-5 text-yellow-500" />
-            <p className="text-sm font-medium text-yellow-700">
+            <AlertTriangle className="h-5 w-5 text-[#f59e0b]" />
+            <p className="text-sm font-medium text-[#f59e0b]">
               {stats.totals.pendingWithdrawals} pending withdrawal request(s)
             </p>
           </div>

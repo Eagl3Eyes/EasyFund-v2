@@ -30,21 +30,21 @@ const footerLinks = {
 
 export function Footer() {
   return (
-    <footer className="border-t bg-muted/30">
+    <footer className="border-t border-white/10 bg-[#040b16]">
       <div className="container px-4 py-12 md:py-16">
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-5">
           {/* Brand */}
           <div className="lg:col-span-1">
             <Link href="/" className="flex items-center gap-2 font-bold text-xl mb-4">
-              <span className="text-primary">Easy</span>
-              <span>Fund</span>
+              <span className="text-[#0ef695]">Easy</span>
+              <span className="text-white">Fund</span>
             </Link>
-            <p className="text-sm text-muted-foreground mb-4">
+            <p className="text-sm text-white/55 mb-4">
               Empowering communities through crowdfunding. Every contribution creates lasting impact.
             </p>
-            <div className="flex items-center gap-1 text-sm text-muted-foreground">
+            <div className="flex items-center gap-1 text-sm text-white/55">
               <span>Made with</span>
-              <Heart className="h-4 w-4 text-red-500 fill-red-500" />
+              <Heart className="h-4 w-4 text-[#ef4444] fill-[#ef4444]" />
               <span>for a better world</span>
             </div>
           </div>
@@ -52,13 +52,13 @@ export function Footer() {
           {/* Links */}
           {Object.entries(footerLinks).map(([category, links]) => (
             <div key={category}>
-              <h3 className="text-sm font-semibold text-foreground mb-4 capitalize">{category}</h3>
+              <h3 className="text-sm font-semibold text-white/80 mb-4 capitalize">{category}</h3>
               <ul className="space-y-3">
                 {links.map((link) => (
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                      className="text-sm text-white/55 hover:text-[#0ef695] transition-colors"
                     >
                       {link.label}
                     </Link>
@@ -69,7 +69,7 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="mt-12 border-t pt-8 text-center text-sm text-muted-foreground">
+        <div className="mt-12 border-t border-white/10 pt-8 text-center text-sm text-white/55">
           <p>&copy; {new Date().getFullYear()} EasyFund. All rights reserved.</p>
         </div>
       </div>

@@ -16,11 +16,11 @@ const statusIcons: Record<string, React.ReactNode> = {
 };
 
 const statusColors: Record<string, string> = {
-  completed: 'bg-green-100 text-green-700',
-  approved: 'bg-green-100 text-green-700',
-  processing: 'bg-yellow-100 text-yellow-700',
-  pending: 'bg-yellow-100 text-yellow-700',
-  rejected: 'bg-red-100 text-red-700',
+  completed: 'bg-[#0ef695]/15 text-[#0ef695]',
+  approved: 'bg-[#0ef695]/15 text-[#0ef695]',
+  processing: 'bg-[#f59e0b]/15 text-[#f59e0b]',
+  pending: 'bg-[#f59e0b]/15 text-[#f59e0b]',
+  rejected: 'bg-[#ef4444]/15 text-[#ef4444]',
 };
 
 export default function WithdrawalsPage() {

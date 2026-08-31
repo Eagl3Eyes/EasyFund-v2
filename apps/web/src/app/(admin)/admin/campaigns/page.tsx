@@ -30,16 +30,16 @@ type SortDirection = 'asc' | 'desc';
 const STATUS_OPTIONS = ['all', 'submitted', 'under_review', 'approved', 'active', 'completed', 'rejected', 'suspended', 'draft', 'needs_information'];
 
 const STATUS_VARIANT: Record<string, string> = {
-  draft: 'bg-gray-100 text-gray-700',
-  submitted: 'bg-yellow-100 text-yellow-700',
-  under_review: 'bg-blue-100 text-blue-700',
-  approved: 'bg-green-100 text-green-700',
+  draft: 'bg-white/10 text-white/60',
+  submitted: 'bg-[#f59e0b]/15 text-[#f59e0b]',
+  under_review: 'bg-[#3b82f6]/15 text-[#3b82f6]',
+  approved: 'bg-[#0ef695]/15 text-[#0ef695]',
   active: 'bg-emerald-100 text-emerald-700',
-  completed: 'bg-purple-100 text-purple-700',
-  rejected: 'bg-red-100 text-red-700',
-  suspended: 'bg-orange-100 text-orange-700',
+  completed: 'bg-[#8b5cf6]/15 text-[#8b5cf6]',
+  rejected: 'bg-[#ef4444]/15 text-[#ef4444]',
+  suspended: 'bg-[#f97316]/15 text-[#f97316]',
   needs_information: 'bg-amber-100 text-amber-700',
-  cancelled: 'bg-gray-100 text-gray-500',
+  cancelled: 'bg-white/10 text-white/40',
 };
 
 export default function AdminCampaignsPage() {
@@ -212,7 +212,7 @@ export default function AdminCampaignsPage() {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <Clock className="h-8 w-8 text-yellow-500" />
+              <Clock className="h-8 w-8 text-[#f59e0b]" />
               <div>
                 <p className="text-2xl font-bold">{(stats.byStatus['submitted'] || 0) + (stats.byStatus['under_review'] || 0)}</p>
                 <p className="text-sm text-muted-foreground">Pending Review</p>
@@ -372,16 +372,16 @@ export default function AdminCampaignsPage() {
                         </Link>
                         {c.status === 'submitted' && (
                           <>
-                            <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-green-600 hover:text-green-700" onClick={() => updateStatus(c._id, 'approved')}>
+                            <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-[#0ef695] hover:text-[#0ef695]/80" onClick={() => updateStatus(c._id, 'approved')}>
                               <CheckCircle className="h-4 w-4" />
                             </Button>
-                            <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-red-600 hover:text-red-700" onClick={() => updateStatus(c._id, 'rejected')}>
+                            <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-[#ef4444] hover:text-[#ef4444]/80" onClick={() => updateStatus(c._id, 'rejected')}>
                               <XCircle className="h-4 w-4" />
                             </Button>
                           </>
                         )}
                         {c.status === 'active' && (
-                          <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-orange-600 hover:text-orange-700" onClick={() => updateStatus(c._id, 'suspended')}>
+                          <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-[#f97316] hover:text-[#f97316]/80" onClick={() => updateStatus(c._id, 'suspended')}>
                             <Ban className="h-4 w-4" />
                           </Button>
                         )}

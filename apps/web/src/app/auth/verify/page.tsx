@@ -61,7 +61,7 @@ export default function VerifyPage() {
         </CardHeader>
         <CardContent className="space-y-4">
           {sent ? (
-            <div className="flex items-center justify-center gap-2 text-green-600">
+            <div className="flex items-center justify-center gap-2 text-[#0ef695]">
               <CheckCircle className="h-5 w-5" />
               <span className="text-sm">Email sent successfully</span>
             </div>

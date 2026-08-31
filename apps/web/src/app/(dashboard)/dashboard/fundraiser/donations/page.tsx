@@ -14,9 +14,9 @@ const statusIcons: Record<string, React.ReactNode> = {
 };
 
 const statusColors: Record<string, string> = {
-  completed: 'bg-green-100 text-green-700',
-  pending: 'bg-yellow-100 text-yellow-700',
-  failed: 'bg-red-100 text-red-700',
+  completed: 'bg-[#0ef695]/15 text-[#0ef695]',
+  pending: 'bg-[#f59e0b]/15 text-[#f59e0b]',
+  failed: 'bg-[#ef4444]/15 text-[#ef4444]',
 };
 
 export default function FundraiserDonationsPage() {

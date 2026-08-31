@@ -41,13 +41,13 @@ export function MilestoneTracker({ milestones, amountRaised, goal }: MilestoneTr
             <div
               key={i}
               className={`flex items-center gap-3 rounded-lg border p-3 transition-colors ${
-                milestoneReached ? 'border-green-200 bg-green-50 dark:border-green-900 dark:bg-green-950' : ''
+                milestoneReached ? 'border-[#0ef695]/20 bg-[#0ef695]/5 dark:border-[#0ef695]/20 dark:bg-[#0ef695]/5' : ''
               }`}
             >
               <div
                 className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${
                   milestoneReached
-                    ? 'bg-green-500 text-white'
+                    ? 'bg-[#0ef695] text-white'
                     : 'bg-muted text-muted-foreground'
                 }`}
               >

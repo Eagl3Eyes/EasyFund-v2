@@ -11,7 +11,7 @@ export default function AboutPage() {
       <div className="mx-auto max-w-3xl">
         <h1 className="text-4xl font-bold text-foreground">About EasyFund</h1>
 
-        <div className="prose prose-gray mt-8 space-y-6 text-muted-foreground">
+        <div className="prose-invert mt-8 space-y-6 text-muted-foreground">
           <p className="text-lg">
             EasyFund is a modern crowdfunding platform built to connect passionate fundraisers
             with generous supporters. Our mission is to make fundraising accessible, transparent,

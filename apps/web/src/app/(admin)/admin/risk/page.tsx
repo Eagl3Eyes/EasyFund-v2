@@ -24,9 +24,9 @@ interface RiskItem {
 }
 
 const levelColors: Record<string, string> = {
-  low: 'bg-green-100 text-green-700',
-  medium: 'bg-yellow-100 text-yellow-700',
-  high: 'bg-red-100 text-red-700',
+  low: 'bg-[#0ef695]/15 text-[#0ef695]',
+  medium: 'bg-[#f59e0b]/15 text-[#f59e0b]',
+  high: 'bg-[#ef4444]/15 text-[#ef4444]',
 };
 
 export default function AdminRiskPage() {

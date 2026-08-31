@@ -13,16 +13,16 @@ import { getApiUrl } from '@/lib/config';
 import type { Campaign } from '@/lib/types';
 
 const statusColors: Record<string, string> = {
-  draft: 'bg-gray-100 text-gray-700',
-  submitted: 'bg-yellow-100 text-yellow-700',
-  under_review: 'bg-blue-100 text-blue-700',
-  approved: 'bg-green-100 text-green-700',
-  published: 'bg-purple-100 text-purple-700',
-  active: 'bg-green-100 text-green-700',
-  rejected: 'bg-red-100 text-red-700',
-  suspended: 'bg-orange-100 text-orange-700',
-  completed: 'bg-blue-100 text-blue-700',
-  cancelled: 'bg-gray-100 text-gray-500',
+  draft: 'bg-white/10 text-white/60',
+  submitted: 'bg-[#f59e0b]/15 text-[#f59e0b]',
+  under_review: 'bg-[#3b82f6]/15 text-[#3b82f6]',
+  approved: 'bg-[#0ef695]/15 text-[#0ef695]',
+  published: 'bg-[#8b5cf6]/15 text-[#8b5cf6]',
+  active: 'bg-[#0ef695]/15 text-[#0ef695]',
+  rejected: 'bg-[#ef4444]/15 text-[#ef4444]',
+  suspended: 'bg-[#f97316]/15 text-[#f97316]',
+  completed: 'bg-[#3b82f6]/15 text-[#3b82f6]',
+  cancelled: 'bg-white/10 text-white/40',
 };
 
 export default function CampaignManagementPage() {

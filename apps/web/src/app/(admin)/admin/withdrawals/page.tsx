@@ -23,11 +23,11 @@ interface Withdrawal {
 }
 
 const STATUS_VARIANT: Record<string, string> = {
-  pending: 'bg-yellow-100 text-yellow-700',
-  approved: 'bg-green-100 text-green-700',
-  processing: 'bg-blue-100 text-blue-700',
+  pending: 'bg-[#f59e0b]/15 text-[#f59e0b]',
+  approved: 'bg-[#0ef695]/15 text-[#0ef695]',
+  processing: 'bg-[#3b82f6]/15 text-[#3b82f6]',
   completed: 'bg-emerald-100 text-emerald-700',
-  rejected: 'bg-red-100 text-red-700',
+  rejected: 'bg-[#ef4444]/15 text-[#ef4444]',
 };
 
 export default function AdminWithdrawalsPage() {
@@ -101,13 +101,13 @@ export default function AdminWithdrawalsPage() {
 
       {/* Pending alert */}
       {pending.length > 0 && (
-        <Card className="border-yellow-200 bg-yellow-50">
+        <Card className="border-[#f59e0b]/20 bg-[#f59e0b]/5">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <Clock className="h-5 w-5 text-yellow-600" />
+              <Clock className="h-5 w-5 text-[#f59e0b]" />
               <div>
-                <p className="font-medium text-yellow-800">{pending.length} pending request(s)</p>
-                <p className="text-sm text-yellow-600">Total: ${totalPending.toLocaleString()}</p>
+                <p className="font-medium text-[#f59e0b]">{pending.length} pending request(s)</p>
+                <p className="text-sm text-[#f59e0b]">Total: ${totalPending.toLocaleString()}</p>
               </div>
             </div>
           </CardContent>
@@ -181,10 +181,10 @@ export default function AdminWithdrawalsPage() {
                   <TableCell>
                     {w.status === 'pending' ? (
                       <div className="flex gap-1">
-                        <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-green-600 hover:text-green-700" onClick={() => updateStatus(w._id, 'approved')}>
+                        <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-[#0ef695] hover:text-[#0ef695]/80" onClick={() => updateStatus(w._id, 'approved')}>
                           <CheckCircle className="h-4 w-4" />
                         </Button>
-                        <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-red-600 hover:text-red-700" onClick={() => updateStatus(w._id, 'rejected')}>
+                        <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-[#ef4444] hover:text-[#ef4444]/80" onClick={() => updateStatus(w._id, 'rejected')}>
                           <XCircle className="h-4 w-4" />
                         </Button>
                       </div>

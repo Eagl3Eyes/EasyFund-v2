@@ -10,11 +10,11 @@ import type { Campaign } from '@/lib/types';
 import { getApiUrl } from '@/lib/config';
 
 const statusColors: Record<string, string> = {
-  draft: 'bg-gray-100 text-gray-700',
-  submitted: 'bg-yellow-100 text-yellow-700',
-  active: 'bg-green-100 text-green-700',
-  completed: 'bg-blue-100 text-blue-700',
-  rejected: 'bg-red-100 text-red-700',
+  draft: 'bg-white/10 text-white/60',
+  submitted: 'bg-[#f59e0b]/15 text-[#f59e0b]',
+  active: 'bg-[#0ef695]/15 text-[#0ef695]',
+  completed: 'bg-[#3b82f6]/15 text-[#3b82f6]',
+  rejected: 'bg-[#ef4444]/15 text-[#ef4444]',
 };
 
 export default function MyCampaignsPage() {

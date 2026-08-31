@@ -83,7 +83,7 @@ export default function OrganizationsPage() {
                 <div className="flex items-start justify-between">
                   <h3 className="text-lg font-semibold text-foreground">{org.name}</h3>
                   {org.verified && (
-                    <Badge variant="success" className="bg-green-100 text-green-700">
+                    <Badge variant="success" className="bg-[#0ef695]/15 text-[#0ef695]">
                       <Shield className="mr-1 h-3 w-3" /> Verified
                     </Badge>
                   )}
