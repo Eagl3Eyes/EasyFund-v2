@@ -56,7 +56,7 @@ export default function CampaignManagementPage() {
   if (authLoading || loading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#0ef695] border-t-transparent" />
       </div>
     );
   }
@@ -65,7 +65,7 @@ export default function CampaignManagementPage() {
 
   return (
     <div className="p-6 lg:p-8">
-      <Link href="/dashboard/fundraiser/campaigns" className="mb-6 inline-flex items-center text-sm text-muted-foreground hover:text-foreground">
+      <Link href="/dashboard/fundraiser/campaigns" className="mb-6 inline-flex items-center text-sm text-white/55 hover:text-white">
         <ArrowLeft className="mr-2 h-4 w-4" /> Back to My Campaigns
       </Link>
 
@@ -92,32 +92,32 @@ export default function CampaignManagementPage() {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardContent className="p-4">
-            <DollarSign className="h-8 w-8 text-primary mb-2" />
+            <DollarSign className="h-8 w-8 text-[#0ef695] mb-2" />
             <p className="text-2xl font-bold">${(campaign.amountRaised || 0).toLocaleString()}</p>
-            <p className="text-sm text-muted-foreground">of ${campaign.goal?.toLocaleString()} goal</p>
+            <p className="text-sm text-white/55">of ${campaign.goal?.toLocaleString()} goal</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">
-            <Users className="h-8 w-8 text-primary mb-2" />
+            <Users className="h-8 w-8 text-[#0ef695] mb-2" />
             <p className="text-2xl font-bold">{campaign.supportersCount || 0}</p>
-            <p className="text-sm text-muted-foreground">supporters</p>
+            <p className="text-sm text-white/55">supporters</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">
-            <Megaphone className="h-8 w-8 text-primary mb-2" />
+            <Megaphone className="h-8 w-8 text-[#0ef695] mb-2" />
             <p className="text-2xl font-bold">{campaign.updatesCount || 0}</p>
-            <p className="text-sm text-muted-foreground">updates</p>
+            <p className="text-sm text-white/55">updates</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">
-            <Calendar className="h-8 w-8 text-primary mb-2" />
+            <Calendar className="h-8 w-8 text-[#0ef695] mb-2" />
             <p className="text-2xl font-bold">
               {campaign.deadline ? new Date(campaign.deadline).toLocaleDateString() : 'No deadline'}
             </p>
-            <p className="text-sm text-muted-foreground">deadline</p>
+            <p className="text-sm text-white/55">deadline</p>
           </CardContent>
         </Card>
       </div>
@@ -125,7 +125,7 @@ export default function CampaignManagementPage() {
       {campaign.description && (
         <Card className="mt-6">
           <CardHeader><CardTitle>Description</CardTitle></CardHeader>
-          <CardContent><p className="text-muted-foreground">{campaign.description}</p></CardContent>
+          <CardContent><p className="text-white/55">{campaign.description}</p></CardContent>
         </Card>
       )}
     </div>

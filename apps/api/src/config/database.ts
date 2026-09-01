@@ -11,13 +11,15 @@ export async function connectToDatabase(): Promise<Db> {
   client = new MongoClient(env.MONGODB_URI, {
     serverApi: {
       version: '1' as any,
-      strict: true,
+      strict: false,
       deprecationErrors: true,
     },
   });
 
   await client.connect();
   db = client.db(env.MONGODB_DB_NAME);
+
+  await ensureIndexes(db);
 
   logger.info(`Connected to MongoDB: ${env.MONGODB_DB_NAME}`);
   return db;
@@ -94,4 +96,26 @@ export function auditLogs(): Collection {
 
 export function paymentWebhooks(): Collection {
   return getDb().collection('payment_webhooks');
+}
+
+async function ensureIndexes(db: Db): Promise<void> {
+  try {
+    await db.collection('campaigns').createIndex(
+      { title: 'text', description: 'text', story: 'text' },
+      { name: 'campaigns_text_search', background: true }
+    );
+    await db.collection('campaigns').createIndex({ slug: 1 }, { unique: true });
+    await db.collection('campaigns').createIndex({ status: 1, createdAt: -1 });
+    await db.collection('campaigns').createIndex({ fundraiserId: 1 });
+    await db.collection('campaigns').createIndex({ category: 1 });
+    await db.collection('campaigns').createIndex({ featured: 1 });
+    await db.collection('donations').createIndex({ campaignId: 1, createdAt: -1 });
+    await db.collection('donations').createIndex({ donorId: 1 });
+    await db.collection('users').createIndex({ email: 1 }, { unique: true });
+    await db.collection('comments').createIndex({ campaignId: 1, createdAt: -1 });
+    await db.collection('notifications').createIndex({ userId: 1, createdAt: -1 });
+    logger.info('Database indexes ensured');
+  } catch (error) {
+    logger.warn({ err: error }, 'Failed to ensure some indexes (non-fatal)');
+  }
 }

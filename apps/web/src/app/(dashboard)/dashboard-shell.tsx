@@ -74,7 +74,7 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
   return (
     <div className="flex h-full flex-col">
       <div className="flex items-center justify-between p-4">
-        <Link href="/dashboard" className="text-lg font-bold text-primary">
+        <Link href="/dashboard" className="text-lg font-bold text-[#0ef695]">
           EasyFund
         </Link>
         {onClose && (
@@ -97,8 +97,8 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
               className={cn(
                 'flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
                 isActive
-                  ? 'bg-primary/10 text-primary'
-                  : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                  ? 'bg-[#0ef695]/10 text-[#0ef695]'
+                  : 'text-white/55 hover:bg-white/[0.06] hover:text-white'
               )}
             >
               <link.icon className="h-4 w-4" />
@@ -110,17 +110,17 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
 
       <div className="border-t p-4">
         <div className="flex items-center gap-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted text-sm font-medium">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/[0.06] text-sm font-medium text-white">
             {user?.name?.charAt(0) || 'U'}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-foreground truncate">{user?.name}</p>
-            <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
+            <p className="text-sm font-medium text-white truncate">{user?.name}</p>
+            <p className="text-xs text-white/55 truncate">{user?.email}</p>
           </div>
         </div>
         <Button
           variant="ghost"
-          className="mt-3 w-full justify-start text-muted-foreground"
+          className="mt-3 w-full justify-start text-white/55"
           onClick={() => logout()}
         >
           <LogOut className="mr-2 h-4 w-4" />
@@ -146,7 +146,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-[calc(100vh-4rem)]">
       {/* Desktop Sidebar */}
-      <aside className="hidden w-64 border-r bg-card lg:block">
+      <aside className="hidden w-64 border-r border-white/[0.08] bg-[#071324] lg:block">
         <SidebarContent />
       </aside>
 
@@ -166,7 +166,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
       <main className="flex-1 overflow-y-auto pb-20 lg:pb-0">{children}</main>
 
       {/* Mobile Bottom Nav */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t bg-card lg:hidden" role="navigation" aria-label="Dashboard navigation">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-white/[0.08] bg-[#071324] lg:hidden" role="navigation" aria-label="Dashboard navigation">
         <div className="flex items-center justify-around py-2">
           {mobileLinks.map((link) => {
             const isActive = pathname === link.href;
@@ -175,7 +175,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
                 key={link.href}
                 href={link.href}
                 className={`flex flex-col items-center gap-1 px-3 py-1 text-xs ${
-                  isActive ? 'text-primary' : 'text-muted-foreground'
+                  isActive ? 'text-[#0ef695]' : 'text-white/55'
                 }`}
                 aria-current={isActive ? 'page' : undefined}
               >

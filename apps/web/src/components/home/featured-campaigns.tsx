@@ -34,7 +34,7 @@ export function FeaturedCampaigns() {
     return (
       <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="rounded-2xl border border-white/[0.08] bg-card shadow-sm overflow-hidden">
+          <div key={i} className="rounded-2xl border border-white/[0.08] bg-[#0c1828] shadow-sm overflow-hidden">
             <Skeleton className="h-48 w-full bg-white/5" />
             <div className="p-4 space-y-3">
               <Skeleton className="h-4 w-3/4 bg-white/10" />

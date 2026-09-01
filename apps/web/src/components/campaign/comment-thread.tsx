@@ -126,7 +126,7 @@ export function CommentThread({ campaignId }: CommentThreadProps) {
       {loading ? (
         <div className="space-y-3">
           {[1, 2, 3].map((i) => (
-            <Card key={i} className="animate-pulse border-white/[0.08] bg-card">
+            <Card key={i} className="animate-pulse border-white/[0.08] bg-[#0c1828]">
               <CardContent className="h-20" />
             </Card>
           ))}
@@ -136,7 +136,7 @@ export function CommentThread({ campaignId }: CommentThreadProps) {
       ) : (
         <div className="space-y-3">
           {comments.map((comment) => (
-            <Card key={comment._id} className="border-white/[0.08] bg-card">
+            <Card key={comment._id} className="border-white/[0.08] bg-[#0c1828]">
               <CardContent className="p-4">
                 <div className="flex gap-3">
                   <Avatar className="h-8 w-8">

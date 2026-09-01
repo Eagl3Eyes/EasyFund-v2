@@ -60,7 +60,7 @@ export default function WithdrawalRequestPage() {
   if (authLoading || loading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#0ef695] border-t-transparent" />
       </div>
     );
   }
@@ -108,23 +108,23 @@ export default function WithdrawalRequestPage() {
 
   return (
     <div className="p-6 lg:p-8">
-      <Link href="/dashboard/fundraiser/withdrawals" className="mb-6 inline-flex items-center text-sm text-muted-foreground hover:text-foreground">
+      <Link href="/dashboard/fundraiser/withdrawals" className="mb-6 inline-flex items-center text-sm text-white/55 hover:text-white">
         <ArrowLeft className="mr-2 h-4 w-4" /> Back to Withdrawals
       </Link>
 
       <div className="mb-8">
         <h1 className="text-3xl font-bold">Request Withdrawal</h1>
-        <p className="mt-1 text-muted-foreground">Withdraw funds from your campaigns</p>
+        <p className="mt-1 text-white/55">Withdraw funds from your campaigns</p>
       </div>
 
       {balance && (
         <Card className="mb-6 max-w-2xl">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <DollarSign className="h-8 w-8 text-primary" />
+              <DollarSign className="h-8 w-8 text-[#0ef695]" />
               <div>
-                <p className="text-sm text-muted-foreground">Available Balance</p>
-                <p className="text-2xl font-bold text-primary">${balance.available.toFixed(2)}</p>
+                <p className="text-sm text-white/55">Available Balance</p>
+                <p className="text-2xl font-bold text-[#0ef695]">${balance.available.toFixed(2)}</p>
               </div>
             </div>
           </CardContent>
@@ -139,7 +139,7 @@ export default function WithdrawalRequestPage() {
           <div className="space-y-2">
             <Label>Campaign</Label>
             <select
-              className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm"
+              className="flex h-9 w-full rounded-md border border-white/[0.08] bg-[#0c1828] px-3 py-1 text-sm text-white"
               value={selectedCampaign}
               onChange={(e) => setSelectedCampaign(e.target.value)}
             >
@@ -154,7 +154,7 @@ export default function WithdrawalRequestPage() {
             <Label htmlFor="amount">Amount (USD)</Label>
             <Input id="amount" type="number" min="50" value={amount || ''} onChange={(e) => setAmount(Number(e.target.value))} placeholder="Minimum $50" />
             {amount > 0 && (
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-white/55">
                 Fee (2%): ${fees.toFixed(2)} | You receive: ${netAmount.toFixed(2)}
               </p>
             )}

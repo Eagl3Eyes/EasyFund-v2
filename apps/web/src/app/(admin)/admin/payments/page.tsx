@@ -39,7 +39,7 @@ export default function AdminPaymentsPage() {
     if (user) fetchData();
   }, [user]);
 
-  if (loading) return <div className="flex min-h-[60vh] items-center justify-center"><div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" /></div>;
+  if (loading) return <div className="flex min-h-[60vh] items-center justify-center"><div className="h-8 w-8 animate-spin rounded-full border-4 border-[#0ef695] border-t-transparent" /></div>;
   if (!user) return null;
 
   const filtered = payments.filter((p) => {
@@ -53,18 +53,18 @@ export default function AdminPaymentsPage() {
   return (
     <div className="p-6 lg:p-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-foreground">Payment History</h1>
-        <p className="mt-1 text-muted-foreground">All transactions across the platform</p>
+        <h1 className="text-3xl font-bold text-white">Payment History</h1>
+        <p className="mt-1 text-white/55">All transactions across the platform</p>
       </div>
 
-      <div className="mb-6 rounded-lg bg-primary/5 p-4">
-        <p className="text-sm text-muted-foreground">Total Payment Volume</p>
-        <p className="text-2xl font-bold text-primary">${totalVolume.toLocaleString()}</p>
+      <div className="mb-6 rounded-lg bg-[#0ef695]/5 p-4">
+        <p className="text-sm text-white/55">Total Payment Volume</p>
+        <p className="text-2xl font-bold text-[#0ef695]">${totalVolume.toLocaleString()}</p>
       </div>
 
       <div className="mb-6 flex flex-col gap-4 sm:flex-row">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/55" />
           <Input placeholder="Search by donor or campaign..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-9" />
         </div>
         <Select value={statusFilter} onValueChange={setStatusFilter}>
@@ -79,17 +79,17 @@ export default function AdminPaymentsPage() {
       </div>
 
       {isDataLoading ? (
-        <div className="space-y-4">{[1, 2, 3].map((i) => <div key={i} className="h-16 animate-pulse rounded-lg bg-muted" />)}</div>
+        <div className="space-y-4">{[1, 2, 3].map((i) => <div key={i} className="h-16 animate-pulse rounded-lg bg-white/[0.06]" />)}</div>
       ) : filtered.length === 0 ? (
-        <div className="rounded-xl border bg-card p-12 text-center">
-          <DollarSign className="mx-auto h-12 w-12 text-muted-foreground" />
-          <p className="mt-4 text-lg font-medium text-foreground">No payments found</p>
+        <div className="rounded-xl border border-white/[0.08] bg-[#0c1828] p-12 text-center">
+          <DollarSign className="mx-auto h-12 w-12 text-white/55" />
+          <p className="mt-4 text-lg font-medium text-white">No payments found</p>
         </div>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b text-left text-muted-foreground">
+              <tr className="border-b text-left text-white/55">
                 <th className="pb-3 font-medium">Donor</th>
                 <th className="pb-3 font-medium">Campaign</th>
                 <th className="pb-3 font-medium">Amount</th>
@@ -100,11 +100,11 @@ export default function AdminPaymentsPage() {
             <tbody>
               {filtered.map((p) => (
                 <tr key={p._id} className="border-b last:border-0">
-                  <td className="py-3 font-medium text-foreground">{p.userName || 'Anonymous'}</td>
-                  <td className="py-3 text-muted-foreground">{p.campaignTitle}</td>
-                  <td className="py-3 font-semibold text-primary">${p.amount}</td>
+                  <td className="py-3 font-medium text-white">{p.userName || 'Anonymous'}</td>
+                  <td className="py-3 text-white/55">{p.campaignTitle}</td>
+                  <td className="py-3 font-semibold text-[#0ef695]">${p.amount}</td>
                   <td className="py-3"><Badge className={statusColors[p.status] || ''}>{p.status}</Badge></td>
-                  <td className="py-3 text-muted-foreground">{new Date(p.createdAt).toLocaleDateString()}</td>
+                  <td className="py-3 text-white/55">{new Date(p.createdAt).toLocaleDateString()}</td>
                 </tr>
               ))}
             </tbody>

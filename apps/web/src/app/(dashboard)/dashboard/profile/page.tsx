@@ -11,7 +11,7 @@ export default function ProfilePage() {
   if (loading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#0ef695] border-t-transparent" />
       </div>
     );
   }
@@ -21,8 +21,8 @@ export default function ProfilePage() {
   return (
     <div className="p-6 lg:p-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-foreground">Profile</h1>
-        <p className="mt-1 text-muted-foreground">Manage your public profile information</p>
+        <h1 className="text-3xl font-bold text-white">Profile</h1>
+        <p className="mt-1 text-white/55">Manage your public profile information</p>
       </div>
 
       <Card className="max-w-2xl">

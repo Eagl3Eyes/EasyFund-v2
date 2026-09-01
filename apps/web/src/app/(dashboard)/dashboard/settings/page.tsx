@@ -22,7 +22,7 @@ export default function SettingsPage() {
   if (loading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#0ef695] border-t-transparent" />
       </div>
     );
   }
@@ -57,7 +57,7 @@ export default function SettingsPage() {
     <div className="p-6 max-w-2xl space-y-6">
       <div>
         <h1 className="text-3xl font-bold">Settings</h1>
-        <p className="text-muted-foreground">Manage your account preferences</p>
+        <p className="text-white/55">Manage your account preferences</p>
       </div>
 
       <Card>
@@ -74,7 +74,7 @@ export default function SettingsPage() {
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input id="email" value={user?.email || ''} disabled />
-            <p className="text-xs text-muted-foreground">Email cannot be changed</p>
+            <p className="text-xs text-white/55">Email cannot be changed</p>
           </div>
           <div className="space-y-2">
             <Label htmlFor="bio">Bio</Label>
@@ -97,7 +97,7 @@ export default function SettingsPage() {
           <div className="flex items-center justify-between">
             <div>
               <p className="font-medium">Email Notifications</p>
-              <p className="text-sm text-muted-foreground">Receive updates about your campaigns and donations</p>
+              <p className="text-sm text-white/55">Receive updates about your campaigns and donations</p>
             </div>
             <Button
               variant={emailNotifications ? 'default' : 'outline'}
@@ -111,7 +111,7 @@ export default function SettingsPage() {
           <div className="flex items-center justify-between">
             <div>
               <p className="font-medium">Campaign Updates</p>
-              <p className="text-sm text-muted-foreground">Get notified when campaigns you support post updates</p>
+              <p className="text-sm text-white/55">Get notified when campaigns you support post updates</p>
             </div>
             <Button variant="default" size="sm">Enabled</Button>
           </div>
@@ -127,12 +127,12 @@ export default function SettingsPage() {
         <CardContent className="space-y-4">
           <div>
             <p className="font-medium">Role</p>
-            <p className="text-sm text-muted-foreground capitalize">{user?.role || 'donor'}</p>
+            <p className="text-sm text-white/55 capitalize">{user?.role || 'donor'}</p>
           </div>
           <Separator />
           <div>
             <p className="font-medium">Verification Level</p>
-            <p className="text-sm text-muted-foreground capitalize">{user?.verificationLevel || 'none'}</p>
+            <p className="text-sm text-white/55 capitalize">{user?.verificationLevel || 'none'}</p>
           </div>
         </CardContent>
       </Card>

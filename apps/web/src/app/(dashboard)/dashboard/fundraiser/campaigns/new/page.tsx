@@ -10,8 +10,8 @@ export default function CreateCampaignPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-foreground">Create a Campaign</h1>
-        <p className="mt-2 text-muted-foreground">
+        <h1 className="text-3xl font-bold text-white">Create a Campaign</h1>
+        <p className="mt-2 text-white/55">
           Tell your story and start raising funds for your cause
         </p>
       </div>

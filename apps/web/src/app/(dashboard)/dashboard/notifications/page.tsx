@@ -69,7 +69,7 @@ export default function NotificationsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Notifications</h1>
-          <p className="text-muted-foreground">
+          <p className="text-white/55">
             {unreadCount > 0 ? `${unreadCount} unread` : 'All caught up'}
           </p>
         </div>
@@ -91,8 +91,8 @@ export default function NotificationsPage() {
       ) : notifications.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
-            <Bell className="h-12 w-12 text-muted-foreground mb-4" />
-            <p className="text-muted-foreground">No notifications yet</p>
+            <Bell className="h-12 w-12 text-white/55 mb-4" />
+            <p className="text-white/55">No notifications yet</p>
           </CardContent>
         </Card>
       ) : (
@@ -100,7 +100,7 @@ export default function NotificationsPage() {
           {notifications.map((n) => (
             <Card
               key={n._id}
-              className={n.read ? '' : 'border-primary/50 bg-primary/5'}
+              className={n.read ? '' : 'border-[#0ef695]/50 bg-[#0ef695]/5'}
             >
               <CardContent className="flex items-start justify-between p-4">
                 <div className="flex-1">
@@ -108,8 +108,8 @@ export default function NotificationsPage() {
                     <h3 className="font-medium">{n.title}</h3>
                     {!n.read && <Badge variant="default" className="h-5">New</Badge>}
                   </div>
-                  <p className="text-sm text-muted-foreground mt-1">{n.message}</p>
-                  <p className="text-xs text-muted-foreground mt-2">
+                  <p className="text-sm text-white/55 mt-1">{n.message}</p>
+                  <p className="text-xs text-white/55 mt-2">
                     {new Date(n.createdAt).toLocaleString()}
                   </p>
                 </div>

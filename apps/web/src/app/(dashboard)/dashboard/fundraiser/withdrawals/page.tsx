@@ -51,7 +51,7 @@ export default function WithdrawalsPage() {
   if (loading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#0ef695] border-t-transparent" />
       </div>
     );
   }
@@ -67,44 +67,44 @@ export default function WithdrawalsPage() {
   return (
     <div className="p-6 lg:p-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-foreground">Withdrawals</h1>
-        <p className="mt-1 text-muted-foreground">Track your withdrawal requests</p>
+        <h1 className="text-3xl font-bold text-white">Withdrawals</h1>
+        <p className="mt-1 text-white/55">Track your withdrawal requests</p>
       </div>
 
-      <div className="mb-6 rounded-lg bg-primary/5 p-4">
-        <p className="text-sm text-muted-foreground">Total Withdrawn</p>
-        <p className="text-2xl font-bold text-primary">${totalWithdrawn.toLocaleString()}</p>
+      <div className="mb-6 rounded-lg bg-[#0ef695]/5 p-4">
+        <p className="text-sm text-white/55">Total Withdrawn</p>
+        <p className="text-2xl font-bold text-[#0ef695]">${totalWithdrawn.toLocaleString()}</p>
       </div>
 
       {isDataLoading ? (
         <div className="space-y-4">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-20 animate-pulse rounded-lg bg-muted" />
+            <div key={i} className="h-20 animate-pulse rounded-lg bg-white/[0.06]" />
           ))}
         </div>
       ) : withdrawals.length === 0 ? (
-        <div className="rounded-xl border bg-card p-12 text-center">
-          <DollarSign className="mx-auto h-12 w-12 text-muted-foreground" />
-          <p className="mt-4 text-lg font-medium text-foreground">No withdrawals yet</p>
-          <p className="mt-2 text-muted-foreground">
+        <div className="rounded-xl border border-white/[0.08] bg-[#0c1828] p-12 text-center">
+          <DollarSign className="mx-auto h-12 w-12 text-white/55" />
+          <p className="mt-4 text-lg font-medium text-white">No withdrawals yet</p>
+          <p className="mt-2 text-white/55">
             Withdrawals will appear here once you request them
           </p>
         </div>
       ) : (
         <div className="space-y-3">
           {withdrawals.map((withdrawal) => (
-            <div key={withdrawal._id} className="flex items-center justify-between rounded-lg border bg-card p-4">
+            <div key={withdrawal._id} className="flex items-center justify-between rounded-lg border border-white/[0.08] bg-[#0c1828] p-4">
               <div className="flex items-center gap-3">
                 {statusIcons[withdrawal.status]}
                 <div>
-                  <p className="font-medium text-foreground">{withdrawal.campaignTitle}</p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="font-medium text-white">{withdrawal.campaignTitle}</p>
+                  <p className="text-sm text-white/55">
                     {new Date(withdrawal.createdAt).toLocaleDateString()}
                   </p>
                 </div>
               </div>
               <div className="text-right">
-                <p className="font-semibold text-primary">${withdrawal.amount}</p>
+                <p className="font-semibold text-[#0ef695]">${withdrawal.amount}</p>
                 <Badge className={statusColors[withdrawal.status] || ''}>
                   {withdrawal.status}
                 </Badge>

@@ -38,7 +38,7 @@ export default function VerifyPage() {
   if (loading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#0ef695] border-t-transparent" />
       </div>
     );
   }
@@ -47,8 +47,8 @@ export default function VerifyPage() {
     <div className="container mx-auto flex min-h-[70vh] items-center justify-center px-4 py-12">
       <Card className="w-full max-w-md text-center">
         <CardHeader>
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
-            <Mail className="h-8 w-8 text-primary" />
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#0ef695]/10">
+            <Mail className="h-8 w-8 text-[#0ef695]" />
           </div>
           <CardTitle className="mt-4 text-2xl">Verify Your Email</CardTitle>
           <CardDescription>
@@ -72,7 +72,7 @@ export default function VerifyPage() {
             {sent ? 'Resend Verification Email' : 'Send Verification Email'}
           </Button>
 
-          <Link href="/dashboard" className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground">
+          <Link href="/dashboard" className="inline-flex items-center text-sm text-white/55 hover:text-white">
             <ArrowLeft className="mr-1 h-4 w-4" /> Back to Dashboard
           </Link>
         </CardContent>

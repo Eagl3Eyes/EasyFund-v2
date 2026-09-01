@@ -76,7 +76,7 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#0ef695] border-t-transparent" />
       </div>
     );
   }
@@ -129,10 +129,10 @@ export default function DashboardPage() {
   return (
     <div className="p-6 lg:p-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-foreground">
+        <h1 className="text-3xl font-bold text-white">
           Welcome back, {user?.name?.split(' ')[0] || 'there'}!
         </h1>
-        <p className="mt-1 text-muted-foreground">
+        <p className="mt-1 text-white/55">
           {isFundraiser
             ? "Here's an overview of your fundraising activity"
             : "Here's an overview of your activity"}
@@ -144,13 +144,13 @@ export default function DashboardPage() {
         {fundraiserStats.map((stat) => (
           <Card key={stat.title}>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">
+              <CardTitle className="text-sm font-medium text-white/55">
                 {stat.title}
               </CardTitle>
               <stat.icon className={`h-4 w-4 ${stat.color}`} />
             </CardHeader>
             <CardContent>
-              <p className="text-2xl font-bold text-foreground">{stat.value}</p>
+              <p className="text-2xl font-bold text-white">{stat.value}</p>
             </CardContent>
           </Card>
         ))}
@@ -159,53 +159,53 @@ export default function DashboardPage() {
       {/* Quick Actions */}
       <div className="mt-8 grid gap-4 sm:grid-cols-2">
         <Link href="/explore">
-          <Card className="cursor-pointer transition-colors hover:bg-muted/50">
+          <Card className="cursor-pointer transition-colors hover:bg-white/[0.06]">
             <CardContent className="flex items-center justify-between p-4">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                  <Heart className="h-5 w-5 text-primary" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#0ef695]/10">
+                  <Heart className="h-5 w-5 text-[#0ef695]" />
                 </div>
                 <div>
-                  <p className="font-medium text-foreground">Find a Campaign</p>
-                  <p className="text-sm text-muted-foreground">Discover causes to support</p>
+                  <p className="font-medium text-white">Find a Campaign</p>
+                  <p className="text-sm text-white/55">Discover causes to support</p>
                 </div>
               </div>
-              <ArrowRight className="h-4 w-4 text-muted-foreground" />
+              <ArrowRight className="h-4 w-4 text-white/55" />
             </CardContent>
           </Card>
         </Link>
 
         {isFundraiser ? (
           <Link href="/dashboard/fundraiser/campaigns/new">
-            <Card className="cursor-pointer transition-colors hover:bg-muted/50">
+            <Card className="cursor-pointer transition-colors hover:bg-white/[0.06]">
               <CardContent className="flex items-center justify-between p-4">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                    <Megaphone className="h-5 w-5 text-primary" />
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#0ef695]/10">
+                    <Megaphone className="h-5 w-5 text-[#0ef695]" />
                   </div>
                   <div>
-                    <p className="font-medium text-foreground">Start a Campaign</p>
-                    <p className="text-sm text-muted-foreground">Create a new fundraiser</p>
+                    <p className="font-medium text-white">Start a Campaign</p>
+                    <p className="text-sm text-white/55">Create a new fundraiser</p>
                   </div>
                 </div>
-                <ArrowRight className="h-4 w-4 text-muted-foreground" />
+                <ArrowRight className="h-4 w-4 text-white/55" />
               </CardContent>
             </Card>
           </Link>
         ) : (
           <Link href="/dashboard/fundraiser/campaigns/new">
-            <Card className="cursor-pointer transition-colors hover:bg-muted/50">
+            <Card className="cursor-pointer transition-colors hover:bg-white/[0.06]">
               <CardContent className="flex items-center justify-between p-4">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                    <Megaphone className="h-5 w-5 text-primary" />
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#0ef695]/10">
+                    <Megaphone className="h-5 w-5 text-[#0ef695]" />
                   </div>
                   <div>
-                    <p className="font-medium text-foreground">Become a Fundraiser</p>
-                    <p className="text-sm text-muted-foreground">Start raising funds</p>
+                    <p className="font-medium text-white">Become a Fundraiser</p>
+                    <p className="text-sm text-white/55">Start raising funds</p>
                   </div>
                 </div>
-                <ArrowRight className="h-4 w-4 text-muted-foreground" />
+                <ArrowRight className="h-4 w-4 text-white/55" />
               </CardContent>
             </Card>
           </Link>
@@ -216,8 +216,8 @@ export default function DashboardPage() {
       {isFundraiser && myCampaigns.length > 0 && (
         <div className="mt-8">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold text-foreground">My Campaigns</h2>
-            <Link href="/dashboard/fundraiser/campaigns" className="text-sm text-primary hover:underline">
+            <h2 className="text-xl font-semibold text-white">My Campaigns</h2>
+            <Link href="/dashboard/fundraiser/campaigns" className="text-sm text-[#0ef695] hover:underline">
               View all
             </Link>
           </div>
@@ -233,23 +233,23 @@ export default function DashboardPage() {
       {recentDonations.length > 0 && (
         <div className="mt-8">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold text-foreground">
+            <h2 className="text-xl font-semibold text-white">
               {isFundraiser ? 'Recent Donations to My Campaigns' : 'Recent Donations'}
             </h2>
-            <Link href="/dashboard/donations" className="text-sm text-primary hover:underline">
+            <Link href="/dashboard/donations" className="text-sm text-[#0ef695] hover:underline">
               View all
             </Link>
           </div>
           <div className="space-y-3">
             {recentDonations.map((donation) => (
-              <div key={donation._id} className="flex items-center justify-between rounded-lg border p-4">
+              <div key={donation._id} className="flex items-center justify-between rounded-lg border border-white/[0.08] p-4">
                 <div>
-                  <p className="font-medium text-foreground">{donation.campaignTitle}</p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="font-medium text-white">{donation.campaignTitle}</p>
+                  <p className="text-sm text-white/55">
                     {new Date(donation.createdAt).toLocaleDateString()}
                   </p>
                 </div>
-                <p className="font-semibold text-primary">${donation.amount}</p>
+                <p className="font-semibold text-[#0ef695]">${donation.amount}</p>
               </div>
             ))}
           </div>
@@ -260,8 +260,8 @@ export default function DashboardPage() {
       {!isFundraiser && savedCampaigns.length > 0 && (
         <div className="mt-8">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold text-foreground">Saved Campaigns</h2>
-            <Link href="/dashboard/saved" className="text-sm text-primary hover:underline">
+            <h2 className="text-xl font-semibold text-white">Saved Campaigns</h2>
+            <Link href="/dashboard/saved" className="text-sm text-[#0ef695] hover:underline">
               View all
             </Link>
           </div>
@@ -277,20 +277,20 @@ export default function DashboardPage() {
       {notifications.length > 0 && (
         <div className="mt-8">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-semibold text-foreground">Recent Activity</h2>
-            <Link href="/dashboard/notifications" className="text-sm text-primary hover:underline">
+            <h2 className="text-xl font-semibold text-white">Recent Activity</h2>
+            <Link href="/dashboard/notifications" className="text-sm text-[#0ef695] hover:underline">
               View all
             </Link>
           </div>
           <div className="space-y-2">
             {notifications.map((n) => (
-              <div key={n._id} className={`flex items-start gap-3 rounded-lg border p-3 ${!n.read ? 'bg-primary/5' : ''}`}>
-                <Bell className="mt-0.5 h-4 w-4 text-muted-foreground shrink-0" />
+              <div key={n._id} className={`flex items-start gap-3 rounded-lg border border-white/[0.08] p-3 ${!n.read ? 'bg-[#0ef695]/5' : ''}`}>
+                <Bell className="mt-0.5 h-4 w-4 text-white/55 shrink-0" />
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium text-foreground">{n.title}</p>
-                  <p className="text-xs text-muted-foreground truncate">{n.message}</p>
+                  <p className="text-sm font-medium text-white">{n.title}</p>
+                  <p className="text-xs text-white/55 truncate">{n.message}</p>
                 </div>
-                <span className="text-xs text-muted-foreground whitespace-nowrap">
+                <span className="text-xs text-white/55 whitespace-nowrap">
                   {new Date(n.createdAt).toLocaleDateString()}
                 </span>
               </div>

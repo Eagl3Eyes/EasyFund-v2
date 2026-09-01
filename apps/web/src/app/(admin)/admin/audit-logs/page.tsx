@@ -29,7 +29,7 @@ export default function AdminAuditLogsPage() {
   if (loading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#0ef695] border-t-transparent" />
       </div>
     );
   }
@@ -53,7 +53,7 @@ export default function AdminAuditLogsPage() {
   if (user?.role !== 'admin') {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
-        <p className="text-muted-foreground">Access Denied</p>
+        <p className="text-white/55">Access Denied</p>
       </div>
     );
   }
@@ -62,7 +62,7 @@ export default function AdminAuditLogsPage() {
     <div className="p-6 space-y-6">
       <div>
         <h1 className="text-3xl font-bold">Audit Logs</h1>
-        <p className="text-muted-foreground">Track all administrative actions</p>
+        <p className="text-white/55">Track all administrative actions</p>
       </div>
 
       {isDataLoading ? (
@@ -70,8 +70,8 @@ export default function AdminAuditLogsPage() {
       ) : logs.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
-            <ScrollText className="h-12 w-12 text-muted-foreground mb-4" />
-            <p className="text-muted-foreground">No audit logs yet</p>
+            <ScrollText className="h-12 w-12 text-white/55 mb-4" />
+            <p className="text-white/55">No audit logs yet</p>
           </CardContent>
         </Card>
       ) : (
@@ -82,9 +82,9 @@ export default function AdminAuditLogsPage() {
                 <div>
                   <div className="flex items-center gap-2">
                     <Badge variant="outline">{log.action}</Badge>
-                    <span className="text-sm text-muted-foreground">{log.targetType}</span>
+                    <span className="text-sm text-white/55">{log.targetType}</span>
                   </div>
-                  <p className="text-xs text-muted-foreground mt-1">
+                  <p className="text-xs text-white/55 mt-1">
                     by {log.performedBy} &middot; {new Date(log.createdAt).toLocaleString()}
                   </p>
                 </div>

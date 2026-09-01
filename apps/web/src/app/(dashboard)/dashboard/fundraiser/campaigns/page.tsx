@@ -45,7 +45,7 @@ export default function MyCampaignsPage() {
   if (loading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#0ef695] border-t-transparent" />
       </div>
     );
   }
@@ -58,8 +58,8 @@ export default function MyCampaignsPage() {
     <div className="p-6 lg:p-8">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">My Campaigns</h1>
-          <p className="mt-1 text-muted-foreground">Manage your fundraising campaigns</p>
+          <h1 className="text-3xl font-bold text-white">My Campaigns</h1>
+          <p className="mt-1 text-white/55">Manage your fundraising campaigns</p>
         </div>
         <Link href="/dashboard/fundraiser/campaigns/new">
           <Button>
@@ -72,13 +72,13 @@ export default function MyCampaignsPage() {
       {isDataLoading ? (
         <div className="space-y-4">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-24 animate-pulse rounded-lg bg-muted" />
+            <div key={i} className="h-24 animate-pulse rounded-lg bg-white/[0.06]" />
           ))}
         </div>
       ) : campaigns.length === 0 ? (
-        <div className="rounded-xl border bg-card p-12 text-center">
-          <p className="text-lg font-medium text-foreground">No campaigns yet</p>
-          <p className="mt-2 text-muted-foreground">Create your first campaign to start raising funds</p>
+        <div className="rounded-xl border border-white/[0.08] bg-[#0c1828] p-12 text-center">
+          <p className="text-lg font-medium text-white">No campaigns yet</p>
+          <p className="mt-2 text-white/55">Create your first campaign to start raising funds</p>
           <Link href="/dashboard/fundraiser/campaigns/new">
             <Button className="mt-4">
               <Plus className="mr-2 h-4 w-4" />
@@ -89,7 +89,7 @@ export default function MyCampaignsPage() {
       ) : (
         <div className="space-y-4">
           {campaigns.map((campaign) => (
-            <div key={campaign._id} className="flex items-center justify-between rounded-lg border bg-card p-4">
+            <div key={campaign._id} className="flex items-center justify-between rounded-lg border border-white/[0.08] bg-[#0c1828] p-4">
               <div className="flex items-center gap-4">
                 {campaign.image && (
                   <img
@@ -101,7 +101,7 @@ export default function MyCampaignsPage() {
                 <div>
                   <Link
                     href={`/campaign/${campaign.slug}`}
-                    className="font-medium text-foreground hover:text-primary"
+                    className="font-medium text-white hover:text-[#0ef695]"
                   >
                     {campaign.title}
                   </Link>
@@ -109,7 +109,7 @@ export default function MyCampaignsPage() {
                     <Badge className={statusColors[campaign.status] || ''}>
                       {campaign.status}
                     </Badge>
-                    <span className="text-sm text-muted-foreground">
+                    <span className="text-sm text-white/55">
                       ${campaign.amountRaised?.toLocaleString()} / ${campaign.goal?.toLocaleString()}
                     </span>
                   </div>

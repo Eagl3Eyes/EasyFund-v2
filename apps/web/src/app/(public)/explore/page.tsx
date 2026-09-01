@@ -164,7 +164,7 @@ function ExploreContent() {
                 aria-label="Search campaigns"
                 value={search}
                 onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-                className="pl-9 border-white/[0.08] bg-card text-white placeholder:text-white/30 focus-visible:ring-[#0ef695]/50"
+                className="pl-9 border-white/[0.08] bg-[#0c1828] text-white placeholder:text-white/30 focus-visible:ring-[#0ef695]/50"
               />
             </div>
             <button type="submit" className="inline-flex items-center justify-center rounded-2xl bg-[#0ef695] px-5 py-2.5 text-sm font-bold text-[#060e1e] shadow-lg shadow-[#0ef695]/20 transition hover:bg-[#38f9a8]">
@@ -182,7 +182,7 @@ function ExploreContent() {
 
         {/* Filter Panel */}
         {showFilters && (
-          <div className="rounded-2xl border border-white/[0.08] bg-card p-4">
+          <div className="rounded-2xl border border-white/[0.08] bg-[#0c1828] p-4">
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
                 <label className="text-sm font-medium text-white">Category</label>
@@ -261,7 +261,7 @@ function ExploreContent() {
       {loading ? (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="rounded-2xl border border-white/[0.08] bg-card shadow-sm overflow-hidden">
+            <div key={i} className="rounded-2xl border border-white/[0.08] bg-[#0c1828] shadow-sm overflow-hidden">
               <Skeleton className="h-48 w-full bg-white/5" />
               <div className="p-4 space-y-3">
                 <Skeleton className="h-4 w-3/4 bg-white/10" />
@@ -273,7 +273,7 @@ function ExploreContent() {
           ))}
         </div>
       ) : campaigns.length === 0 ? (
-        <div className="rounded-2xl border border-white/[0.08] bg-card p-12 text-center">
+        <div className="rounded-2xl border border-white/[0.08] bg-[#0c1828] p-12 text-center">
           <p className="text-lg font-medium text-white">No campaigns found</p>
           <p className="mt-2 text-white/55">
             Try adjusting your search or filters

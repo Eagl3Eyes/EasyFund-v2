@@ -43,24 +43,24 @@ export default function ContactPage() {
         </p>
 
         <div className="mt-12 grid gap-8 md:grid-cols-3">
-          <div className="rounded-2xl border border-white/[0.08] bg-card p-6 text-center shadow-sm">
+          <div className="rounded-2xl border border-white/[0.08] bg-[#0c1828] p-6 text-center shadow-sm">
             <Mail className="mx-auto h-6 w-6 text-[#0ef695]" />
             <h3 className="mt-3 font-semibold text-white">Email</h3>
             <p className="mt-1 text-sm text-white/55">support@easyfund.com</p>
           </div>
-          <div className="rounded-2xl border border-white/[0.08] bg-card p-6 text-center shadow-sm">
+          <div className="rounded-2xl border border-white/[0.08] bg-[#0c1828] p-6 text-center shadow-sm">
             <MessageSquare className="mx-auto h-6 w-6 text-[#0ef695]" />
             <h3 className="mt-3 font-semibold text-white">Live Chat</h3>
             <p className="mt-1 text-sm text-white/55">Available Mon-Fri, 9am-5pm EST</p>
           </div>
-          <div className="rounded-2xl border border-white/[0.08] bg-card p-6 text-center shadow-sm">
+          <div className="rounded-2xl border border-white/[0.08] bg-[#0c1828] p-6 text-center shadow-sm">
             <MapPin className="mx-auto h-6 w-6 text-[#0ef695]" />
             <h3 className="mt-3 font-semibold text-white">Location</h3>
             <p className="mt-1 text-sm text-white/55">Remote-first company</p>
           </div>
         </div>
 
-        <div className="mt-12 rounded-2xl border border-white/[0.08] bg-card p-8 shadow-sm">
+        <div className="mt-12 rounded-2xl border border-white/[0.08] bg-[#0c1828] p-8 shadow-sm">
           {submitted ? (
             <div className="text-center py-8">
               <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#0ef695]/10">

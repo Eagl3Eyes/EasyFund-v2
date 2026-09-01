@@ -93,7 +93,7 @@ export function DonationFlow({ campaignId, campaignTitle, fundraiserName }: Dona
 
   if (step === 'success') {
     return (
-      <div className="rounded-xl border border-white/[0.08] bg-card p-6 shadow-sm text-center">
+      <div className="rounded-xl border border-white/[0.08] bg-[#0c1828] p-6 shadow-sm text-center">
         <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#0ef695]/10">
           <Check className="h-6 w-6 text-[#0ef695]" />
         </div>
@@ -111,7 +111,7 @@ export function DonationFlow({ campaignId, campaignTitle, fundraiserName }: Dona
 
   if (step === 'processing') {
     return (
-      <div className="rounded-xl border border-white/[0.08] bg-card p-6 shadow-sm text-center">
+      <div className="rounded-xl border border-white/[0.08] bg-[#0c1828] p-6 shadow-sm text-center">
         <Loader2 className="mx-auto h-8 w-8 animate-spin text-[#0ef695]" />
         <p className="mt-4 text-sm text-white/55">
           Redirecting to Stripe Checkout...
@@ -121,7 +121,7 @@ export function DonationFlow({ campaignId, campaignTitle, fundraiserName }: Dona
   }
 
   return (
-    <div className="rounded-xl border border-white/[0.08] bg-card p-6 shadow-sm">
+    <div className="rounded-xl border border-white/[0.08] bg-[#0c1828] p-6 shadow-sm">
       <h3 className="text-lg font-semibold text-white">Support This Campaign</h3>
       <p className="mt-1 text-sm text-white/55">
         Your donation directly supports {fundraiserName}&apos;s campaign

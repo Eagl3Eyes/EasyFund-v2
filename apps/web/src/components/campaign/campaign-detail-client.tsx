@@ -251,7 +251,7 @@ export function CampaignDetailClient({ slug }: CampaignDetailClientProps) {
               <h2 className="text-xl font-semibold text-white">Campaign Updates</h2>
               <div className="mt-4 space-y-4">
                 {updates.map((update) => (
-                  <div key={update._id} className="rounded-lg border border-white/[0.08] bg-card p-5">
+                  <div key={update._id} className="rounded-lg border border-white/[0.08] bg-[#0c1828] p-5">
                     <div className="flex items-center justify-between">
                       <h3 className="font-medium text-white">{update.title}</h3>
                       <span className="flex items-center text-xs text-white/40">
@@ -300,7 +300,7 @@ export function CampaignDetailClient({ slug }: CampaignDetailClientProps) {
         </div>
 
         <div className="space-y-6">
-          <div className="rounded-xl border border-white/[0.08] bg-card p-6 shadow-sm">
+          <div className="rounded-xl border border-white/[0.08] bg-[#0c1828] p-6 shadow-sm">
             <CampaignProgress raised={campaign.amountRaised} goal={campaign.goal} />
             <div className="mt-6 grid grid-cols-2 gap-4 text-center">
               <div>
@@ -328,7 +328,7 @@ export function CampaignDetailClient({ slug }: CampaignDetailClientProps) {
               Share Campaign
             </button>
             {showShareMenu && (
-              <div className="absolute top-full left-0 right-0 z-10 mt-2 rounded-xl border border-white/[0.08] bg-card p-2 shadow-lg">
+              <div className="absolute top-full left-0 right-0 z-10 mt-2 rounded-xl border border-white/[0.08] bg-[#0c1828] p-2 shadow-lg">
                 <button onClick={copyLink} className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors">
                   {copied ? <Check className="h-4 w-4 text-[#0ef695]" /> : <LinkIcon className="h-4 w-4" />}
                   {copied ? 'Copied!' : 'Copy Link'}
@@ -348,7 +348,7 @@ export function CampaignDetailClient({ slug }: CampaignDetailClientProps) {
             Report Campaign
           </button>
 
-          <div className="rounded-xl border border-white/[0.08] bg-card p-6 shadow-sm">
+          <div className="rounded-xl border border-white/[0.08] bg-[#0c1828] p-6 shadow-sm">
             <h3 className="font-semibold text-white">Campaign Details</h3>
             <dl className="mt-4 space-y-3">
               <div className="flex justify-between">

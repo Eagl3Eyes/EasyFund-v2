@@ -118,10 +118,18 @@ export class CampaignRepository extends BaseRepository<CampaignDocument> {
   }
 
   async search(query: string, options?: QueryOptions): Promise<PaginatedResult<CampaignDocument>> {
-    return this.findPaginated(
-      { $text: { $search: query }, status: 'active' } as any,
-      options
-    );
+    try {
+      return await this.findPaginated(
+        { $text: { $search: query }, status: 'active' } as any,
+        options
+      );
+    } catch {
+      const regex = new RegExp(query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
+      return this.findPaginated(
+        { status: 'active', $or: [{ title: regex }, { description: regex }, { story: regex }] } as any,
+        options
+      );
+    }
   }
 
   async findByFilters(
@@ -131,7 +139,10 @@ export class CampaignRepository extends BaseRepository<CampaignDocument> {
     const filter: any = { status: 'active' };
 
     if (filters.category) filter.category = filters.category;
-    if (filters.search) filter.$text = { $search: filters.search };
+    if (filters.search) {
+      const regex = new RegExp(filters.search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
+      filter.$or = [{ title: regex }, { description: regex }, { story: regex }];
+    }
     if (filters.minGoal || filters.maxGoal) {
       filter.goal = {};
       if (filters.minGoal) filter.goal.$gte = filters.minGoal;

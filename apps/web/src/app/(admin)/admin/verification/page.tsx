@@ -31,7 +31,7 @@ export default function AdminVerificationPage() {
   if (loading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#0ef695] border-t-transparent" />
       </div>
     );
   }
@@ -72,7 +72,7 @@ export default function AdminVerificationPage() {
   if (user?.role !== 'admin') {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
-        <p className="text-muted-foreground">Access Denied</p>
+        <p className="text-white/55">Access Denied</p>
       </div>
     );
   }
@@ -81,7 +81,7 @@ export default function AdminVerificationPage() {
     <div className="p-6 space-y-6">
       <div>
         <h1 className="text-3xl font-bold">Verification Requests</h1>
-        <p className="text-muted-foreground">Review identity and organization verification</p>
+        <p className="text-white/55">Review identity and organization verification</p>
       </div>
 
       {pending.length > 0 && (
@@ -97,8 +97,8 @@ export default function AdminVerificationPage() {
                         <p className="font-medium">{r.userName}</p>
                         <Badge variant="outline">{r.level}</Badge>
                       </div>
-                      <p className="text-sm text-muted-foreground">{r.userEmail}</p>
-                      <p className="text-xs text-muted-foreground mt-1">
+                      <p className="text-sm text-white/55">{r.userEmail}</p>
+                      <p className="text-xs text-white/55 mt-1">
                         Submitted {new Date(r.createdAt).toLocaleDateString()}
                       </p>
                     </div>
@@ -133,8 +133,8 @@ export default function AdminVerificationPage() {
         ) : processed.length === 0 ? (
           <Card>
             <CardContent className="flex flex-col items-center justify-center py-12">
-              <Shield className="h-12 w-12 text-muted-foreground mb-4" />
-              <p className="text-muted-foreground">No verification history</p>
+              <Shield className="h-12 w-12 text-white/55 mb-4" />
+              <p className="text-white/55">No verification history</p>
             </CardContent>
           </Card>
         ) : (
@@ -147,7 +147,7 @@ export default function AdminVerificationPage() {
                       <p className="font-medium">{r.userName}</p>
                       <Badge variant="outline">{r.level}</Badge>
                     </div>
-                    <p className="text-sm text-muted-foreground">{r.userEmail}</p>
+                    <p className="text-sm text-white/55">{r.userEmail}</p>
                   </div>
                   <Badge variant={r.status === 'approved' ? 'default' : 'destructive'}>
                     {r.status}

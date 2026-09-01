@@ -57,7 +57,7 @@ export default function AdminPage() {
   if (loading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#0ef695] border-t-transparent" />
       </div>
     );
   }
@@ -70,8 +70,8 @@ export default function AdminPage() {
     return (
       <div className="p-6 lg:p-8 text-center">
         <AlertTriangle className="mx-auto h-12 w-12 text-[#f59e0b]" />
-        <h1 className="mt-4 text-2xl font-bold text-foreground">Access Denied</h1>
-        <p className="mt-2 text-muted-foreground">You don&apos;t have admin access.</p>
+        <h1 className="mt-4 text-2xl font-bold text-white">Access Denied</h1>
+        <p className="mt-2 text-white/55">You don&apos;t have admin access.</p>
       </div>
     );
   }
@@ -93,7 +93,7 @@ export default function AdminPage() {
       title: 'Total Raised',
       value: `$${(stats?.totals.raised || 0).toLocaleString()}`,
       icon: DollarSign,
-      color: 'text-primary',
+      color: 'text-[#0ef695]',
     },
     {
       title: 'Total Donations',
@@ -117,8 +117,8 @@ export default function AdminPage() {
   return (
     <div className="p-6 lg:p-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-foreground">Admin Dashboard</h1>
-        <p className="mt-1 text-muted-foreground">Platform overview and management</p>
+        <h1 className="text-3xl font-bold text-white">Admin Dashboard</h1>
+        <p className="mt-1 text-white/55">Platform overview and management</p>
       </div>
 
       {/* Stats */}
@@ -126,13 +126,13 @@ export default function AdminPage() {
         {statCards.map((stat) => (
           <Card key={stat.title}>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">
+              <CardTitle className="text-sm font-medium text-white/55">
                 {stat.title}
               </CardTitle>
               <stat.icon className={`h-4 w-4 ${stat.color}`} />
             </CardHeader>
             <CardContent>
-              <p className="text-2xl font-bold text-foreground">{stat.value}</p>
+              <p className="text-2xl font-bold text-white">{stat.value}</p>
             </CardContent>
           </Card>
         ))}
@@ -151,19 +151,19 @@ export default function AdminPage() {
 
       {/* Quick Actions */}
       <div className="mt-8">
-        <h2 className="text-xl font-semibold text-foreground mb-4">Quick Actions</h2>
+        <h2 className="text-xl font-semibold text-white mb-4">Quick Actions</h2>
         <div className="grid gap-4 sm:grid-cols-2">
           {quickLinks.map((link) => (
             <Link key={link.href} href={link.href}>
-              <Card className="cursor-pointer transition-colors hover:bg-muted/50">
+              <Card className="cursor-pointer transition-colors hover:bg-white/[0.06]">
                 <CardContent className="flex items-center justify-between p-4">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                      <link.icon className="h-5 w-5 text-primary" />
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#0ef695]/10">
+                      <link.icon className="h-5 w-5 text-[#0ef695]" />
                     </div>
-                    <p className="font-medium text-foreground">{link.label}</p>
+                    <p className="font-medium text-white">{link.label}</p>
                   </div>
-                  <ArrowRight className="h-4 w-4 text-muted-foreground" />
+                  <ArrowRight className="h-4 w-4 text-white/55" />
                 </CardContent>
               </Card>
             </Link>

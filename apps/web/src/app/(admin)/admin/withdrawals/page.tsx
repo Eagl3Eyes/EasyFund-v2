@@ -53,7 +53,7 @@ export default function AdminWithdrawalsPage() {
   if (loading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#0ef695] border-t-transparent" />
       </div>
     );
   }
@@ -61,7 +61,7 @@ export default function AdminWithdrawalsPage() {
   if (!user || user?.role !== 'admin') {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
-        <p className="text-muted-foreground">Access Denied</p>
+        <p className="text-white/55">Access Denied</p>
       </div>
     );
   }
@@ -96,7 +96,7 @@ export default function AdminWithdrawalsPage() {
     <div className="p-6 space-y-6">
       <div>
         <h1 className="text-3xl font-bold">Withdrawals</h1>
-        <p className="text-muted-foreground">Process withdrawal requests</p>
+        <p className="text-white/55">Process withdrawal requests</p>
       </div>
 
       {/* Pending alert */}
@@ -117,7 +117,7 @@ export default function AdminWithdrawalsPage() {
       {/* Toolbar */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <div className="relative max-w-sm">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/55" />
           <Input
             placeholder="Search by fundraiser..."
             value={search}
@@ -146,8 +146,8 @@ export default function AdminWithdrawalsPage() {
       ) : filtered.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
-            <DollarSign className="h-12 w-12 text-muted-foreground mb-4" />
-            <p className="text-muted-foreground">No withdrawals found</p>
+            <DollarSign className="h-12 w-12 text-white/55 mb-4" />
+            <p className="text-white/55">No withdrawals found</p>
           </CardContent>
         </Card>
       ) : (
@@ -168,14 +168,14 @@ export default function AdminWithdrawalsPage() {
                   <TableCell>
                     <div>
                       <p className="font-medium">{w.fundraiserName}</p>
-                      {w.bankName && <p className="text-xs text-muted-foreground">{w.bankName}</p>}
+                      {w.bankName && <p className="text-xs text-white/55">{w.bankName}</p>}
                     </div>
                   </TableCell>
                   <TableCell className="font-semibold">${w.amount.toLocaleString()}</TableCell>
                   <TableCell>
                     <Badge className={STATUS_VARIANT[w.status] || ''}>{w.status}</Badge>
                   </TableCell>
-                  <TableCell className="text-sm text-muted-foreground">
+                  <TableCell className="text-sm text-white/55">
                     {new Date(w.createdAt).toLocaleDateString()}
                   </TableCell>
                   <TableCell>
@@ -189,7 +189,7 @@ export default function AdminWithdrawalsPage() {
                         </Button>
                       </div>
                     ) : (
-                      <span className="text-xs text-muted-foreground">—</span>
+                      <span className="text-xs text-white/55">—</span>
                     )}
                   </TableCell>
                 </TableRow>

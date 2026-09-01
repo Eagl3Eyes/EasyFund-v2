@@ -52,8 +52,8 @@ export default function RegisterPage() {
   return (
     <div>
       <div className="mb-8 text-center lg:text-left">
-        <h1 className="text-2xl font-bold text-foreground">Create Your Account</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
+        <h1 className="text-2xl font-bold text-white">Create Your Account</h1>
+        <p className="mt-2 text-sm text-white/55">
           Join EasyFund and start making a difference
         </p>
       </div>
@@ -83,7 +83,7 @@ export default function RegisterPage() {
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-white/55 hover:text-white"
             >
               {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </button>
@@ -118,7 +118,7 @@ export default function RegisterPage() {
 
       <div className="relative my-6">
         <Separator />
-        <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-background px-2 text-xs text-muted-foreground">
+        <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#060e1e] px-2 text-xs text-white/55">
           or
         </span>
       </div>
@@ -150,9 +150,9 @@ export default function RegisterPage() {
         Continue with Google
       </Button>
 
-      <p className="mt-6 text-center text-sm text-muted-foreground">
+      <p className="mt-6 text-center text-sm text-white/55">
         Already have an account?{' '}
-        <Link href="/auth/login" className="font-medium text-primary hover:underline">
+        <Link href="/auth/login" className="font-medium text-[#0ef695] hover:underline">
           Log in
         </Link>
       </p>

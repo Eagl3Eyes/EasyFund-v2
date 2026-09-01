@@ -63,26 +63,26 @@ export default function AdminDonationsPage() {
     <div className="p-6 lg:p-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold">Donations</h1>
-        <p className="mt-1 text-muted-foreground">View all platform donations</p>
+        <p className="mt-1 text-white/55">View all platform donations</p>
       </div>
 
       <div className="mb-6 grid gap-4 sm:grid-cols-2">
         <Card>
           <CardContent className="p-4">
-            <p className="text-sm text-muted-foreground">Total Donations</p>
+            <p className="text-sm text-white/55">Total Donations</p>
             <p className="text-2xl font-bold">{filtered.length}</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4">
-            <p className="text-sm text-muted-foreground">Total Amount</p>
-            <p className="text-2xl font-bold text-primary">${totalAmount.toLocaleString()}</p>
+            <p className="text-sm text-white/55">Total Amount</p>
+            <p className="text-2xl font-bold text-[#0ef695]">${totalAmount.toLocaleString()}</p>
           </CardContent>
         </Card>
       </div>
 
       <div className="mb-4 flex items-center gap-2">
-        <Search className="h-4 w-4 text-muted-foreground" />
+        <Search className="h-4 w-4 text-white/55" />
         <Input
           placeholder="Search by email or campaign..."
           value={search}
@@ -93,17 +93,17 @@ export default function AdminDonationsPage() {
 
       {loading ? (
         <div className="space-y-3">
-          {[1, 2, 3].map(i => <div key={i} className="h-16 animate-pulse rounded-lg bg-muted" />)}
+          {[1, 2, 3].map(i => <div key={i} className="h-16 animate-pulse rounded-lg bg-white/[0.06]" />)}
         </div>
       ) : filtered.length === 0 ? (
-        <div className="rounded-xl border bg-card p-12 text-center">
-          <DollarSign className="mx-auto h-12 w-12 text-muted-foreground" />
+        <div className="rounded-xl border border-white/[0.08] bg-[#0c1828] p-12 text-center">
+          <DollarSign className="mx-auto h-12 w-12 text-white/55" />
           <p className="mt-4 text-lg font-medium">No donations found</p>
         </div>
       ) : (
         <div className="overflow-x-auto rounded-lg border">
           <table className="w-full text-sm">
-            <thead className="border-b bg-muted/50">
+            <thead className="border-b bg-white/[0.06]">
               <tr>
                 <th className="px-4 py-3 text-left font-medium">Campaign</th>
                 <th className="px-4 py-3 text-left font-medium">Donor</th>
@@ -117,13 +117,13 @@ export default function AdminDonationsPage() {
                 <tr key={donation._id} className="border-b last:border-0">
                   <td className="px-4 py-3 font-medium">{donation.campaignTitle}</td>
                   <td className="px-4 py-3">{donation.donorEmail}</td>
-                  <td className="px-4 py-3 font-semibold text-primary">${donation.amount}</td>
+                  <td className="px-4 py-3 font-semibold text-[#0ef695]">${donation.amount}</td>
                   <td className="px-4 py-3">
                     <Badge variant={donation.status === 'completed' ? 'default' : 'secondary'}>
                       {donation.status}
                     </Badge>
                   </td>
-                  <td className="px-4 py-3 text-muted-foreground">
+                  <td className="px-4 py-3 text-white/55">
                     {new Date(donation.createdAt).toLocaleDateString()}
                   </td>
                 </tr>

@@ -52,7 +52,7 @@ export default function OrganizationsPage() {
       <div className="mb-8">
         <div className="relative max-w-md">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/40" />
-          <Input placeholder="Search organizations..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-9 border-white/[0.08] bg-card text-white placeholder:text-white/30 focus-visible:ring-[#0ef695]/50" />
+          <Input placeholder="Search organizations..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-9 border-white/[0.08] bg-[#0c1828] text-white placeholder:text-white/30 focus-visible:ring-[#0ef695]/50" />
         </div>
       </div>
 
@@ -61,7 +61,7 @@ export default function OrganizationsPage() {
           {[1, 2, 3].map((i) => <div key={i} className="h-64 animate-pulse rounded-2xl bg-white/5" />)}
         </div>
       ) : filtered.length === 0 ? (
-        <div className="rounded-2xl border border-white/[0.08] bg-card p-12 text-center">
+        <div className="rounded-2xl border border-white/[0.08] bg-[#0c1828] p-12 text-center">
           <Users className="mx-auto h-12 w-12 text-white/30" />
           <p className="mt-4 text-lg font-medium text-white">
             {search ? 'No organizations match your search' : 'No organizations yet'}
@@ -73,7 +73,7 @@ export default function OrganizationsPage() {
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((org) => (
-            <Card key={org._id} className="overflow-hidden border-white/[0.08] bg-card">
+            <Card key={org._id} className="overflow-hidden border-white/[0.08] bg-[#0c1828]">
               {org.image && (
                 <div className="aspect-[16/6] overflow-hidden">
                   <img src={org.image} alt={org.name} className="h-full w-full object-cover" />

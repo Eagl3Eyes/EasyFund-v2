@@ -49,7 +49,7 @@ export default function AdminUsersPage() {
   if (loading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#0ef695] border-t-transparent" />
       </div>
     );
   }
@@ -57,7 +57,7 @@ export default function AdminUsersPage() {
   if (!user || user?.role !== 'admin') {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
-        <p className="text-muted-foreground">Access Denied</p>
+        <p className="text-white/55">Access Denied</p>
       </div>
     );
   }
@@ -92,7 +92,7 @@ export default function AdminUsersPage() {
     <div className="p-6 space-y-6">
       <div>
         <h1 className="text-3xl font-bold">Users</h1>
-        <p className="text-muted-foreground">Manage platform users</p>
+        <p className="text-white/55">Manage platform users</p>
       </div>
 
       {/* Stats */}
@@ -100,10 +100,10 @@ export default function AdminUsersPage() {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <UsersIcon className="h-8 w-8 text-primary" />
+              <UsersIcon className="h-8 w-8 text-[#0ef695]" />
               <div>
                 <p className="text-2xl font-bold">{stats.total}</p>
-                <p className="text-sm text-muted-foreground">Total Users</p>
+                <p className="text-sm text-white/55">Total Users</p>
               </div>
             </div>
           </CardContent>
@@ -114,7 +114,7 @@ export default function AdminUsersPage() {
               <Megaphone className="h-8 w-8 text-blue-500" />
               <div>
                 <p className="text-2xl font-bold">{stats.byRole['fundraiser'] || 0}</p>
-                <p className="text-sm text-muted-foreground">Fundraisers</p>
+                <p className="text-sm text-white/55">Fundraisers</p>
               </div>
             </div>
           </CardContent>
@@ -125,7 +125,7 @@ export default function AdminUsersPage() {
               <CheckCircle className="h-8 w-8 text-green-500" />
               <div>
                 <p className="text-2xl font-bold">{stats.byRole['donor'] || 0}</p>
-                <p className="text-sm text-muted-foreground">Donors</p>
+                <p className="text-sm text-white/55">Donors</p>
               </div>
             </div>
           </CardContent>
@@ -136,7 +136,7 @@ export default function AdminUsersPage() {
               <Shield className="h-8 w-8 text-purple-500" />
               <div>
                 <p className="text-2xl font-bold">{stats.byRole['admin'] || 0}</p>
-                <p className="text-sm text-muted-foreground">Admins</p>
+                <p className="text-sm text-white/55">Admins</p>
               </div>
             </div>
           </CardContent>
@@ -146,7 +146,7 @@ export default function AdminUsersPage() {
       {/* Toolbar */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <div className="relative max-w-sm">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/55" />
           <Input
             placeholder="Search users..."
             value={search}
@@ -179,8 +179,8 @@ export default function AdminUsersPage() {
       ) : filtered.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
-            <UsersIcon className="h-12 w-12 text-muted-foreground mb-4" />
-            <p className="text-muted-foreground">No users found</p>
+            <UsersIcon className="h-12 w-12 text-white/55 mb-4" />
+            <p className="text-white/55">No users found</p>
           </CardContent>
         </Card>
       ) : (
@@ -203,7 +203,7 @@ export default function AdminUsersPage() {
                   <TableCell>
                     <div>
                       <p className="font-medium">{u.name}</p>
-                      <p className="text-xs text-muted-foreground">{u.email}</p>
+                      <p className="text-xs text-white/55">{u.email}</p>
                     </div>
                   </TableCell>
                   <TableCell>
@@ -217,14 +217,14 @@ export default function AdminUsersPage() {
                         <CheckCircle className="mr-1 h-3 w-3" /> Verified
                       </Badge>
                     ) : (
-                      <Badge variant="outline" className="text-muted-foreground">
+                      <Badge variant="outline" className="text-white/55">
                         <XCircle className="mr-1 h-3 w-3" /> Unverified
                       </Badge>
                     )}
                   </TableCell>
                   <TableCell>${(u.totalDonated || 0).toLocaleString()}</TableCell>
                   <TableCell>{u.campaignsCount || 0}</TableCell>
-                  <TableCell className="text-sm text-muted-foreground">
+                  <TableCell className="text-sm text-white/55">
                     {new Date(u.createdAt).toLocaleDateString()}
                   </TableCell>
                   <TableCell>

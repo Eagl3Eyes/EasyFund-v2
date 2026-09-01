@@ -44,7 +44,7 @@ export default function UpdatesPage() {
   if (loading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#0ef695] border-t-transparent" />
       </div>
     );
   }
@@ -92,7 +92,7 @@ export default function UpdatesPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Post Update</h1>
-          <p className="text-muted-foreground">Share updates with your supporters</p>
+          <p className="text-white/55">Share updates with your supporters</p>
         </div>
         <Button onClick={() => setShowForm(!showForm)}>
           <Plus className="mr-2 h-4 w-4" /> New Update
@@ -108,7 +108,7 @@ export default function UpdatesPage() {
                 <select
                   value={selectedCampaign}
                   onChange={(e) => setSelectedCampaign(e.target.value)}
-                  className="w-full rounded-md border bg-background px-3 py-2 text-sm"
+                  className="w-full rounded-md border border-white/[0.08] bg-[#060e1e] px-3 py-2 text-sm"
                 >
                   <option value="">Select a campaign</option>
                   {activeCampaigns.map((c) => (
@@ -138,8 +138,8 @@ export default function UpdatesPage() {
       ) : activeCampaigns.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
-            <Megaphone className="h-12 w-12 text-muted-foreground mb-4" />
-            <p className="text-muted-foreground mb-4">You need an active campaign to post updates</p>
+            <Megaphone className="h-12 w-12 text-white/55 mb-4" />
+            <p className="text-white/55 mb-4">You need an active campaign to post updates</p>
             <Link href="/dashboard/fundraiser/campaigns/new">
               <Button>Create Campaign</Button>
             </Link>

@@ -95,7 +95,7 @@ export default function EditCampaignPage() {
   if (authLoading || loading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#0ef695] border-t-transparent" />
       </div>
     );
   }
@@ -105,7 +105,7 @@ export default function EditCampaignPage() {
   if (campaign.fundraiserId !== user._id && user.role !== 'admin') {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
-        <p className="text-muted-foreground">You don&apos;t have permission to edit this campaign</p>
+        <p className="text-white/55">You don&apos;t have permission to edit this campaign</p>
       </div>
     );
   }
@@ -141,13 +141,13 @@ export default function EditCampaignPage() {
 
   return (
     <div className="p-6 lg:p-8">
-      <Link href="/dashboard/fundraiser/campaigns" className="mb-6 inline-flex items-center text-sm text-muted-foreground hover:text-foreground">
+      <Link href="/dashboard/fundraiser/campaigns" className="mb-6 inline-flex items-center text-sm text-white/55 hover:text-white">
         <ArrowLeft className="mr-2 h-4 w-4" /> Back to My Campaigns
       </Link>
 
       <div className="mb-8">
         <h1 className="text-3xl font-bold">Edit Campaign</h1>
-        <p className="mt-1 text-muted-foreground">
+        <p className="mt-1 text-white/55">
           Status: <Badge variant="outline">{campaign.status}</Badge>
           {!isEditable && (
             <span className="ml-2 text-sm text-yellow-600">(Only draft, rejected, or needs_information campaigns can be edited)</span>

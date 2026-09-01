@@ -28,13 +28,13 @@ export default function AdminOverviewPage() {
     if (user) fetchData();
   }, [user]);
 
-  if (loading) return <div className="flex min-h-[60vh] items-center justify-center"><div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" /></div>;
+  if (loading) return <div className="flex min-h-[60vh] items-center justify-center"><div className="h-8 w-8 animate-spin rounded-full border-4 border-[#0ef695] border-t-transparent" /></div>;
   if (!user) return null;
 
   const stats = [
     { title: 'Total Users', value: overview?.totals.users?.toLocaleString() || '0', icon: Users, color: 'text-blue-500' },
     { title: 'Total Campaigns', value: overview?.totals.campaigns?.toLocaleString() || '0', icon: Megaphone, color: 'text-green-500' },
-    { title: 'Total Raised', value: `$${overview?.totals.raised?.toLocaleString() || '0'}`, icon: DollarSign, color: 'text-primary' },
+    { title: 'Total Raised', value: `$${overview?.totals.raised?.toLocaleString() || '0'}`, icon: DollarSign, color: 'text-[#0ef695]' },
     { title: 'Total Donations', value: overview?.totals.donations?.toLocaleString() || '0', icon: TrendingUp, color: 'text-purple-500' },
   ];
 
@@ -48,18 +48,18 @@ export default function AdminOverviewPage() {
   return (
     <div className="p-6 lg:p-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-foreground">Admin Overview</h1>
-        <p className="mt-1 text-muted-foreground">Platform-wide metrics and status</p>
+        <h1 className="text-3xl font-bold text-white">Admin Overview</h1>
+        <p className="mt-1 text-white/55">Platform-wide metrics and status</p>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat) => (
           <Card key={stat.title}>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">{stat.title}</CardTitle>
+              <CardTitle className="text-sm font-medium text-white/55">{stat.title}</CardTitle>
               <stat.icon className={`h-4 w-4 ${stat.color}`} />
             </CardHeader>
-            <CardContent><p className="text-2xl font-bold text-foreground">{stat.value}</p></CardContent>
+            <CardContent><p className="text-2xl font-bold text-white">{stat.value}</p></CardContent>
           </Card>
         ))}
       </div>
@@ -83,7 +83,7 @@ export default function AdminOverviewPage() {
       <Card className="mt-8">
         <CardHeader><CardTitle>Platform Activity</CardTitle></CardHeader>
         <CardContent>
-          {isDataLoading ? <div className="h-[300px] animate-pulse rounded bg-muted" /> : overview?.raisedByDay?.length ? <OverviewChart data={overview.raisedByDay} /> : <p className="flex h-[300px] items-center justify-center text-muted-foreground">No data available</p>}
+          {isDataLoading ? <div className="h-[300px] animate-pulse rounded bg-white/[0.06]" /> : overview?.raisedByDay?.length ? <OverviewChart data={overview.raisedByDay} /> : <p className="flex h-[300px] items-center justify-center text-white/55">No data available</p>}
         </CardContent>
       </Card>
     </div>

@@ -74,7 +74,7 @@ export default function CategoriesPage() {
       {loading ? (
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: 9 }).map((_, i) => (
-            <div key={i} className="rounded-2xl border border-white/[0.08] bg-card p-8 shadow-sm">
+            <div key={i} className="rounded-2xl border border-white/[0.08] bg-[#0c1828] p-8 shadow-sm">
               <Skeleton className="h-12 w-12 rounded-lg bg-white/10" />
               <Skeleton className="mt-4 h-6 w-32 bg-white/10" />
               <Skeleton className="mt-2 h-4 w-full bg-white/10" />
@@ -88,7 +88,7 @@ export default function CategoriesPage() {
             <Link
               key={cat.slug}
               href={`/explore?category=${cat.slug}`}
-              className="group rounded-2xl border border-white/[0.08] bg-card p-8 shadow-sm transition-all hover:border-[#0ef695]/40 hover:shadow-[0_0_30px_rgba(14,246,149,0.06)]"
+              className="group rounded-2xl border border-white/[0.08] bg-[#0c1828] p-8 shadow-sm transition-all hover:border-[#0ef695]/40 hover:shadow-[0_0_30px_rgba(14,246,149,0.06)]"
             >
               <div
                 className="flex h-12 w-12 items-center justify-center rounded-xl text-2xl"

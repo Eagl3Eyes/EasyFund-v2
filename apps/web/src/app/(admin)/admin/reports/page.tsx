@@ -50,7 +50,7 @@ export default function AdminReportsPage() {
   if (loading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#0ef695] border-t-transparent" />
       </div>
     );
   }
@@ -58,7 +58,7 @@ export default function AdminReportsPage() {
   if (!user || user?.role !== 'admin') {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
-        <p className="text-muted-foreground">Access Denied</p>
+        <p className="text-white/55">Access Denied</p>
       </div>
     );
   }
@@ -93,7 +93,7 @@ export default function AdminReportsPage() {
     <div className="p-6 space-y-6">
       <div>
         <h1 className="text-3xl font-bold">Reports</h1>
-        <p className="text-muted-foreground">Review user-submitted reports</p>
+        <p className="text-white/55">Review user-submitted reports</p>
       </div>
 
       {pendingCount > 0 && (
@@ -110,7 +110,7 @@ export default function AdminReportsPage() {
       {/* Toolbar */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <div className="relative max-w-sm">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/55" />
           <Input
             placeholder="Search reports..."
             value={search}
@@ -136,8 +136,8 @@ export default function AdminReportsPage() {
       ) : filtered.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
-            <AlertTriangle className="h-12 w-12 text-muted-foreground mb-4" />
-            <p className="text-muted-foreground">No reports found</p>
+            <AlertTriangle className="h-12 w-12 text-white/55 mb-4" />
+            <p className="text-white/55">No reports found</p>
           </CardContent>
         </Card>
       ) : (
@@ -165,14 +165,14 @@ export default function AdminReportsPage() {
                   <TableCell>
                     <div>
                       <p className="text-sm font-medium">{r.targetTitle}</p>
-                      <p className="text-xs text-muted-foreground">{r.targetType}</p>
+                      <p className="text-xs text-white/55">{r.targetType}</p>
                     </div>
                   </TableCell>
                   <TableCell>
                     <Badge className={STATUS_VARIANT[r.status] || ''}>{r.status}</Badge>
                   </TableCell>
                   <TableCell className="text-sm">{r.reporterName}</TableCell>
-                  <TableCell className="text-sm text-muted-foreground">
+                  <TableCell className="text-sm text-white/55">
                     {new Date(r.createdAt).toLocaleDateString()}
                   </TableCell>
                   <TableCell>
@@ -186,7 +186,7 @@ export default function AdminReportsPage() {
                         </Button>
                       </div>
                     ) : (
-                      <span className="text-xs text-muted-foreground">—</span>
+                      <span className="text-xs text-white/55">—</span>
                     )}
                   </TableCell>
                 </TableRow>

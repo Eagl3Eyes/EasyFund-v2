@@ -66,8 +66,8 @@ function LoginForm() {
   return (
     <div>
       <div className="mb-8 text-center lg:text-left">
-        <h1 className="text-2xl font-bold text-foreground">Welcome Back</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
+        <h1 className="text-2xl font-bold text-white">Welcome Back</h1>
+        <p className="mt-2 text-sm text-white/55">
           Log in to your EasyFund account
         </p>
       </div>
@@ -89,7 +89,7 @@ function LoginForm() {
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <Label htmlFor="password">Password</Label>
-            <Link href="/auth/reset-password" className="text-xs text-primary hover:underline">
+            <Link href="/auth/reset-password" className="text-xs text-[#0ef695] hover:underline">
               Forgot password?
             </Link>
           </div>
@@ -103,7 +103,7 @@ function LoginForm() {
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-white/55 hover:text-white"
             >
               {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </button>
@@ -127,7 +127,7 @@ function LoginForm() {
 
       <div className="relative my-6">
         <Separator />
-        <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-background px-2 text-xs text-muted-foreground">
+        <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#060e1e] px-2 text-xs text-white/55">
           or continue with
         </span>
       </div>
@@ -159,9 +159,9 @@ function LoginForm() {
         Continue with Google
       </Button>
 
-      <p className="mt-6 text-center text-sm text-muted-foreground">
+      <p className="mt-6 text-center text-sm text-white/55">
         Don&apos;t have an account?{' '}
-        <Link href="/auth/register" className="font-medium text-primary hover:underline">
+        <Link href="/auth/register" className="font-medium text-[#0ef695] hover:underline">
           Sign up
         </Link>
       </p>

@@ -99,7 +99,7 @@ export default function AdminCampaignsPage() {
   if (loading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#0ef695] border-t-transparent" />
       </div>
     );
   }
@@ -107,7 +107,7 @@ export default function AdminCampaignsPage() {
   if (!user || user?.role !== 'admin') {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
-        <p className="text-muted-foreground">Access Denied</p>
+        <p className="text-white/55">Access Denied</p>
       </div>
     );
   }
@@ -193,7 +193,7 @@ export default function AdminCampaignsPage() {
     <div className="p-6 space-y-6">
       <div>
         <h1 className="text-3xl font-bold">Campaigns</h1>
-        <p className="text-muted-foreground">Review and manage campaigns</p>
+        <p className="text-white/55">Review and manage campaigns</p>
       </div>
 
       {/* Stats */}
@@ -201,10 +201,10 @@ export default function AdminCampaignsPage() {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <Megaphone className="h-8 w-8 text-primary" />
+              <Megaphone className="h-8 w-8 text-[#0ef695]" />
               <div>
                 <p className="text-2xl font-bold">{stats.total}</p>
-                <p className="text-sm text-muted-foreground">Total</p>
+                <p className="text-sm text-white/55">Total</p>
               </div>
             </div>
           </CardContent>
@@ -215,7 +215,7 @@ export default function AdminCampaignsPage() {
               <Clock className="h-8 w-8 text-[#f59e0b]" />
               <div>
                 <p className="text-2xl font-bold">{(stats.byStatus['submitted'] || 0) + (stats.byStatus['under_review'] || 0)}</p>
-                <p className="text-sm text-muted-foreground">Pending Review</p>
+                <p className="text-sm text-white/55">Pending Review</p>
               </div>
             </div>
           </CardContent>
@@ -226,7 +226,7 @@ export default function AdminCampaignsPage() {
               <CheckCircle className="h-8 w-8 text-green-500" />
               <div>
                 <p className="text-2xl font-bold">{(stats.byStatus['active'] || 0) + (stats.byStatus['approved'] || 0)}</p>
-                <p className="text-sm text-muted-foreground">Active</p>
+                <p className="text-sm text-white/55">Active</p>
               </div>
             </div>
           </CardContent>
@@ -237,7 +237,7 @@ export default function AdminCampaignsPage() {
               <AlertTriangle className="h-8 w-8 text-red-500" />
               <div>
                 <p className="text-2xl font-bold">{(stats.byStatus['rejected'] || 0) + (stats.byStatus['suspended'] || 0)}</p>
-                <p className="text-sm text-muted-foreground">Rejected / Suspended</p>
+                <p className="text-sm text-white/55">Rejected / Suspended</p>
               </div>
             </div>
           </CardContent>
@@ -248,7 +248,7 @@ export default function AdminCampaignsPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <div className="relative max-w-sm">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/55" />
             <Input
               placeholder="Search campaigns..."
               value={search}
@@ -272,7 +272,7 @@ export default function AdminCampaignsPage() {
 
         {selectedIds.size > 0 && (
           <div className="flex items-center gap-2">
-            <span className="text-sm text-muted-foreground">{selectedIds.size} selected</span>
+            <span className="text-sm text-white/55">{selectedIds.size} selected</span>
             <Button size="sm" variant="default" disabled={bulkActionLoading} onClick={() => bulkUpdateStatus('approved')}>
               <CheckCircle className="mr-1 h-3 w-3" /> Approve
             </Button>
@@ -298,8 +298,8 @@ export default function AdminCampaignsPage() {
       ) : filtered.length === 0 ? (
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
-            <Megaphone className="h-12 w-12 text-muted-foreground mb-4" />
-            <p className="text-muted-foreground">No campaigns found</p>
+            <Megaphone className="h-12 w-12 text-white/55 mb-4" />
+            <p className="text-white/55">No campaigns found</p>
           </CardContent>
         </Card>
       ) : (
@@ -344,7 +344,7 @@ export default function AdminCampaignsPage() {
                     <TableCell>
                       <div>
                         <p className="font-medium">{c.title}</p>
-                        <p className="text-xs text-muted-foreground">by {c.fundraiserName}</p>
+                        <p className="text-xs text-white/55">by {c.fundraiserName}</p>
                       </div>
                     </TableCell>
                     <TableCell>
@@ -354,13 +354,13 @@ export default function AdminCampaignsPage() {
                     <TableCell>${c.amountRaised?.toLocaleString()}</TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
-                        <div className="h-2 w-20 rounded-full bg-muted overflow-hidden">
-                          <div className="h-full bg-primary rounded-full" style={{ width: `${progress}%` }} />
+                        <div className="h-2 w-20 rounded-full bg-white/[0.06] overflow-hidden">
+                          <div className="h-full bg-[#0ef695] rounded-full" style={{ width: `${progress}%` }} />
                         </div>
-                        <span className="text-xs text-muted-foreground">{progress}%</span>
+                        <span className="text-xs text-white/55">{progress}%</span>
                       </div>
                     </TableCell>
-                    <TableCell className="text-sm text-muted-foreground">
+                    <TableCell className="text-sm text-white/55">
                       {new Date(c.createdAt).toLocaleDateString()}
                     </TableCell>
                     <TableCell>

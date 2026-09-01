@@ -25,23 +25,23 @@ export function DonationPanel({ campaignId, campaignSlug, title, raised, goal, s
   const daysLeft = Math.max(0, Math.ceil((new Date(deadline).getTime() - Date.now()) / (1000 * 60 * 60 * 24)));
 
   return (
-    <div className="rounded-xl border bg-card p-6 shadow-sm sticky top-24">
+    <div className="rounded-xl border border-white/[0.08] bg-[#0c1828] p-6 shadow-sm sticky top-24">
       <div className="space-y-4">
         <div>
-          <p className="text-3xl font-bold text-primary">{formatCurrency(raised)}</p>
-          <p className="text-sm text-muted-foreground">raised of {formatCurrency(goal)} goal</p>
+          <p className="text-3xl font-bold text-[#0ef695]">{formatCurrency(raised)}</p>
+          <p className="text-sm text-white/55">raised of {formatCurrency(goal)} goal</p>
         </div>
 
         <Progress value={progress} className="h-3" />
 
         <div className="grid grid-cols-2 gap-4 text-center">
           <div>
-            <p className="text-xl font-bold text-foreground">{supportersCount}</p>
-            <p className="text-xs text-muted-foreground">supporters</p>
+            <p className="text-xl font-bold text-white">{supportersCount}</p>
+            <p className="text-xs text-white/55">supporters</p>
           </div>
           <div>
-            <p className="text-xl font-bold text-foreground">{daysLeft}</p>
-            <p className="text-xs text-muted-foreground">days left</p>
+            <p className="text-xl font-bold text-white">{daysLeft}</p>
+            <p className="text-xs text-white/55">days left</p>
           </div>
         </div>
 

@@ -47,7 +47,7 @@ export default function FundraiserAnalyticsPage() {
   if (loading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#0ef695] border-t-transparent" />
       </div>
     );
   }
@@ -66,8 +66,8 @@ export default function FundraiserAnalyticsPage() {
     <div className="p-6 lg:p-8">
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Analytics</h1>
-          <p className="mt-1 text-muted-foreground">Track your campaign performance</p>
+          <h1 className="text-3xl font-bold text-white">Analytics</h1>
+          <p className="mt-1 text-white/55">Track your campaign performance</p>
         </div>
         <Select value={period} onValueChange={setPeriod}>
           <SelectTrigger className="w-[140px]" aria-label="Select time period">
@@ -86,11 +86,11 @@ export default function FundraiserAnalyticsPage() {
         {stats.map((stat) => (
           <Card key={stat.title}>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">{stat.title}</CardTitle>
+              <CardTitle className="text-sm font-medium text-white/55">{stat.title}</CardTitle>
               <stat.icon className={`h-4 w-4 ${stat.color}`} />
             </CardHeader>
             <CardContent>
-              <p className="text-2xl font-bold text-foreground">{stat.value}</p>
+              <p className="text-2xl font-bold text-white">{stat.value}</p>
             </CardContent>
           </Card>
         ))}
@@ -103,11 +103,11 @@ export default function FundraiserAnalyticsPage() {
           </CardHeader>
           <CardContent>
             {isDataLoading ? (
-              <div className="h-[300px] animate-pulse rounded bg-muted" />
+              <div className="h-[300px] animate-pulse rounded bg-white/[0.06]" />
             ) : analytics?.viewsByDay?.length ? (
               <CampaignStatsChart data={analytics.viewsByDay} />
             ) : (
-              <p className="flex h-[300px] items-center justify-center text-muted-foreground">No data available</p>
+              <p className="flex h-[300px] items-center justify-center text-white/55">No data available</p>
             )}
           </CardContent>
         </Card>
@@ -117,11 +117,11 @@ export default function FundraiserAnalyticsPage() {
           </CardHeader>
           <CardContent>
             {isDataLoading ? (
-              <div className="h-[300px] animate-pulse rounded bg-muted" />
+              <div className="h-[300px] animate-pulse rounded bg-white/[0.06]" />
             ) : analytics?.donationsByDay?.length ? (
               <DonationChart data={analytics.donationsByDay} />
             ) : (
-              <p className="flex h-[300px] items-center justify-center text-muted-foreground">No data available</p>
+              <p className="flex h-[300px] items-center justify-center text-white/55">No data available</p>
             )}
           </CardContent>
         </Card>

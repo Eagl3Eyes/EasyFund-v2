@@ -27,7 +27,7 @@ export default function HowItWorksPage() {
               { icon: HandCoins, title: 'Donate Securely', desc: 'Make a donation in just a few clicks. All payments are processed securely through Stripe.' },
               { icon: BarChart3, title: 'Track Impact', desc: 'Follow campaign updates and see how your support is making a real difference in people\'s lives.' },
             ].map((item, i) => (
-              <div key={i} className="rounded-2xl border border-white/[0.08] bg-card p-6 text-center shadow-sm">
+              <div key={i} className="rounded-2xl border border-white/[0.08] bg-[#0c1828] p-6 text-center shadow-sm">
                 <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-[#0ef695]/10 text-[#0ef695]">
                   <item.icon className="h-6 w-6" />
                 </div>
@@ -47,7 +47,7 @@ export default function HowItWorksPage() {
               { icon: Users, title: 'Build Community', desc: 'Share your campaign and engage with supporters. Post updates to keep them informed.' },
               { icon: ShieldCheck, title: 'Get Verified', desc: 'Earn trust with verification badges. Verified campaigns receive more donations on average.' },
             ].map((item, i) => (
-              <div key={i} className="rounded-2xl border border-white/[0.08] bg-card p-6 text-center shadow-sm">
+              <div key={i} className="rounded-2xl border border-white/[0.08] bg-[#0c1828] p-6 text-center shadow-sm">
                 <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-[#0ef695]/10 text-[#0ef695]">
                   <item.icon className="h-6 w-6" />
                 </div>

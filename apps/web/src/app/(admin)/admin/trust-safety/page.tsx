@@ -27,7 +27,7 @@ export default function AdminTrustSafetyPage() {
   if (loading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#0ef695] border-t-transparent" />
       </div>
     );
   }
@@ -51,7 +51,7 @@ export default function AdminTrustSafetyPage() {
   if (user?.role !== 'admin') {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
-        <p className="text-muted-foreground">Access Denied</p>
+        <p className="text-white/55">Access Denied</p>
       </div>
     );
   }
@@ -60,40 +60,40 @@ export default function AdminTrustSafetyPage() {
     <div className="p-6 space-y-6">
       <div>
         <h1 className="text-3xl font-bold">Trust & Safety</h1>
-        <p className="text-muted-foreground">Platform safety metrics and guidelines</p>
+        <p className="text-white/55">Platform safety metrics and guidelines</p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Total Users</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+            <Users className="h-4 w-4 text-white/55" />
           </CardHeader>
           <CardContent>
             <p className="text-2xl font-bold">{isDataLoading ? '...' : stats?.totals.users || 0}</p>
-            <p className="text-xs text-muted-foreground">Registered users</p>
+            <p className="text-xs text-white/55">Registered users</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Active Campaigns</CardTitle>
-            <Megaphone className="h-4 w-4 text-muted-foreground" />
+            <Megaphone className="h-4 w-4 text-white/55" />
           </CardHeader>
           <CardContent>
             <p className="text-2xl font-bold">{isDataLoading ? '...' : stats?.totals.campaigns || 0}</p>
-            <p className="text-xs text-muted-foreground">Published campaigns</p>
+            <p className="text-xs text-white/55">Published campaigns</p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Pending Withdrawals</CardTitle>
-            <AlertTriangle className="h-4 w-4 text-muted-foreground" />
+            <AlertTriangle className="h-4 w-4 text-white/55" />
           </CardHeader>
           <CardContent>
             <p className="text-2xl font-bold">{isDataLoading ? '...' : stats?.totals.pendingWithdrawals || 0}</p>
-            <p className="text-xs text-muted-foreground">Requires review</p>
+            <p className="text-xs text-white/55">Requires review</p>
           </CardContent>
         </Card>
       </div>
@@ -104,28 +104,28 @@ export default function AdminTrustSafetyPage() {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-start gap-3">
-            <Eye className="mt-1 h-4 w-4 text-muted-foreground" />
+            <Eye className="mt-1 h-4 w-4 text-white/55" />
             <div>
               <p className="font-medium">Campaign Review</p>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-white/55">
                 All campaigns are reviewed before going live. Check for authentic images, clear goals, and genuine fundraising purposes.
               </p>
             </div>
           </div>
           <div className="flex items-start gap-3">
-            <AlertTriangle className="mt-1 h-4 w-4 text-muted-foreground" />
+            <AlertTriangle className="mt-1 h-4 w-4 text-white/55" />
             <div>
               <p className="font-medium">Fraud Detection</p>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-white/55">
                 Monitor for suspicious donation patterns, duplicate campaigns, and misleading information. Report concerns immediately.
               </p>
             </div>
           </div>
           <div className="flex items-start gap-3">
-            <Ban className="mt-1 h-4 w-4 text-muted-foreground" />
+            <Ban className="mt-1 h-4 w-4 text-white/55" />
             <div>
               <p className="font-medium">User Suspension</p>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-white/55">
                 Users who violate platform policies may be suspended. All suspensions are logged in the audit trail.
               </p>
             </div>

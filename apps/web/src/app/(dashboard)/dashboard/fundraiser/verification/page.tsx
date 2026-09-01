@@ -43,7 +43,7 @@ export default function VerificationPage() {
   if (authLoading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#0ef695] border-t-transparent" />
       </div>
     );
   }
@@ -85,22 +85,22 @@ export default function VerificationPage() {
 
   return (
     <div className="p-6 lg:p-8">
-      <Link href="/dashboard" className="mb-6 inline-flex items-center text-sm text-muted-foreground hover:text-foreground">
+      <Link href="/dashboard" className="mb-6 inline-flex items-center text-sm text-white/55 hover:text-white">
         <ArrowLeft className="mr-2 h-4 w-4" /> Back to Dashboard
       </Link>
 
       <div className="mb-8">
         <h1 className="text-3xl font-bold">Fundraiser Verification</h1>
-        <p className="mt-1 text-muted-foreground">Build trust with donors by verifying your identity</p>
+        <p className="mt-1 text-white/55">Build trust with donors by verifying your identity</p>
       </div>
 
       {/* Current Status */}
       <Card className="mb-6 max-w-2xl">
         <CardContent className="p-4">
           <div className="flex items-center gap-3">
-            <Shield className="h-8 w-8 text-primary" />
+            <Shield className="h-8 w-8 text-[#0ef695]" />
             <div>
-              <p className="text-sm text-muted-foreground">Current Verification Level</p>
+              <p className="text-sm text-white/55">Current Verification Level</p>
               <p className="text-lg font-semibold capitalize">{currentLevel === 'none' ? 'Unverified' : currentLevel}</p>
             </div>
           </div>
@@ -118,7 +118,7 @@ export default function VerificationPage() {
             <Card
               key={level.value}
               className={`cursor-pointer transition-colors ${
-                selectedLevel === level.value ? 'border-primary bg-primary/5' : ''
+                selectedLevel === level.value ? 'border-[#0ef695] bg-[#0ef695]/5' : ''
               } ${isVerified ? 'opacity-60' : ''}`}
               onClick={() => !isVerified && !hasPending && setSelectedLevel(level.value)}
             >
@@ -128,7 +128,7 @@ export default function VerificationPage() {
                     <span className="text-2xl">{level.icon}</span>
                     <div>
                       <p className="font-medium">{level.label}</p>
-                      <p className="text-sm text-muted-foreground">{level.desc}</p>
+                      <p className="text-sm text-white/55">{level.desc}</p>
                     </div>
                   </div>
                   {isVerified ? (
@@ -160,7 +160,7 @@ export default function VerificationPage() {
                 onChange={(e) => setDocuments(e.target.value)}
                 rows={4}
               />
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-white/55">
                 For identity verification, you may be asked to upload documents in a future step.
               </p>
             </div>

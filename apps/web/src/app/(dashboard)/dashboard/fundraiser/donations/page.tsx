@@ -42,7 +42,7 @@ export default function FundraiserDonationsPage() {
   if (loading) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#0ef695] border-t-transparent" />
       </div>
     );
   }
@@ -56,42 +56,42 @@ export default function FundraiserDonationsPage() {
   return (
     <div className="p-6 lg:p-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-foreground">Donations Received</h1>
-        <p className="mt-1 text-muted-foreground">Donations to your campaigns</p>
+        <h1 className="text-3xl font-bold text-white">Donations Received</h1>
+        <p className="mt-1 text-white/55">Donations to your campaigns</p>
       </div>
 
-      <div className="mb-6 rounded-lg bg-primary/5 p-4">
-        <p className="text-sm text-muted-foreground">Total Received</p>
-        <p className="text-2xl font-bold text-primary">${totalReceived.toLocaleString()}</p>
+      <div className="mb-6 rounded-lg bg-[#0ef695]/5 p-4">
+        <p className="text-sm text-white/55">Total Received</p>
+        <p className="text-2xl font-bold text-[#0ef695]">${totalReceived.toLocaleString()}</p>
       </div>
 
       {isDataLoading ? (
         <div className="space-y-4">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-20 animate-pulse rounded-lg bg-muted" />
+            <div key={i} className="h-20 animate-pulse rounded-lg bg-white/[0.06]" />
           ))}
         </div>
       ) : donations.length === 0 ? (
-        <div className="rounded-xl border bg-card p-12 text-center">
-          <DollarSign className="mx-auto h-12 w-12 text-muted-foreground" />
-          <p className="mt-4 text-lg font-medium text-foreground">No donations yet</p>
-          <p className="mt-2 text-muted-foreground">Donations will appear here once supporters contribute</p>
+        <div className="rounded-xl border border-white/[0.08] bg-[#0c1828] p-12 text-center">
+          <DollarSign className="mx-auto h-12 w-12 text-white/55" />
+          <p className="mt-4 text-lg font-medium text-white">No donations yet</p>
+          <p className="mt-2 text-white/55">Donations will appear here once supporters contribute</p>
         </div>
       ) : (
         <div className="space-y-3">
           {donations.map((donation) => (
-            <div key={donation._id} className="flex items-center justify-between rounded-lg border bg-card p-4">
+            <div key={donation._id} className="flex items-center justify-between rounded-lg border border-white/[0.08] bg-[#0c1828] p-4">
               <div className="flex items-center gap-3">
                 {statusIcons[donation.status]}
                 <div>
-                  <p className="font-medium text-foreground">{donation.userName || 'Anonymous'}</p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="font-medium text-white">{donation.userName || 'Anonymous'}</p>
+                  <p className="text-sm text-white/55">
                     {donation.campaignTitle} &middot; {new Date(donation.createdAt).toLocaleDateString()}
                   </p>
                 </div>
               </div>
               <div className="text-right">
-                <p className="font-semibold text-primary">${donation.amount}</p>
+                <p className="font-semibold text-[#0ef695]">${donation.amount}</p>
                 <Badge className={statusColors[donation.status] || ''}>{donation.status}</Badge>
               </div>
             </div>

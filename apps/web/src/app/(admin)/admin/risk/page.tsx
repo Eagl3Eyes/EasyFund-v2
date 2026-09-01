@@ -47,7 +47,7 @@ export default function AdminRiskPage() {
     if (user) fetchData();
   }, [user]);
 
-  if (loading) return <div className="flex min-h-[60vh] items-center justify-center"><div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" /></div>;
+  if (loading) return <div className="flex min-h-[60vh] items-center justify-center"><div className="h-8 w-8 animate-spin rounded-full border-4 border-[#0ef695] border-t-transparent" /></div>;
   if (!user) return null;
 
   const filtered = levelFilter === 'all' ? items : items.filter((i) => i.riskLevel === levelFilter);
@@ -69,8 +69,8 @@ export default function AdminRiskPage() {
     <div className="p-6 lg:p-8">
       <div className="mb-8 flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Risk Assessment</h1>
-          <p className="mt-1 text-muted-foreground">Campaigns flagged by the risk engine</p>
+          <h1 className="text-3xl font-bold text-white">Risk Assessment</h1>
+          <p className="mt-1 text-white/55">Campaigns flagged by the risk engine</p>
         </div>
         <Select value={levelFilter} onValueChange={setLevelFilter}>
           <SelectTrigger className="w-[140px]"><SelectValue /></SelectTrigger>
@@ -84,12 +84,12 @@ export default function AdminRiskPage() {
       </div>
 
       {isDataLoading ? (
-        <div className="space-y-4">{[1, 2, 3].map((i) => <div key={i} className="h-24 animate-pulse rounded-lg bg-muted" />)}</div>
+        <div className="space-y-4">{[1, 2, 3].map((i) => <div key={i} className="h-24 animate-pulse rounded-lg bg-white/[0.06]" />)}</div>
       ) : filtered.length === 0 ? (
-        <div className="rounded-xl border bg-card p-12 text-center">
-          <Shield className="mx-auto h-12 w-12 text-muted-foreground" />
-          <p className="mt-4 text-lg font-medium text-foreground">No risk items</p>
-          <p className="mt-2 text-muted-foreground">All campaigns look clean</p>
+        <div className="rounded-xl border border-white/[0.08] bg-[#0c1828] p-12 text-center">
+          <Shield className="mx-auto h-12 w-12 text-white/55" />
+          <p className="mt-4 text-lg font-medium text-white">No risk items</p>
+          <p className="mt-2 text-white/55">All campaigns look clean</p>
         </div>
       ) : (
         <div className="space-y-3">
@@ -102,8 +102,8 @@ export default function AdminRiskPage() {
                       <AlertTriangle className="h-5 w-5" />
                     </div>
                     <div>
-                      <p className="font-medium text-foreground">{item.title}</p>
-                      <p className="text-sm text-muted-foreground">{item.fundraiserName} &middot; Goal: ${item.goal.toLocaleString()}</p>
+                      <p className="font-medium text-white">{item.title}</p>
+                      <p className="text-sm text-white/55">{item.fundraiserName} &middot; Goal: ${item.goal.toLocaleString()}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
@@ -121,14 +121,14 @@ export default function AdminRiskPage() {
                 </div>
                 {expandedId === item._id && (
                   <div className="mt-4 space-y-2 border-t pt-4">
-                    <p className="text-sm font-medium text-foreground">Risk Signals:</p>
+                    <p className="text-sm font-medium text-white">Risk Signals:</p>
                     {item.riskSignals?.map((signal, i) => (
                       <div key={i} className="flex items-start gap-2 text-sm">
                         <Badge variant="outline" className="mt-0.5 shrink-0">+{signal.score}</Badge>
-                        <p className="text-muted-foreground">{signal.reason}</p>
+                        <p className="text-white/55">{signal.reason}</p>
                       </div>
                     ))}
-                    <a href={`/campaign/${item._id}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-sm text-primary hover:underline mt-2">
+                    <a href={`/campaign/${item._id}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-sm text-[#0ef695] hover:underline mt-2">
                       View Campaign <ExternalLink className="h-3 w-3" />
                     </a>
                   </div>

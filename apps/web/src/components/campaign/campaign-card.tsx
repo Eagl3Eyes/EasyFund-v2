@@ -25,7 +25,7 @@ export function CampaignCard({ campaign, onSave, saved, following, onFollow }: C
   const daysLeft = getDaysRemaining(campaign.deadline);
 
   return (
-    <Card variant="interactive" className="group overflow-hidden border-white/[0.08]">
+    <Card variant="interactive" className="group overflow-hidden border-white/[0.08] bg-[#0c1828]">
       <Link href={`/campaign/${campaign.slug}`}>
         <div className="relative aspect-[16/10] overflow-hidden">
           <Image
