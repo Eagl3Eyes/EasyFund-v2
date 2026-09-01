@@ -25,7 +25,7 @@ import {
   AnimatedCounter,
   CampaignCardData,
   CommunityDiorama,
-  DiscoverCard,
+  DiscoverCarousel,
   HeroGlobe,
   ImpactDiorama,
   Reveal,
@@ -33,6 +33,7 @@ import {
   TrustCard,
   VerticalSideNav,
 } from './landing-components';
+import { getApiUrl } from '@/lib/config';
 
 const EasyFund3DScene = dynamic(() => import('./easyfund-3d-scene'), {
   ssr: false,
@@ -40,48 +41,20 @@ const EasyFund3DScene = dynamic(() => import('./easyfund-3d-scene'), {
 });
 
 /* ==========================================================
-   DATA
+   CATEGORY COLORS
 ========================================================== */
 
-const campaigns: CampaignCardData[] = [
-  {
-    category: 'Education',
-    catColor: '#2563eb',
-    title: 'Build a School in Rural India',
-    raised: '$18,450',
-    percent: 61,
-    supporters: 98,
-    image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=80',
-  },
-  {
-    category: 'Medical',
-    catColor: '#ef4444',
-    title: 'Help Children Fight Cancer',
-    raised: '$32,860',
-    percent: 82,
-    supporters: 186,
-    image: '/images/landing/child_cancer.jpg',
-    featured: true,
-  },
-  {
-    category: 'Environment',
-    catColor: '#16a34a',
-    title: 'Save Our Rainforests',
-    raised: '$15,230',
-    percent: 43,
-    supporters: 112,
-    image: 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80',
-  },
-  {
-    category: 'Community',
-    catColor: '#9333ea',
-    title: 'Food for Homeless People',
-    raised: '$9,600',
-    percent: 48,
-    supporters: 76,
-    image: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=800&q=80',
-  },
-];
+const categoryColors: Record<string, string> = {
+  education: '#3B82F6',
+  health: '#EF4444',
+  environment: '#22C55E',
+  community: '#10B981',
+  emergency: '#F59E0B',
+  technology: '#6366F1',
+  'arts-culture': '#EC4899',
+  sports: '#F97316',
+  animals: '#8B5CF6',
+};
 
 const SECTIONS = ['home', 'discover', 'support', 'impact', 'trust', 'joinus'];
 
@@ -92,6 +65,7 @@ const SECTIONS = ['home', 'discover', 'support', 'impact', 'trust', 'joinus'];
 export default function LandingPage() {
   const [activeSection, setActiveSection] = useState(0);
   const [selectedAmt, setSelectedAmt] = useState(25);
+  const [discoverCampaigns, setDiscoverCampaigns] = useState<CampaignCardData[]>([]);
 
   // Scroll‑spy
   useEffect(() => {
@@ -105,6 +79,29 @@ export default function LandingPage() {
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
     return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // Fetch campaigns for Discover section
+  useEffect(() => {
+    fetch(`${getApiUrl()}/api/campaigns?limit=6&sortBy=amountRaised&sortOrder=desc`, { credentials: 'include' })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.data) {
+          const mapped: CampaignCardData[] = data.data.map((c: any) => ({
+            slug: c.slug,
+            category: c.category,
+            catColor: categoryColors[c.category] || '#6366F1',
+            title: c.title,
+            raised: `$${(c.amountRaised || 0).toLocaleString()}`,
+            percent: c.goal ? Math.min(Math.round((c.amountRaised / c.goal) * 100), 100) : 0,
+            supporters: c.supportersCount || 0,
+            image: c.image || 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80',
+            featured: c.featured,
+          }));
+          setDiscoverCampaigns(mapped);
+        }
+      })
+      .catch(() => {});
   }, []);
 
   // Hero parallax
@@ -235,9 +232,9 @@ export default function LandingPage() {
       {/* ================================================================
           02 — DISCOVER
       ================================================================ */}
-      <section id="discover" className="relative z-20 bg-[#EFF2F6] py-20 text-[#071324] sm:py-24 lg:py-32">
+      <section id="discover" className="relative z-20 overflow-hidden bg-[#EFF2F6] py-20 text-[#071324] sm:py-24 lg:py-32">
         <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-12">
-          <div className="grid gap-8 lg:grid-cols-[0.45fr_1fr] lg:gap-14">
+          <div className="grid gap-10 lg:grid-cols-[0.38fr_1fr] lg:gap-14 items-center">
             {/* Left Sidebar Header */}
             <div>
               <Reveal>
@@ -267,24 +264,8 @@ export default function LandingPage() {
               </Reveal>
             </div>
 
-            {/* Right Cards */}
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              {campaigns.map((c, i) => (
-                <DiscoverCard key={c.title} card={c} index={i} />
-              ))}
-            </div>
-          </div>
-
-          {/* Pagination dots */}
-          <div className="mt-10 flex justify-center gap-2 lg:mt-12">
-            {[true, false, false, false, false].map((on, i) => (
-              <span
-                key={i}
-                className={`h-2 w-2 rounded-full transition-colors ${
-                  on ? 'bg-[#071324]' : 'bg-[#071324]/20'
-                }`}
-              />
-            ))}
+            {/* Right — Carousel with fan layout and pagination dots */}
+            <DiscoverCarousel campaigns={discoverCampaigns} />
           </div>
         </div>
       </section>

@@ -2,6 +2,7 @@
 
 import { motion, useScroll, useTransform, useInView, useSpring } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import {
   Heart,
   Leaf,
@@ -24,11 +25,20 @@ const NAV = [
   { id: 'joinus', num: '06', name: 'Join Us' },
 ];
 
+// Sections with light backgrounds where dark text is needed
+const LIGHT_BG_SECTIONS = new Set(['discover']);
+
 export function VerticalSideNav({ active }: { active: number }) {
+  const isLight = LIGHT_BG_SECTIONS.has(NAV[active]?.id);
+
   return (
     <aside className="fixed left-4 top-1/2 z-40 hidden -translate-y-1/2 xl:flex 2xl:left-8">
       <div className="relative flex flex-col gap-5">
-        <div className="absolute bottom-2 left-[22px] top-2 w-px bg-white/[0.06]" />
+        <div
+          className={`absolute bottom-2 left-[22px] top-2 w-px transition-colors duration-500 ${
+            isLight ? 'bg-[#071324]/[0.08]' : 'bg-white/[0.06]'
+          }`}
+        />
         {NAV.map((s, i) => {
           const on = active === i;
           return (
@@ -38,22 +48,34 @@ export function VerticalSideNav({ active }: { active: number }) {
               className="group relative z-10 flex items-center gap-3 py-1"
             >
               <span
-                className={`w-4 text-right font-mono text-[10px] font-bold transition-colors duration-300 ${
-                  on ? 'text-[#0ef695]' : 'text-white/15'
+                className={`w-4 text-right font-mono text-[10px] font-bold transition-colors duration-500 ${
+                  on
+                    ? 'text-[#16a34a]'
+                    : isLight
+                      ? 'text-[#071324]/25'
+                      : 'text-white/15'
                 }`}
               >
                 {s.num}
               </span>
               <div
-                className={`h-[9px] w-[9px] rounded-full border-[1.5px] transition-all duration-300 ${
+                className={`h-[9px] w-[9px] rounded-full border-[1.5px] transition-all duration-500 ${
                   on
-                    ? 'scale-[1.3] border-[#0ef695] bg-[#0ef695] shadow-[0_0_10px_#0ef695]'
-                    : 'border-white/20 bg-[#060e1e] group-hover:border-white/40'
+                    ? 'scale-[1.3] border-[#16a34a] bg-[#16a34a] shadow-[0_0_10px_rgba(22,163,74,0.5)]'
+                    : isLight
+                      ? 'border-[#071324]/20 bg-[#EFF2F6] group-hover:border-[#071324]/40'
+                      : 'border-white/20 bg-[#060e1e] group-hover:border-white/40'
                 }`}
               />
               <span
-                className={`text-[11px] font-medium tracking-wide transition-colors duration-300 ${
-                  on ? 'text-white' : 'text-white/20 group-hover:text-white/40'
+                className={`text-[11px] font-medium tracking-wide transition-colors duration-500 ${
+                  on
+                    ? isLight
+                      ? 'text-[#071324]'
+                      : 'text-white'
+                    : isLight
+                      ? 'text-[#071324]/30 group-hover:text-[#071324]/55'
+                      : 'text-white/20 group-hover:text-white/40'
                 }`}
               >
                 {s.name}
@@ -121,10 +143,11 @@ export function Reveal({
 }
 
 /* ==========================================================
-   DISCOVER CARD WITH 3D TILT
+   DISCOVER CARD — Light theme, matching reference design
 ========================================================== */
 
 export interface CampaignCardData {
+  slug: string;
   category: string;
   catColor: string;
   title: string;
@@ -135,70 +158,186 @@ export interface CampaignCardData {
   featured?: boolean;
 }
 
+const SUPPORTER_AVATARS = [
+  'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&auto=format&fit=crop&q=80',
+];
+
 export function DiscoverCard({
   card,
   index,
+  isCenterCard = false,
 }: {
   card: CampaignCardData;
   index: number;
+  isCenterCard?: boolean;
 }) {
-  const tilts = [-5, 0, 3, 6];
-  const rotY = tilts[index % 4];
+  return (
+    <Link href={`/campaign/${card.slug}`}>
+      <div
+        className={`group relative cursor-pointer overflow-hidden rounded-[22px] bg-white shadow-xl transition-all duration-500 hover:shadow-2xl ${
+          isCenterCard ? 'ring-2 ring-[#16a34a]/20' : ''
+        }`}
+      >
+        {/* Image Section */}
+        <div className={`relative overflow-hidden ${isCenterCard ? 'h-52 sm:h-64' : 'h-40 sm:h-48'}`}>
+          <img
+            src={card.image}
+            alt={card.title}
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+          {/* Category Badge */}
+          <span
+            className="absolute left-3 top-3 rounded-full px-3 py-1 text-[10px] font-bold text-white shadow-md"
+            style={{ backgroundColor: card.catColor }}
+          >
+            {card.category}
+          </span>
+        </div>
+
+        {/* Content Section */}
+        <div className="p-4 sm:p-5">
+          <h3 className={`line-clamp-2 font-bold leading-snug text-[#1a1a2e] ${
+            isCenterCard ? 'text-[17px] sm:text-lg' : 'text-[14px] sm:text-[15px]'
+          }`}>
+            {card.title}
+          </h3>
+
+          {/* Raised Amount + Percentage */}
+          <div className="mt-3 flex items-baseline justify-between">
+            <span className="text-[13px] font-extrabold text-[#1a1a2e]">
+              {card.raised}
+              <span className="ml-1 text-[11px] font-normal text-[#1a1a2e]/45">raised</span>
+            </span>
+            <span className="text-xs font-bold text-[#16a34a]">{card.percent}%</span>
+          </div>
+
+          {/* Progress Bar */}
+          <div className="mt-2 h-[5px] overflow-hidden rounded-full bg-[#e5e7eb]">
+            <motion.div
+              initial={{ width: 0 }}
+              whileInView={{ width: `${card.percent}%` }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.2, delay: 0.3, ease: 'easeOut' }}
+              className="h-full rounded-full bg-gradient-to-r from-[#16a34a] to-[#22c55e]"
+            />
+          </div>
+
+          {/* Supporters with Photo Avatars */}
+          <div className="mt-3 flex items-center gap-2">
+            <div className="flex -space-x-2">
+              {SUPPORTER_AVATARS.map((src, i) => (
+                <img
+                  key={i}
+                  src={src}
+                  alt=""
+                  className="h-5 w-5 rounded-full border-[1.5px] border-white object-cover"
+                />
+              ))}
+            </div>
+            <span className="text-[11px] font-medium text-[#1a1a2e]/50">
+              {card.supporters} supporters
+            </span>
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+/* ==========================================================
+   DISCOVER CAROUSEL — Fan layout with center highlight + dots
+========================================================== */
+
+export function DiscoverCarousel({ campaigns }: { campaigns: CampaignCardData[] }) {
+  const [currentPage, setCurrentPage] = useState(0);
+  const cardsPerPage = 4;
+  const totalPages = Math.max(1, Math.ceil(campaigns.length / cardsPerPage));
+
+  const visibleCampaigns = campaigns.slice(
+    currentPage * cardsPerPage,
+    currentPage * cardsPerPage + cardsPerPage
+  );
+
+  // Auto-advance every 5s
+  useEffect(() => {
+    if (totalPages <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentPage((p) => (p + 1) % totalPages);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [totalPages]);
+
+  // Determine center index for the "featured/larger" card
+  const centerIdx = Math.floor(visibleCampaigns.length / 2) - (visibleCampaigns.length % 2 === 0 ? 1 : 0);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 40, rotateY: rotY - 2 }}
-      whileInView={{ opacity: 1, y: 0, rotateY: rotY }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.7, delay: index * 0.12 }}
-      whileHover={{ scale: 1.04, rotateY: 0, z: 50 }}
-      style={{ perspective: 1200, transformStyle: 'preserve-3d' }}
-      className={`group cursor-pointer overflow-hidden rounded-[22px] bg-[#0d1726] shadow-xl ring-1 transition-shadow duration-500 hover:shadow-[0_24px_48px_rgba(0,0,0,0.45)] ${
-        card.featured ? 'ring-white/20 lg:scale-[1.02]' : 'ring-white/10'
-      }`}
-    >
-      <div className="relative h-48 overflow-hidden sm:h-56">
-        <img
-          src={card.image}
-          alt={card.title}
-          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0d1726] via-transparent to-black/20" />
-        <span
-          className="absolute left-3 top-3 rounded-full px-2.5 py-1 text-[10px] font-bold text-white backdrop-blur"
-          style={{ backgroundColor: card.catColor }}
-        >
-          {card.category}
-        </span>
+    <div className="flex flex-col items-center gap-8">
+      {/* Cards Container — perspective fan layout */}
+      <div className="relative flex w-full items-center justify-center" style={{ perspective: '1200px' }}>
+        <div className="flex items-center gap-4 sm:gap-5 lg:gap-6">
+          {visibleCampaigns.map((card, i) => {
+            const isCenter = i === centerIdx;
+            // Calculate rotation for fan effect
+            const offset = i - centerIdx;
+            const rotateY = offset * 8;
+            const scale = isCenter ? 1.08 : 0.92;
+            const zIndex = isCenter ? 10 : 5 - Math.abs(offset);
+            const translateZ = isCenter ? 30 : -20 * Math.abs(offset);
+
+            return (
+              <motion.div
+                key={card.slug + '-' + currentPage}
+                initial={{ opacity: 0, y: 40, rotateY: rotateY - 4 }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                  rotateY,
+                  scale,
+                  z: translateZ,
+                }}
+                transition={{
+                  duration: 0.7,
+                  delay: i * 0.1,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                whileHover={{ scale: scale * 1.04, rotateY: 0, z: 60 }}
+                style={{
+                  transformStyle: 'preserve-3d',
+                  zIndex,
+                }}
+                className={`shrink-0 ${
+                  isCenter ? 'w-[260px] sm:w-[300px] lg:w-[320px]' : 'w-[220px] sm:w-[240px] lg:w-[260px]'
+                }`}
+              >
+                <DiscoverCard card={card} index={i} isCenterCard={isCenter} />
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
 
-      <div className="p-4 sm:p-5">
-        <h3 className="line-clamp-2 text-[15px] font-bold leading-snug">
-          {card.title}
-        </h3>
-        <div className="mt-3 flex items-baseline justify-between">
-          <span className="text-sm font-extrabold">{card.raised}<span className="ml-1 text-[11px] font-normal text-white/45">raised</span></span>
-          <span className="text-xs font-bold text-[#0ef695]">{card.percent}%</span>
+      {/* Pagination Dots */}
+      {totalPages > 1 && (
+        <div className="flex items-center gap-2">
+          {Array.from({ length: totalPages }).map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentPage(i)}
+              className={`rounded-full transition-all duration-300 ${
+                i === currentPage
+                  ? 'h-2.5 w-2.5 bg-[#1a1a2e]'
+                  : 'h-2 w-2 bg-[#1a1a2e]/25 hover:bg-[#1a1a2e]/40'
+              }`}
+              aria-label={`Go to page ${i + 1}`}
+            />
+          ))}
         </div>
-        <div className="mt-1.5 h-[5px] overflow-hidden rounded-full bg-white/10">
-          <motion.div
-            initial={{ width: 0 }}
-            whileInView={{ width: `${card.percent}%` }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.2, delay: 0.3, ease: 'easeOut' }}
-            className="h-full rounded-full bg-gradient-to-r from-[#0ef695] to-[#38f9a8]"
-          />
-        </div>
-        <div className="mt-3 flex items-center gap-2 text-[11px] text-white/45">
-          <div className="flex -space-x-1.5">
-            {['bg-amber-400', 'bg-sky-400', 'bg-rose-400'].map((bg, i) => (
-              <div key={i} className={`h-4 w-4 rounded-full border border-[#0d1726] ${bg}`} />
-            ))}
-          </div>
-          <span>{card.supporters} supporters</span>
-        </div>
-      </div>
-    </motion.div>
+      )}
+    </div>
   );
 }
 
