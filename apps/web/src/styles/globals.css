@@ -68,7 +68,8 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
+    background-color: #060e1e;
     font-feature-settings: 'rlig' 1, 'calt' 1;
   }
   h1, h2, h3, h4, h5, h6 {

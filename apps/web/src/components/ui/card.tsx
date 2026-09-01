@@ -6,7 +6,12 @@ const cardVariants = cva('rounded-lg border border-white/[0.08] bg-[#0c1828] tex
   variants: {
     variant: {
       default: '',
-      interactive: 'transition-shadow hover:shadow-md cursor-pointer',
+      interactive:
+        'transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(0,0,0,0.3)] hover:border-white/[0.15] cursor-pointer',
+      glass:
+        'bg-[#071324]/80 backdrop-blur-xl border border-white/[0.08] shadow-xl',
+      glow:
+        'bg-[#071324]/80 backdrop-blur-xl border border-white/[0.08] shadow-xl transition-all duration-300 hover:shadow-[0_0_25px_rgba(14,246,149,0.1)] hover:border-[#0ef695]/20 cursor-pointer',
     },
   },
   defaultVariants: {

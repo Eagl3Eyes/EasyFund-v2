@@ -28,5 +28,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     redirect('/auth/login');
   }
 
-  return <>{children}</>;
+  return (
+    <div className="bg-[#060e1e] text-white selection:bg-[#0ef695]/30">
+      {children}
+    </div>
+  );
 }
