@@ -19,12 +19,29 @@ export class AuthService {
     let user = await this.userService.getByFirebaseUid(firebaseUid);
 
     if (!user) {
+      // Check if this email should be admin
+      const adminEmails = (process.env.ADMIN_EMAILS || '')
+        .split(',')
+        .map((e) => e.trim().toLowerCase())
+        .filter(Boolean);
+      const shouldAdmin = adminEmails.includes(email.toLowerCase());
+
       user = await this.userService.create({
         firebaseUid,
         email,
         name,
         image,
+        role: shouldAdmin ? 'admin' : 'user',
       });
+    } else if (user.role !== 'admin') {
+      // Check if existing user should be upgraded to admin
+      const adminEmails = (process.env.ADMIN_EMAILS || '')
+        .split(',')
+        .map((e) => e.trim().toLowerCase())
+        .filter(Boolean);
+      if (adminEmails.includes(email.toLowerCase())) {
+        user = await this.userService.updateRole(user._id!.toString(), 'admin');
+      }
     }
 
     const authUser: AuthUser = {

@@ -3,7 +3,6 @@ import path from 'path';
 import { z } from 'zod';
 
 dotenv.config({ path: path.resolve(__dirname, '../../../../.env') });
-dotenv.config();
 
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
@@ -22,6 +21,17 @@ const envSchema = z.object({
   EMAIL_PRIVATE_KEY: z.string().optional(),
   EMAIL_DOMAIN: z.string().optional(),
   FRONTEND_URL: z.string().url().default('http://localhost:3000'),
+  ADMIN_EMAILS: z.string().optional(),
+  NEXT_PUBLIC_API_URL: z.string().optional(),
+  NEXT_PUBLIC_SITE_URL: z.string().optional(),
+  NEXT_PUBLIC_SEED_ADMIN_EMAIL: z.string().optional(),
+  NEXT_PUBLIC_STRIPE_PK: z.string().optional(),
+  NEXT_PUBLIC_FIREBASE_API_KEY: z.string().optional(),
+  NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: z.string().optional(),
+  NEXT_PUBLIC_FIREBASE_PROJECT_ID: z.string().optional(),
+  NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: z.string().optional(),
+  NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: z.string().optional(),
+  NEXT_PUBLIC_FIREBASE_APP_ID: z.string().optional(),
 });
 
 function validateEnv() {

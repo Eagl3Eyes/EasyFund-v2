@@ -1,6 +1,7 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { getApiUrl } from '@/lib/config';
+import { DashboardShell } from '../(dashboard)/dashboard-shell';
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const cookieStore = await cookies();
@@ -30,7 +31,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   return (
     <div className="bg-[#060e1e] text-white selection:bg-[#0ef695]/30">
-      {children}
+      <DashboardShell>{children}</DashboardShell>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import { useAuth } from '@/providers/auth-provider';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -42,7 +43,7 @@ export default function AdminAuditLogsPage() {
     try {
       const res = await fetch(`${getApiUrl()}/api/admin/audit-logs?limit=50`, { credentials: 'include' });
       const data = await res.json();
-      setLogs(data.data?.logs || []);
+      setLogs(data.data || []);
     } catch (error) {
       console.error('Failed to fetch audit logs:', error);
     } finally {
@@ -60,10 +61,14 @@ export default function AdminAuditLogsPage() {
 
   return (
     <div className="p-6 space-y-6">
-      <div>
+      <motion.div
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      >
         <h1 className="text-3xl font-bold">Audit Logs</h1>
         <p className="text-white/55">Track all administrative actions</p>
-      </div>
+      </motion.div>
 
       {isDataLoading ? (
         <Card className="animate-pulse"><CardContent className="h-32" /></Card>

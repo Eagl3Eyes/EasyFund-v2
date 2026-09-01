@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Bell, Check, CheckCheck } from 'lucide-react';
 import { getApiUrl } from '@/lib/config';
+import { toast } from 'sonner';
 
 interface Notification {
   _id: string;
@@ -26,9 +27,9 @@ export default function NotificationsPage() {
 
   async function fetchNotifications() {
     try {
-      const res = await fetch(`${getApiUrl()}/api/users/notifications?limit=50`, { credentials: 'include' });
+      const res = await fetch(`${getApiUrl()}/api/auth/notifications?limit=50`, { credentials: 'include' });
       const data = await res.json();
-      setNotifications(data.data?.notifications || []);
+      setNotifications(data.data || []);
     } catch (error) {
       console.error('Failed to fetch notifications:', error);
     } finally {
@@ -38,7 +39,7 @@ export default function NotificationsPage() {
 
   async function markAsRead(id: string) {
     try {
-      await fetch(`${getApiUrl()}/api/users/notifications/${id}/read`, {
+      await fetch(`${getApiUrl()}/api/auth/notifications/${id}/read`, {
         method: 'PATCH',
         credentials: 'include',
       });
@@ -52,11 +53,12 @@ export default function NotificationsPage() {
 
   async function markAllAsRead() {
     try {
-      await fetch(`${getApiUrl()}/api/users/notifications/read-all`, {
+      await fetch(`${getApiUrl()}/api/auth/notifications/read-all`, {
         method: 'PATCH',
         credentials: 'include',
       });
       setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+      toast.success('All notifications marked as read');
     } catch (error) {
       console.error('Failed to mark all as read:', error);
     }
@@ -68,13 +70,13 @@ export default function NotificationsPage() {
     <div className="p-6 space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Notifications</h1>
+          <h1 className="text-3xl font-bold text-white">Notifications</h1>
           <p className="text-white/55">
             {unreadCount > 0 ? `${unreadCount} unread` : 'All caught up'}
           </p>
         </div>
         {unreadCount > 0 && (
-          <Button variant="outline" onClick={markAllAsRead}>
+          <Button variant="outline" onClick={markAllAsRead} className="border-white/15 bg-white/[0.04] text-white hover:bg-white/10">
             <CheckCheck className="mr-2 h-4 w-4" /> Mark All Read
           </Button>
         )}
@@ -83,13 +85,13 @@ export default function NotificationsPage() {
       {loading ? (
         <div className="space-y-3">
           {[1, 2, 3].map((i) => (
-            <Card key={i} className="animate-pulse">
+            <Card key={i} className="animate-pulse border-white/[0.08] bg-[#0c1828]">
               <CardContent className="h-20" />
             </Card>
           ))}
         </div>
       ) : notifications.length === 0 ? (
-        <Card>
+        <Card className="border-white/[0.08] bg-[#0c1828]">
           <CardContent className="flex flex-col items-center justify-center py-12">
             <Bell className="h-12 w-12 text-white/55 mb-4" />
             <p className="text-white/55">No notifications yet</p>
@@ -100,13 +102,13 @@ export default function NotificationsPage() {
           {notifications.map((n) => (
             <Card
               key={n._id}
-              className={n.read ? '' : 'border-[#0ef695]/50 bg-[#0ef695]/5'}
+              className={`border-white/[0.08] ${n.read ? 'bg-[#0c1828]' : 'border-[#0ef695]/50 bg-[#0ef695]/5'}`}
             >
               <CardContent className="flex items-start justify-between p-4">
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
-                    <h3 className="font-medium">{n.title}</h3>
-                    {!n.read && <Badge variant="default" className="h-5">New</Badge>}
+                    <h3 className="font-medium text-white">{n.title}</h3>
+                    {!n.read && <Badge variant="default" className="h-5 bg-[#0ef695] text-[#060e1e]">New</Badge>}
                   </div>
                   <p className="text-sm text-white/55 mt-1">{n.message}</p>
                   <p className="text-xs text-white/55 mt-2">
@@ -119,6 +121,7 @@ export default function NotificationsPage() {
                     variant="ghost"
                     onClick={() => markAsRead(n._id)}
                     aria-label="Mark as read"
+                    className="text-white/55 hover:text-white hover:bg-white/[0.08]"
                   >
                     <Check className="h-4 w-4" />
                   </Button>

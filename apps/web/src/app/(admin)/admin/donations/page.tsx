@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import { DollarSign, Search } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -30,7 +31,7 @@ export default function AdminDonationsPage() {
         if (data.success) {
           // Flatten donations from campaigns
           const allDonations: Donation[] = [];
-          for (const campaign of data.data?.campaigns || []) {
+          for (const campaign of data.data || []) {
             try {
               const dRes = await fetch(`${getApiUrl()}/api/donations/campaign/${campaign._id}`, { credentials: 'include' });
               const dData = await dRes.json();
@@ -61,12 +62,22 @@ export default function AdminDonationsPage() {
 
   return (
     <div className="p-6 lg:p-8">
-      <div className="mb-8">
+      <motion.div
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className="mb-8"
+      >
         <h1 className="text-3xl font-bold">Donations</h1>
         <p className="mt-1 text-white/55">View all platform donations</p>
-      </div>
+      </motion.div>
 
-      <div className="mb-6 grid gap-4 sm:grid-cols-2">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.1 }}
+        className="mb-6 grid gap-4 sm:grid-cols-2"
+      >
         <Card>
           <CardContent className="p-4">
             <p className="text-sm text-white/55">Total Donations</p>
@@ -79,9 +90,14 @@ export default function AdminDonationsPage() {
             <p className="text-2xl font-bold text-[#0ef695]">${totalAmount.toLocaleString()}</p>
           </CardContent>
         </Card>
-      </div>
+      </motion.div>
 
-      <div className="mb-4 flex items-center gap-2">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="mb-4 flex items-center gap-2"
+      >
         <Search className="h-4 w-4 text-white/55" />
         <Input
           placeholder="Search by email or campaign..."
@@ -89,7 +105,7 @@ export default function AdminDonationsPage() {
           onChange={(e) => setSearch(e.target.value)}
           className="max-w-sm"
         />
-      </div>
+      </motion.div>
 
       {loading ? (
         <div className="space-y-3">

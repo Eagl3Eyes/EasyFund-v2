@@ -48,7 +48,7 @@ export default function DashboardPage() {
       try {
         const notifRes = await fetch(`${getApiUrl()}/api/auth/notifications?limit=5`, { credentials: 'include' });
         const notifData = await notifRes.json();
-        if (notifData.success) setNotifications(notifData.data?.notifications || []);
+        if (notifData.success) setNotifications(notifData.data || []);
 
         if (isFundraiser) {
           const [campaignsRes, donationsRes] = await Promise.all([
@@ -151,6 +151,19 @@ export default function DashboardPage() {
         <h1 className="text-3xl font-bold tracking-tight text-white">
           Welcome back, {user?.name?.split(' ')[0] || 'there'}!
         </h1>
+        <div className="mt-2 flex items-center gap-2">
+          <span
+            className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ${
+              user?.role === 'admin'
+                ? 'bg-[#0ef695]/10 text-[#0ef695] ring-1 ring-[#0ef695]/20'
+                : user?.role === 'fundraiser'
+                ? 'bg-purple-500/10 text-purple-400 ring-1 ring-purple-500/20'
+                : 'bg-blue-500/10 text-blue-400 ring-1 ring-blue-500/20'
+            }`}
+          >
+            {user?.role === 'admin' ? '🛡️ Admin' : user?.role === 'fundraiser' ? '📢 Fundraiser' : '❤️ Donor'}
+          </span>
+        </div>
         <p className="mt-1.5 text-white/50">
           {isFundraiser
             ? "Here's an overview of your fundraising activity"

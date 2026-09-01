@@ -100,10 +100,22 @@ export function paymentWebhooks(): Collection {
 
 async function ensureIndexes(db: Db): Promise<void> {
   try {
-    await db.collection('campaigns').createIndex(
-      { title: 'text', description: 'text', story: 'text' },
-      { name: 'campaigns_text_search', background: true }
-    );
+    try {
+      await db.collection('campaigns').createIndex(
+        { title: 'text', description: 'text', story: 'text' },
+        { name: 'campaigns_text_search', background: true }
+      );
+    } catch (e: any) {
+      if (e?.code === 85) {
+        await db.collection('campaigns').dropIndex('title_text_description_text_story_text');
+        await db.collection('campaigns').createIndex(
+          { title: 'text', description: 'text', story: 'text' },
+          { name: 'campaigns_text_search', background: true }
+        );
+      } else {
+        throw e;
+      }
+    }
     await db.collection('campaigns').createIndex({ slug: 1 }, { unique: true });
     await db.collection('campaigns').createIndex({ status: 1, createdAt: -1 });
     await db.collection('campaigns').createIndex({ fundraiserId: 1 });

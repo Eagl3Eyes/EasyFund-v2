@@ -25,6 +25,7 @@ import { Separator } from '@/components/ui/separator';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useAuth } from '@/providers/auth-provider';
 import { cn } from '@/lib/utils';
+import { NotificationBellDropdown } from '@/components/notifications/notification-bell-dropdown';
 
 const donorLinks = [
   { href: '/dashboard', label: 'Overview', icon: LayoutDashboard },
@@ -55,9 +56,11 @@ const adminLinks = [
   { href: '/admin', label: 'Admin Panel', icon: LayoutDashboard },
   { href: '/admin/users', label: 'Users', icon: Users },
   { href: '/admin/campaigns', label: 'Campaigns', icon: Megaphone },
+  { href: '/admin/donations', label: 'Donations', icon: DollarSign },
   { href: '/admin/verification', label: 'Verification', icon: Shield },
   { href: '/admin/withdrawals', label: 'Withdrawals', icon: DollarSign },
   { href: '/admin/reports', label: 'Reports', icon: BarChart3 },
+  { href: '/admin/audit-logs', label: 'Audit Logs', icon: Bell },
 ];
 
 function SidebarContent({ onClose }: { onClose?: () => void }) {
@@ -82,11 +85,14 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
             Easy<span className="text-[#0ef695]">Fund</span>
           </span>
         </Link>
-        {onClose && (
-          <Button variant="ghost" size="sm" onClick={onClose} aria-label="Close sidebar">
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-        )}
+        <div className="flex items-center gap-1">
+          <NotificationBellDropdown />
+          {onClose && (
+            <Button variant="ghost" size="sm" onClick={onClose} aria-label="Close sidebar">
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+          )}
+        </div>
       </div>
 
       <Separator className="bg-white/[0.08]" />

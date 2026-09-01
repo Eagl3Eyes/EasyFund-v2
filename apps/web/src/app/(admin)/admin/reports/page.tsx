@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useMemo } from 'react';
+import { motion } from 'framer-motion';
 import { useAuth } from '@/providers/auth-provider';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -67,7 +68,7 @@ export default function AdminReportsPage() {
     try {
       const res = await fetch(`${getApiUrl()}/api/admin/reports?limit=100`, { credentials: 'include' });
       const data = await res.json();
-      setReports(data.data?.reports || []);
+      setReports(data.data || []);
     } catch (error) {
       console.error('Failed to fetch reports:', error);
     } finally {
@@ -91,24 +92,39 @@ export default function AdminReportsPage() {
 
   return (
     <div className="p-6 space-y-6">
-      <div>
+      <motion.div
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      >
         <h1 className="text-3xl font-bold">Reports</h1>
         <p className="text-white/55">Review user-submitted reports</p>
-      </div>
+      </motion.div>
 
       {pendingCount > 0 && (
-        <Card className="border-[#f59e0b]/20 bg-[#f59e0b]/5">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-2">
-              <AlertTriangle className="h-5 w-5 text-[#f59e0b]" />
-              <p className="font-medium text-[#f59e0b]">{pendingCount} pending report(s) requiring review</p>
-            </div>
-          </CardContent>
-        </Card>
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
+          <Card className="border-[#f59e0b]/20 bg-[#f59e0b]/5">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-2">
+                <AlertTriangle className="h-5 w-5 text-[#f59e0b]" />
+                <p className="font-medium text-[#f59e0b]">{pendingCount} pending report(s) requiring review</p>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
       )}
 
       {/* Toolbar */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="flex flex-col gap-3 sm:flex-row sm:items-center"
+      >
         <div className="relative max-w-sm">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/55" />
           <Input
@@ -129,7 +145,7 @@ export default function AdminReportsPage() {
             <SelectItem value="dismissed">Dismissed</SelectItem>
           </SelectContent>
         </Select>
-      </div>
+      </motion.div>
 
       {isDataLoading ? (
         <Card className="animate-pulse"><CardContent className="h-32" /></Card>

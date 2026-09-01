@@ -10,7 +10,9 @@
     "test:watch": "jest --watch",
     "lint": "eslint src --ext .ts",
     "clean": "rm -rf dist node_modules",
-    "migrate": "tsx src/scripts/migrate.ts"
+    "migrate": "tsx src/scripts/migrate.ts",
+    "seed": "tsx src/scripts/seed.ts",
+    "seed:force": "tsx src/scripts/seed.ts --force"
   },
   "dependencies": {
     "@types/multer": "^2.2.0",

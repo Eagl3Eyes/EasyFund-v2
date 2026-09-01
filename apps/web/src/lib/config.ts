@@ -11,7 +11,7 @@ export function apiEndpoint(path: string): string {
 export async function fetchWithTimeout(
   url: string,
   options: RequestInit = {},
-  timeoutMs = 5000
+  timeoutMs = 15000
 ): Promise<Response> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);

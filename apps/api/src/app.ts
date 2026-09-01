@@ -28,7 +28,10 @@ import { uploadRoutes } from './routes/upload.routes';
 const app = express();
 
 // Security headers
-app.use(helmet());
+app.use(helmet({
+  crossOriginResourcePolicy: false,
+  crossOriginOpenerPolicy: false,
+}));
 app.use(securityHeaders);
 
 // Request logging — one-liner format

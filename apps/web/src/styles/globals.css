@@ -92,12 +92,13 @@
   transition: width 1s ease-out;
 }
 
-/* Smooth scroll */
+/* Firefox scrollbar */
 html {
-  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--muted-foreground) / 0.3) transparent;
 }
 
-/* Custom scrollbar — theme-aware */
+/* WebKit scrollbar (Chrome, Safari, Edge) */
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -113,6 +114,11 @@ html {
 
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(var(--muted-foreground) / 0.5);
+}
+
+/* Ensure scrollbar restores after Radix UI scroll-lock cycle (Firefox fix) */
+body:not([data-scroll-locked]) {
+  overflow: auto !important;
 }
 
 /* Selection highlight */

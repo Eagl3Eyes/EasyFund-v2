@@ -3,13 +3,14 @@
 import { Suspense, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Eye, EyeOff, Loader2 } from 'lucide-react';
+import { Eye, EyeOff, Loader2, Shield, Megaphone, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
+import { Card } from '@/components/ui/card';
 import { loginSchema, type LoginInput } from '@/lib/validations';
 import { useAuth } from '@/providers/auth-provider';
 import { toast } from 'sonner';
@@ -22,11 +23,16 @@ function LoginForm() {
   const { login, loginWithGoogle } = useAuth();
 
   const {
-    register,
+    control,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
   });
 
   const onSubmit = async (data: LoginInput) => {
@@ -63,6 +69,20 @@ function LoginForm() {
     }
   };
 
+  const seedAdminEmail = process.env.NEXT_PUBLIC_SEED_ADMIN_EMAIL || '';
+
+  const demoAccounts = [
+    ...(seedAdminEmail ? [{ email: seedAdminEmail, label: 'Admin', icon: Shield, color: 'bg-[#0ef695]/10 text-[#0ef695]', desc: 'Full platform access' }] : []),
+    { email: 'sarah@example.com', label: 'Fundraiser', icon: Megaphone, color: 'bg-purple-500/10 text-purple-400', desc: 'Create & manage campaigns' },
+    { email: 'emily@example.com', label: 'Donor', icon: Heart, color: 'bg-blue-500/10 text-blue-400', desc: 'Donate & support causes' },
+  ];
+
+  const handleDemoLogin = (email: string) => {
+    setValue('email', email, { shouldValidate: true });
+    setValue('password', 'password123', { shouldValidate: true });
+    toast.info('Demo credentials filled. Click Log In to continue.');
+  };
+
   return (
     <div>
       <div className="mb-8 text-center lg:text-left">
@@ -75,11 +95,17 @@ function LoginForm() {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="space-y-2">
           <Label htmlFor="email">Email</Label>
-          <Input
-            id="email"
-            type="email"
-            placeholder="you@example.com"
-            {...register('email')}
+          <Controller
+            control={control}
+            name="email"
+            render={({ field }) => (
+              <Input
+                id="email"
+                type="email"
+                placeholder="you@example.com"
+                {...field}
+              />
+            )}
           />
           {errors.email && (
             <p className="text-sm text-destructive">{errors.email.message}</p>
@@ -94,11 +120,17 @@ function LoginForm() {
             </Link>
           </div>
           <div className="relative">
-            <Input
-              id="password"
-              type={showPassword ? 'text' : 'password'}
-              placeholder="Enter your password"
-              {...register('password')}
+            <Controller
+              control={control}
+              name="password"
+              render={({ field }) => (
+                <Input
+                  id="password"
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="Enter your password"
+                  {...field}
+                />
+              )}
             />
             <button
               type="button"
@@ -158,6 +190,31 @@ function LoginForm() {
         </svg>
         Continue with Google
       </Button>
+
+      <div className="relative my-6">
+        <Separator />
+        <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#060e1e] px-2 text-xs text-white/55">
+          quick demo access
+        </span>
+      </div>
+
+      <div className="grid grid-cols-3 gap-3">
+        {demoAccounts.map((demo) => (
+          <button
+            key={demo.email}
+            type="button"
+            onClick={() => handleDemoLogin(demo.email)}
+            className="group rounded-xl border border-white/[0.08] bg-[#0c1828] p-3 text-center transition-all duration-300 hover:-translate-y-1 hover:border-[#0ef695]/20 hover:shadow-[0_0_20px_rgba(14,246,149,0.08)]"
+          >
+            <div className={`mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-xl ${demo.color} transition-transform duration-300 group-hover:scale-110`}>
+              <demo.icon className="h-5 w-5" />
+            </div>
+            <p className="text-xs font-semibold text-white">{demo.label}</p>
+            <p className="mt-0.5 text-[10px] text-white/40">{demo.desc}</p>
+          </button>
+        ))}
+      </div>
+      <p className="mt-2 text-center text-[10px] text-white/30">Password: password123 — Register these accounts first</p>
 
       <p className="mt-6 text-center text-sm text-white/55">
         Don&apos;t have an account?{' '}

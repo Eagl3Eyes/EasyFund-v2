@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useMemo } from 'react';
+import { motion } from 'framer-motion';
 import { useAuth } from '@/providers/auth-provider';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -66,7 +67,7 @@ export default function AdminUsersPage() {
     try {
       const res = await fetch(`${getApiUrl()}/api/admin/users?limit=100`, { credentials: 'include' });
       const data = await res.json();
-      setUsers(data.data?.users || []);
+      setUsers(data.data || []);
     } catch (error) {
       console.error('Failed to fetch users:', error);
     } finally {
@@ -90,13 +91,22 @@ export default function AdminUsersPage() {
 
   return (
     <div className="p-6 space-y-6">
-      <div>
+      <motion.div
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      >
         <h1 className="text-3xl font-bold">Users</h1>
         <p className="text-white/55">Manage platform users</p>
-      </div>
+      </motion.div>
 
       {/* Stats */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.1 }}
+        className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
+      >
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
@@ -141,10 +151,15 @@ export default function AdminUsersPage() {
             </div>
           </CardContent>
         </Card>
-      </div>
+      </motion.div>
 
       {/* Toolbar */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="flex flex-col gap-3 sm:flex-row sm:items-center"
+      >
         <div className="relative max-w-sm">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/55" />
           <Input
@@ -165,7 +180,7 @@ export default function AdminUsersPage() {
             <SelectItem value="admin">Admin</SelectItem>
           </SelectContent>
         </Select>
-      </div>
+      </motion.div>
 
       {/* Table */}
       {isDataLoading ? (

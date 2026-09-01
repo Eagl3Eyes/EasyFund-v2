@@ -1,7 +1,8 @@
 import { MongoClient, ObjectId } from 'mongodb';
 import dotenv from 'dotenv';
+import path from 'path';
 
-dotenv.config();
+dotenv.config({ path: path.resolve(__dirname, '../../../../.env') });
 
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017';
 const DB_NAME = process.env.MONGODB_DB_NAME || 'EasyFundDB';

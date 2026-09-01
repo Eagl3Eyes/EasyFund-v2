@@ -10,6 +10,7 @@ const router = Router();
 router.post('/', verifyJWT, verifyDonor, paymentLimiter, validateBody(createDonationSchema), donationController.create);
 router.get('/user/:email', verifyJWT, donationController.getByUser);
 router.get('/campaign/:id', donationController.getByCampaign);
+router.get('/campaign/:id/supporters', donationController.getSupporters);
 router.get('/recent', donationController.getRecent);
 
 export { router as donationRoutes };
