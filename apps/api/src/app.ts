@@ -31,9 +31,18 @@ const app = express();
 app.use(helmet());
 app.use(securityHeaders);
 
-// Request logging
+// Request logging — one-liner format
 const logger = pino({ name: 'easyfund-api', level: 'info' });
-app.use(pinoHttp({ logger, autoLogging: env.NODE_ENV !== 'test' }));
+app.use(
+  pinoHttp({
+    logger,
+    autoLogging: false,
+    customSuccessMessage: (req, res) =>
+      `${req.method} ${req.url} ${(res as any).statusCode} ${(res as any).responseTime}ms`,
+    customErrorMessage: (req, res) =>
+      `${req.method} ${req.url} ${(res as any).statusCode} ${(res as any).responseTime}ms`,
+  })
+);
 
 // CORS
 app.use(
