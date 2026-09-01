@@ -2,21 +2,18 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { Heart, Menu, X } from 'lucide-react';
 
 const navLinks = [
-  { label: 'Explore', anchor: '#discover', route: '/explore' },
-  { label: 'Categories', anchor: '#support', route: '/categories' },
-  { label: 'How It Works', anchor: '#impact', route: '/how-it-works' },
-  { label: 'About Us', anchor: '#trust', route: '/about' },
-  { label: 'Success Stories', anchor: '#joinus', route: '/explore' },
+  { label: 'Explore', href: '/explore' },
+  { label: 'Categories', href: '/categories' },
+  { label: 'How It Works', href: '/how-it-works' },
+  { label: 'About Us', href: '/about' },
+  { label: 'Success Stories', href: '/explore' },
 ];
 
 export function LandingNavbar() {
-  const pathname = usePathname();
   const [menu, setMenu] = useState(false);
-  const isHome = pathname === '/';
 
   return (
     <header className="fixed left-0 top-0 z-50 w-full">
@@ -34,17 +31,11 @@ export function LandingNavbar() {
 
           {/* Desktop Links */}
           <div className="hidden items-center gap-6 text-[13px] font-medium text-white/60 lg:flex">
-            {navLinks.map((link) =>
-              isHome ? (
-                <a key={link.label} href={link.anchor} className="transition hover:text-white">
-                  {link.label}
-                </a>
-              ) : (
-                <Link key={link.label} href={link.route} className="transition hover:text-white">
-                  {link.label}
-                </Link>
-              )
-            )}
+            {navLinks.map((link) => (
+              <Link key={link.label} href={link.href} className="transition hover:text-white">
+                {link.label}
+              </Link>
+            ))}
           </div>
 
           {/* Desktop Actions */}
@@ -77,27 +68,16 @@ export function LandingNavbar() {
         {menu && (
           <div className="mt-2 rounded-2xl border border-white/10 bg-[#071324]/95 p-4 backdrop-blur-xl lg:hidden">
             <div className="flex flex-col gap-1">
-              {navLinks.map((link) =>
-                isHome ? (
-                  <a
-                    key={link.label}
-                    href={link.anchor}
-                    onClick={() => setMenu(false)}
-                    className="rounded-xl px-4 py-2.5 text-sm text-white/60 transition hover:bg-white/5 hover:text-white"
-                  >
-                    {link.label}
-                  </a>
-                ) : (
-                  <Link
-                    key={link.label}
-                    href={link.route}
-                    onClick={() => setMenu(false)}
-                    className="rounded-xl px-4 py-2.5 text-sm text-white/60 transition hover:bg-white/5 hover:text-white"
-                  >
-                    {link.label}
-                  </Link>
-                )
-              )}
+              {navLinks.map((link) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  onClick={() => setMenu(false)}
+                  className="rounded-xl px-4 py-2.5 text-sm text-white/60 transition hover:bg-white/5 hover:text-white"
+                >
+                  {link.label}
+                </Link>
+              ))}
               <div className="mt-3 grid grid-cols-2 gap-2">
                 <Link
                   href="/auth/login"
