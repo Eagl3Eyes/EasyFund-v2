@@ -19,10 +19,10 @@ export function CampaignProgress({ raised, goal, className, showMilestones = tru
     <div className={cn('w-full', className)}>
       <Progress
         value={percentage}
-        className="h-3"
+        className="h-3 bg-white/10"
         indicatorClassName={cn(
           'transition-all duration-700',
-          percentage >= 100 ? 'bg-success' : percentage >= 75 ? 'bg-primary' : 'bg-primary'
+          percentage >= 100 ? 'bg-[#0ef695]' : percentage >= 75 ? 'bg-[#0ef695]' : 'bg-[#0ef695]'
         )}
       />
 
@@ -37,13 +37,13 @@ export function CampaignProgress({ raised, goal, className, showMilestones = tru
               <div
                 className={cn(
                   'h-2 w-2 rounded-full',
-                  percentage >= milestone ? 'bg-primary' : 'bg-muted-foreground/30'
+                  percentage >= milestone ? 'bg-[#0ef695]' : 'bg-white/20'
                 )}
               />
               <span
                 className={cn(
                   'mt-1 text-[10px]',
-                  percentage >= milestone ? 'text-primary font-medium' : 'text-muted-foreground'
+                  percentage >= milestone ? 'text-[#0ef695] font-medium' : 'text-white/40'
                 )}
               >
                 {milestone}%

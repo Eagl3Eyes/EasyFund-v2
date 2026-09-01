@@ -50,14 +50,14 @@ export default function PublicProfilePage() {
     return (
       <div className="mx-auto max-w-5xl px-4 py-8">
         <div className="flex items-center gap-6">
-          <Skeleton className="h-20 w-20 rounded-full" />
+          <Skeleton className="h-20 w-20 rounded-full bg-white/10" />
           <div className="space-y-2">
-            <Skeleton className="h-8 w-48" />
-            <Skeleton className="h-4 w-32" />
+            <Skeleton className="h-8 w-48 bg-white/10" />
+            <Skeleton className="h-4 w-32 bg-white/10" />
           </div>
         </div>
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {[1, 2, 3].map((i) => <Skeleton key={i} className="h-80 rounded-xl" />)}
+          {[1, 2, 3].map((i) => <Skeleton key={i} className="h-80 rounded-xl bg-white/5" />)}
         </div>
       </div>
     );
@@ -66,7 +66,7 @@ export default function PublicProfilePage() {
   if (!profile) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <p className="text-muted-foreground">User not found</p>
+        <p className="text-white/55">User not found</p>
       </div>
     );
   }
@@ -74,7 +74,7 @@ export default function PublicProfilePage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
       <div className="flex items-center gap-6">
-        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 text-2xl font-bold text-primary">
+        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#0ef695]/10 text-2xl font-bold text-[#0ef695]">
           {profile.image ? (
             <img src={profile.image} alt={profile.name} className="h-20 w-20 rounded-full object-cover" />
           ) : (
@@ -83,14 +83,14 @@ export default function PublicProfilePage() {
         </div>
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold text-foreground">{profile.name}</h1>
+            <h1 className="text-2xl font-bold text-white">{profile.name}</h1>
             {profile.verificationLevel && profile.verificationLevel !== 'none' && (
-              <Badge variant="success" className="bg-[#0ef695]/15 text-[#0ef695]">
+              <Badge variant="success" className="bg-[#0ef695]/15 text-[#0ef695] border-transparent">
                 <Shield className="mr-1 h-3 w-3" /> Verified
               </Badge>
             )}
           </div>
-          <div className="mt-1 flex items-center gap-3 text-sm text-muted-foreground">
+          <div className="mt-1 flex items-center gap-3 text-sm text-white/55">
             <span className="capitalize">{profile.role}</span>
             {profile.location && (
               <span className="flex items-center gap-1">
@@ -101,13 +101,13 @@ export default function PublicProfilePage() {
               <Calendar className="h-3.5 w-3.5" /> Joined {new Date(profile.createdAt).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
             </span>
           </div>
-          {profile.bio && <p className="mt-2 text-sm text-muted-foreground">{profile.bio}</p>}
+          {profile.bio && <p className="mt-2 text-sm text-white/55">{profile.bio}</p>}
         </div>
       </div>
 
       {campaigns.length > 0 && (
         <div className="mt-10">
-          <h2 className="mb-6 text-xl font-semibold text-foreground">Campaigns</h2>
+          <h2 className="mb-6 text-xl font-semibold text-white">Campaigns</h2>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {campaigns.map((c) => (
               <CampaignCard key={c._id} campaign={c} />

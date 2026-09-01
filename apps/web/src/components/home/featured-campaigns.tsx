@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import { CampaignCard } from '@/components/campaign/campaign-card';
 import { Skeleton } from '@/components/ui/skeleton';
 import type { Campaign } from '@/lib/types';
@@ -35,13 +34,13 @@ export function FeaturedCampaigns() {
     return (
       <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="rounded-xl border bg-card shadow-sm overflow-hidden">
-            <Skeleton className="h-48 w-full" />
+          <div key={i} className="rounded-2xl border border-white/[0.08] bg-card shadow-sm overflow-hidden">
+            <Skeleton className="h-48 w-full bg-white/5" />
             <div className="p-4 space-y-3">
-              <Skeleton className="h-4 w-3/4" />
-              <Skeleton className="h-3 w-full" />
-              <Skeleton className="h-2 w-full" />
-              <Skeleton className="h-3 w-1/2" />
+              <Skeleton className="h-4 w-3/4 bg-white/10" />
+              <Skeleton className="h-3 w-full bg-white/10" />
+              <Skeleton className="h-2 w-full bg-white/10" />
+              <Skeleton className="h-3 w-1/2 bg-white/10" />
             </div>
           </div>
         ))}
@@ -51,14 +50,14 @@ export function FeaturedCampaigns() {
 
   if (campaigns.length === 0) {
     return (
-      <div className="mt-12 text-center text-muted-foreground">
-        <p>No campaigns available yet. Be the first to start one!</p>
-        <Link
+      <div className="mt-12 text-center">
+        <p className="text-white/55">No campaigns available yet. Be the first to start one!</p>
+        <a
           href="/auth/register"
-          className="mt-4 inline-flex h-10 items-center justify-center rounded-lg bg-primary px-6 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+          className="mt-4 inline-flex items-center justify-center rounded-2xl bg-[#0ef695] px-6 py-3 text-sm font-bold text-[#060e1e] shadow-lg shadow-[#0ef695]/20 transition hover:bg-[#38f9a8]"
         >
           Start a Campaign
-        </Link>
+        </a>
       </div>
     );
   }
