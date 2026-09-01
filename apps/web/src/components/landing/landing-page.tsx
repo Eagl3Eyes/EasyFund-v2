@@ -83,21 +83,37 @@ export default function LandingPage() {
 
   // Fetch campaigns for Discover section
   useEffect(() => {
-    fetch(`${getApiUrl()}/api/campaigns?limit=6&sortBy=amountRaised&sortOrder=desc`, { credentials: 'include' })
+    fetch(`${getApiUrl()}/api/campaigns?limit=12&sortBy=amountRaised&sortOrder=desc`, { credentials: 'include' })
       .then((res) => res.json())
-      .then((data) => {
+      .then(async (data) => {
         if (data.success && data.data) {
-          const mapped: CampaignCardData[] = data.data.map((c: any) => ({
-            slug: c.slug,
-            category: c.category,
-            catColor: categoryColors[c.category] || '#6366F1',
-            title: c.title,
-            raised: `$${(c.amountRaised || 0).toLocaleString()}`,
-            percent: c.goal ? Math.min(Math.round((c.amountRaised / c.goal) * 100), 100) : 0,
-            supporters: c.supportersCount || 0,
-            image: c.image || 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80',
-            featured: c.featured,
-          }));
+          const mapped: CampaignCardData[] = await Promise.all(
+            data.data.map(async (c: any) => {
+              let supporterAvatars: string[] = [];
+              try {
+                const supRes = await fetch(`${getApiUrl()}/api/donations/campaign/${c._id}/supporters?limit=4`, { credentials: 'include' });
+                const supData = await supRes.json();
+                if (supData.success && supData.data) {
+                  supporterAvatars = supData.data
+                    .filter((s: any) => s.userImage)
+                    .slice(0, 4)
+                    .map((s: any) => s.userImage);
+                }
+              } catch {}
+              return {
+                slug: c.slug,
+                category: c.category,
+                catColor: categoryColors[c.category] || '#6366F1',
+                title: c.title,
+                raised: `$${(c.amountRaised || 0).toLocaleString()}`,
+                percent: c.goal ? Math.min(Math.round((c.amountRaised / c.goal) * 100), 100) : 0,
+                supporters: c.supportersCount || 0,
+                image: c.image || 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80',
+                featured: c.featured,
+                supporterAvatars,
+              };
+            })
+          );
           setDiscoverCampaigns(mapped);
         }
       })

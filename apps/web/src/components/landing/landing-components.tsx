@@ -156,28 +156,33 @@ export interface CampaignCardData {
   supporters: number;
   image: string;
   featured?: boolean;
+  supporterAvatars?: string[];
 }
-
-const SUPPORTER_AVATARS = [
-  'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=60&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=60&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=60&auto=format&fit=crop&q=80',
-];
 
 export function DiscoverCard({
   card,
   index,
   isCenterCard = false,
+  isDragging = false,
 }: {
   card: CampaignCardData;
   index: number;
   isCenterCard?: boolean;
+  isDragging?: boolean;
 }) {
+  const avatars = card.supporterAvatars?.filter(Boolean).slice(0, 4) || [];
   return (
-    <Link href={`/campaign/${card.slug}`}>
+    <Link
+      href={`/campaign/${card.slug}`}
+      onClick={(e) => {
+        if (isDragging) {
+          e.preventDefault();
+        }
+      }}
+      draggable={false}
+    >
       <div
-        className={`group relative cursor-pointer overflow-hidden rounded-[22px] bg-white shadow-xl transition-all duration-500 hover:shadow-2xl ${
+        className={`group relative select-none overflow-hidden rounded-[22px] bg-white shadow-xl transition-all duration-500 hover:shadow-2xl ${
           isCenterCard ? 'ring-2 ring-[#16a34a]/20' : ''
         }`}
       >
@@ -186,7 +191,8 @@ export function DiscoverCard({
           <img
             src={card.image}
             alt={card.title}
-            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+            draggable={false}
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110 pointer-events-none"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
           {/* Category Badge */}
@@ -229,14 +235,21 @@ export function DiscoverCard({
           {/* Supporters with Photo Avatars */}
           <div className="mt-3 flex items-center gap-2">
             <div className="flex -space-x-2">
-              {SUPPORTER_AVATARS.map((src, i) => (
+              {avatars.length > 0 ? avatars.map((src, i) => (
                 <img
                   key={i}
                   src={src}
                   alt=""
-                  className="h-5 w-5 rounded-full border-[1.5px] border-white object-cover"
+                  draggable={false}
+                  className="h-5 w-5 rounded-full border-[1.5px] border-white object-cover pointer-events-none"
                 />
-              ))}
+              )) : (
+                <>
+                  <div className="flex h-5 w-5 items-center justify-center rounded-full border-[1.5px] border-white bg-[#16a34a] text-[7px] font-bold text-white">A</div>
+                  <div className="flex h-5 w-5 items-center justify-center rounded-full border-[1.5px] border-white bg-[#3b82f6] text-[7px] font-bold text-white">B</div>
+                  <div className="flex h-5 w-5 items-center justify-center rounded-full border-[1.5px] border-white bg-[#8b5cf6] text-[7px] font-bold text-white">C</div>
+                </>
+              )}
             </div>
             <span className="text-[11px] font-medium text-[#1a1a2e]/50">
               {card.supporters} supporters
@@ -249,94 +262,275 @@ export function DiscoverCard({
 }
 
 /* ==========================================================
-   DISCOVER CAROUSEL — Fan layout with center highlight + dots
+   DISCOVER CAROUSEL — Draggable Fan Layout with Mouse Hold & Slide
 ========================================================== */
 
+const FALLBACK_CAMPAIGNS: CampaignCardData[] = [
+  {
+    slug: 'build-school-rural-india',
+    category: 'Education',
+    catColor: '#3B82F6',
+    title: 'Build a School in Rural India',
+    raised: '$18,450',
+    percent: 61,
+    supporters: 98,
+    image: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=800&q=80',
+  },
+  {
+    slug: 'help-children-fight-cancer',
+    category: 'Medical',
+    catColor: '#EF4444',
+    title: 'Help Children Fight Cancer',
+    raised: '$32,860',
+    percent: 82,
+    supporters: 186,
+    image: 'https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&w=800&q=80',
+  },
+  {
+    slug: 'save-our-rainforests',
+    category: 'Environment',
+    catColor: '#22C55E',
+    title: 'Save Our Rainforests',
+    raised: '$15,230',
+    percent: 42,
+    supporters: 112,
+    image: 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80',
+  },
+  {
+    slug: 'food-for-homeless',
+    category: 'Community',
+    catColor: '#10B981',
+    title: 'Food for Homeless People',
+    raised: '$9,640',
+    percent: 82,
+    supporters: 78,
+    image: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=800&q=80',
+  },
+  {
+    slug: 'clean-water-villages',
+    category: 'Community',
+    catColor: '#0EA5E9',
+    title: 'Clean Water for African Villages',
+    raised: '$18,750',
+    percent: 75,
+    supporters: 89,
+    image: 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=800&q=80',
+  },
+  {
+    slug: 'solar-panels-schools',
+    category: 'Environment',
+    catColor: '#16A34A',
+    title: 'Solar Panels for Public Schools',
+    raised: '$52,000',
+    percent: 65,
+    supporters: 213,
+    image: 'https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&fit=crop&w=800&q=80',
+  },
+];
+
 export function DiscoverCarousel({ campaigns }: { campaigns: CampaignCardData[] }) {
-  const [currentPage, setCurrentPage] = useState(0);
-  const cardsPerPage = 4;
-  const totalPages = Math.max(1, Math.ceil(campaigns.length / cardsPerPage));
+  const allCampaigns = campaigns.length > 0 ? campaigns : FALLBACK_CAMPAIGNS;
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const isDraggingRef = useRef(false);
+  const isHoveredRef = useRef(false);
 
-  const visibleCampaigns = campaigns.slice(
-    currentPage * cardsPerPage,
-    currentPage * cardsPerPage + cardsPerPage
-  );
+  const total = allCampaigns.length;
 
-  // Auto-advance every 5s
+  // Auto-advance every 5s if not hovered or dragging
   useEffect(() => {
-    if (totalPages <= 1) return;
+    if (total <= 1) return;
     const interval = setInterval(() => {
-      setCurrentPage((p) => (p + 1) % totalPages);
-    }, 5000);
+      if (!isHoveredRef.current && !isDraggingRef.current) {
+        setActiveIndex((prev) => (prev + 1) % total);
+      }
+    }, 4800);
     return () => clearInterval(interval);
-  }, [totalPages]);
+  }, [total]);
 
-  // Determine center index for the "featured/larger" card
-  const centerIdx = Math.floor(visibleCampaigns.length / 2) - (visibleCampaigns.length % 2 === 0 ? 1 : 0);
+  const nextSlide = () => {
+    setActiveIndex((prev) => (prev + 1) % total);
+  };
+
+  const prevSlide = () => {
+    setActiveIndex((prev) => (prev - 1 + total) % total);
+  };
+
+  const handleDragEnd = (_: any, info: { offset: { x: number }; velocity: { x: number } }) => {
+    const threshold = 30;
+    const velocityThreshold = 200;
+
+    if (info.offset.x < -threshold || info.velocity.x < -velocityThreshold) {
+      nextSlide();
+    } else if (info.offset.x > threshold || info.velocity.x > velocityThreshold) {
+      prevSlide();
+    }
+
+    setTimeout(() => {
+      setIsDragging(false);
+      isDraggingRef.current = false;
+    }, 100);
+  };
+
+  // Ultra-smooth easing curve (Apple cubic-out)
+  const smoothTransition = {
+    duration: 0.75,
+    ease: [0.16, 1, 0.3, 1],
+  };
 
   return (
-    <div className="flex flex-col items-center gap-8">
-      {/* Cards Container — perspective fan layout */}
-      <div className="relative flex w-full items-center justify-center" style={{ perspective: '1200px' }}>
-        <div className="flex items-center gap-4 sm:gap-5 lg:gap-6">
-          {visibleCampaigns.map((card, i) => {
-            const isCenter = i === centerIdx;
-            // Calculate rotation for fan effect
-            const offset = i - centerIdx;
-            const rotateY = offset * 8;
-            const scale = isCenter ? 1.08 : 0.92;
-            const zIndex = isCenter ? 10 : 5 - Math.abs(offset);
-            const translateZ = isCenter ? 30 : -20 * Math.abs(offset);
+    <div
+      className="flex flex-col items-center gap-8 select-none w-full"
+      onMouseEnter={() => {
+        isHoveredRef.current = true;
+      }}
+      onMouseLeave={() => {
+        isHoveredRef.current = false;
+      }}
+    >
+      {/* Draggable Cards Stage */}
+      <motion.div
+        drag="x"
+        dragConstraints={{ left: 0, right: 0 }}
+        dragElastic={0.12}
+        onDragStart={() => {
+          setIsDragging(true);
+          isDraggingRef.current = true;
+        }}
+        onDragEnd={handleDragEnd}
+        className="relative flex w-full h-[470px] sm:h-[510px] cursor-grab active:cursor-grabbing items-center justify-start overflow-visible touch-pan-y"
+        style={{ perspective: '1400px' }}
+      >
+        <div className="relative w-full h-full flex items-center">
+          {allCampaigns.map((card, i) => {
+            // Circular shortest distance from activeIndex
+            let diff = (i - activeIndex) % total;
+            if (diff > total / 2) diff -= total;
+            if (diff < -total / 2) diff += total;
+
+            const isSpotlight = diff === 0;
+            const isVisible = diff >= -1 && diff <= 2;
+
+            // Compute 3D transforms for fan layout matching reference image
+            let xPos = 0;
+            let scale = 0.92;
+            let rotateY = 0;
+            let zPos = -20;
+            let opacity = 0;
+            let zIndex = 1;
+
+            if (diff === -1) {
+              // Left card
+              xPos = -255;
+              scale = 0.92;
+              rotateY = -7;
+              zPos = -15;
+              opacity = 1;
+              zIndex = 4;
+            } else if (diff === 0) {
+              // Spotlight center-left card (elevated & larger)
+              xPos = 0;
+              scale = 1.08;
+              rotateY = 0;
+              zPos = 35;
+              opacity = 1;
+              zIndex = 10;
+            } else if (diff === 1) {
+              // Right card 1
+              xPos = 265;
+              scale = 0.93;
+              rotateY = 7;
+              zPos = -10;
+              opacity = 1;
+              zIndex = 5;
+            } else if (diff === 2) {
+              // Far right card 2
+              xPos = 515;
+              scale = 0.88;
+              rotateY = 14;
+              zPos = -25;
+              opacity = 0.95;
+              zIndex = 3;
+            } else if (diff < -1) {
+              // Off-screen left
+              xPos = -520;
+              scale = 0.8;
+              rotateY = -18;
+              zPos = -50;
+              opacity = 0;
+              zIndex = 0;
+            } else {
+              // Off-screen right
+              xPos = 760;
+              scale = 0.8;
+              rotateY = 20;
+              zPos = -50;
+              opacity = 0;
+              zIndex = 0;
+            }
 
             return (
               <motion.div
-                key={card.slug + '-' + currentPage}
-                initial={{ opacity: 0, y: 40, rotateY: rotateY - 4 }}
+                key={card.slug}
+                initial={false}
                 animate={{
-                  opacity: 1,
-                  y: 0,
-                  rotateY,
+                  x: xPos,
                   scale,
-                  z: translateZ,
+                  rotateY,
+                  z: zPos,
+                  opacity,
                 }}
-                transition={{
-                  duration: 0.7,
-                  delay: i * 0.1,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-                whileHover={{ scale: scale * 1.04, rotateY: 0, z: 60 }}
+                transition={smoothTransition}
+                whileHover={
+                  isVisible
+                    ? {
+                        scale: scale * 1.03,
+                        rotateY: 0,
+                        z: zPos + 30,
+                        transition: { duration: 0.3, ease: 'easeOut' },
+                      }
+                    : undefined
+                }
                 style={{
+                  position: 'absolute',
+                  left: '260px',
                   transformStyle: 'preserve-3d',
                   zIndex,
+                  pointerEvents: isVisible ? 'auto' : 'none',
                 }}
-                className={`shrink-0 ${
-                  isCenter ? 'w-[260px] sm:w-[300px] lg:w-[320px]' : 'w-[220px] sm:w-[240px] lg:w-[260px]'
+                className={`transition-shadow ${
+                  isSpotlight
+                    ? 'w-[270px] sm:w-[310px] lg:w-[325px]'
+                    : 'w-[230px] sm:w-[250px] lg:w-[265px]'
                 }`}
               >
-                <DiscoverCard card={card} index={i} isCenterCard={isCenter} />
+                <DiscoverCard
+                  card={card}
+                  index={i}
+                  isCenterCard={isSpotlight}
+                  isDragging={isDragging}
+                />
               </motion.div>
             );
           })}
         </div>
-      </div>
+      </motion.div>
 
-      {/* Pagination Dots */}
-      {totalPages > 1 && (
-        <div className="flex items-center gap-2">
-          {Array.from({ length: totalPages }).map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setCurrentPage(i)}
-              className={`rounded-full transition-all duration-300 ${
-                i === currentPage
-                  ? 'h-2.5 w-2.5 bg-[#1a1a2e]'
-                  : 'h-2 w-2 bg-[#1a1a2e]/25 hover:bg-[#1a1a2e]/40'
-              }`}
-              aria-label={`Go to page ${i + 1}`}
-            />
-          ))}
-        </div>
-      )}
+      {/* Slide Indicator Dots */}
+      <div className="flex items-center gap-2 mt-2">
+        {allCampaigns.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setActiveIndex(i)}
+            className={`rounded-full transition-all duration-500 ease-out ${
+              i === activeIndex
+                ? 'h-2 w-7 bg-[#16a34a]'
+                : 'h-2 w-2 bg-[#071324]/20 hover:bg-[#071324]/40'
+            }`}
+            aria-label={`Go to slide ${i + 1}`}
+          />
+        ))}
+      </div>
     </div>
   );
 }

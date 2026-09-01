@@ -55,15 +55,22 @@ export class DonationController {
         page: 1,
         limit: 100,
       });
-      const supporters = result.data
-        .filter((d: any) => d.status === 'completed')
-        .map((d: any) => ({
-          _id: d._id,
-          userName: d.anonymous ? 'Anonymous' : d.userName,
-          amount: d.amount,
-          message: d.message,
-          createdAt: d.createdAt,
-        }));
+      const completed = result.data.filter((d: any) => d.status === 'completed');
+
+      const userIds = [...new Set(completed.filter((d: any) => !d.anonymous && d.userId).map((d: any) => d.userId))];
+      const userDocs = userIds.length > 0
+        ? await users().find({ _id: { $in: userIds.map((uid: string) => new ObjectId(uid)) } }).toArray()
+        : [];
+      const userImageMap = new Map(userDocs.map((u: any) => [u._id.toString(), u.image || '']));
+
+      const supporters = completed.map((d: any) => ({
+        _id: d._id,
+        userName: d.anonymous ? 'Anonymous' : d.userName,
+        userImage: d.anonymous ? '' : (userImageMap.get(d.userId) || ''),
+        amount: d.amount,
+        message: d.message,
+        createdAt: d.createdAt,
+      }));
       res.json({ success: true, data: supporters });
     } catch (error) {
       next(error);
