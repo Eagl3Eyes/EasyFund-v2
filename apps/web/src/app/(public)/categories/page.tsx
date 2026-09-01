@@ -65,8 +65,8 @@ export default function CategoriesPage() {
   return (
     <div className="container mx-auto px-4 py-12">
       <div className="text-center">
-        <h1 className="text-4xl font-bold text-foreground">Explore Categories</h1>
-        <p className="mt-4 text-lg text-muted-foreground">
+        <h1 className="text-4xl font-bold text-white">Explore Categories</h1>
+        <p className="mt-4 text-lg text-white/55">
           Find causes you care about and discover campaigns making a difference.
         </p>
       </div>
@@ -74,11 +74,11 @@ export default function CategoriesPage() {
       {loading ? (
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: 9 }).map((_, i) => (
-            <div key={i} className="rounded-xl border bg-card p-8 shadow-sm">
-              <Skeleton className="h-12 w-12 rounded-lg" />
-              <Skeleton className="mt-4 h-6 w-32" />
-              <Skeleton className="mt-2 h-4 w-full" />
-              <Skeleton className="mt-2 h-4 w-20" />
+            <div key={i} className="rounded-2xl border border-white/[0.08] bg-card p-8 shadow-sm">
+              <Skeleton className="h-12 w-12 rounded-lg bg-white/10" />
+              <Skeleton className="mt-4 h-6 w-32 bg-white/10" />
+              <Skeleton className="mt-2 h-4 w-full bg-white/10" />
+              <Skeleton className="mt-2 h-4 w-20 bg-white/10" />
             </div>
           ))}
         </div>
@@ -88,19 +88,19 @@ export default function CategoriesPage() {
             <Link
               key={cat.slug}
               href={`/explore?category=${cat.slug}`}
-              className="group rounded-xl border bg-card p-8 shadow-sm transition-all hover:shadow-md hover:border-primary/50"
+              className="group rounded-2xl border border-white/[0.08] bg-card p-8 shadow-sm transition-all hover:border-[#0ef695]/40 hover:shadow-[0_0_30px_rgba(14,246,149,0.06)]"
             >
               <div
-                className="flex h-12 w-12 items-center justify-center rounded-lg text-2xl"
+                className="flex h-12 w-12 items-center justify-center rounded-xl text-2xl"
                 style={{ backgroundColor: `${cat.color}20` }}
               >
                 {iconMap[cat.icon] || '📋'}
               </div>
-              <h2 className="mt-4 text-lg font-semibold text-foreground group-hover:text-primary">
+              <h2 className="mt-4 text-lg font-semibold text-white group-hover:text-[#0ef695] transition-colors">
                 {cat.name}
               </h2>
-              <p className="mt-2 text-sm text-muted-foreground">{cat.description}</p>
-              <p className="mt-3 text-xs text-muted-foreground">
+              <p className="mt-2 text-sm text-white/55">{cat.description}</p>
+              <p className="mt-3 text-xs text-white/40">
                 {cat.campaignCount} campaign{cat.campaignCount !== 1 ? 's' : ''}
               </p>
             </Link>

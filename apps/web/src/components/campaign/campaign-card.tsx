@@ -25,7 +25,7 @@ export function CampaignCard({ campaign, onSave, saved, following, onFollow }: C
   const daysLeft = getDaysRemaining(campaign.deadline);
 
   return (
-    <Card variant="interactive" className="group overflow-hidden">
+    <Card variant="interactive" className="group overflow-hidden border-white/[0.08]">
       <Link href={`/campaign/${campaign.slug}`}>
         <div className="relative aspect-[16/10] overflow-hidden">
           <Image
@@ -37,14 +37,14 @@ export function CampaignCard({ campaign, onSave, saved, following, onFollow }: C
           />
           {campaign.category && (
             <div className="absolute left-3 top-3">
-              <Badge variant="secondary" className="bg-background/80 backdrop-blur-sm">
+              <Badge variant="secondary" className="bg-[#071324]/80 backdrop-blur-sm text-white/80 border-white/[0.08]">
                 {campaign.category}
               </Badge>
             </div>
           )}
           {campaign.fundraiserVerified && (
             <div className="absolute right-3 top-3">
-              <Badge variant="success" className="bg-success/90 backdrop-blur-sm">
+              <Badge variant="success" className="bg-[#0ef695]/20 text-[#0ef695] backdrop-blur-sm border-transparent">
                 Verified
               </Badge>
             </div>
@@ -54,32 +54,32 @@ export function CampaignCard({ campaign, onSave, saved, following, onFollow }: C
 
       <div className="p-4">
         <Link href={`/campaign/${campaign.slug}`}>
-          <h3 className="text-lg font-semibold leading-tight text-foreground line-clamp-2 hover:text-primary transition-colors">
+          <h3 className="text-lg font-semibold leading-tight text-white line-clamp-2 hover:text-[#0ef695] transition-colors">
             {campaign.title}
           </h3>
         </Link>
 
-        <p className="mt-1 text-sm text-muted-foreground line-clamp-2">
+        <p className="mt-1 text-sm text-white/55 line-clamp-2">
           {truncate(campaign.description, 100)}
         </p>
 
-        <div className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
-          <span className="font-medium text-foreground">{campaign.fundraiserName}</span>
+        <div className="mt-3 flex items-center gap-2 text-sm">
+          <span className="font-medium text-white/80">{campaign.fundraiserName}</span>
         </div>
 
         <div className="mt-4">
-          <Progress value={progress} className="h-2" />
+          <Progress value={progress} className="h-2 bg-white/10" />
         </div>
 
         <div className="mt-3 flex items-center justify-between text-sm">
           <div>
-            <span className="font-bold text-primary">{formatCurrency(campaign.amountRaised)}</span>
-            <span className="text-muted-foreground"> raised</span>
+            <span className="font-bold text-[#0ef695]">{formatCurrency(campaign.amountRaised)}</span>
+            <span className="text-white/40"> raised</span>
           </div>
-          <span className="text-muted-foreground">{progress}%</span>
+          <span className="text-white/50">{progress}%</span>
         </div>
 
-        <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
+        <div className="mt-3 flex items-center justify-between text-xs text-white/40">
           <div className="flex items-center gap-1">
             <Users className="h-3.5 w-3.5" />
             <span>{campaign.supportersCount} supporters</span>
@@ -93,7 +93,7 @@ export function CampaignCard({ campaign, onSave, saved, following, onFollow }: C
         </div>
 
         <div className="mt-4 flex items-center justify-between">
-          <span className="text-xs text-muted-foreground">
+          <span className="text-xs text-white/40">
             Goal: {formatCurrency(campaign.goal)}
           </span>
           <div className="flex items-center gap-1">
@@ -103,10 +103,10 @@ export function CampaignCard({ campaign, onSave, saved, following, onFollow }: C
                   e.preventDefault();
                   onFollow(campaign._id);
                 }}
-                className="rounded-full p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                className="rounded-full p-1.5 text-white/40 hover:bg-white/10 hover:text-white transition-colors"
                 aria-label={following ? 'Unfollow fundraiser' : 'Follow fundraiser'}
               >
-                {following ? <UserCheck className="h-4 w-4 text-primary" /> : <UserPlus className="h-4 w-4" />}
+                {following ? <UserCheck className="h-4 w-4 text-[#0ef695]" /> : <UserPlus className="h-4 w-4" />}
               </button>
             )}
             {onSave && (
@@ -115,7 +115,7 @@ export function CampaignCard({ campaign, onSave, saved, following, onFollow }: C
                   e.preventDefault();
                   onSave(campaign._id);
                 }}
-                className="rounded-full p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                className="rounded-full p-1.5 text-white/40 hover:bg-white/10 hover:text-white transition-colors"
                 aria-label={saved ? 'Remove from saved' : 'Save campaign'}
               >
                 <Heart className={`h-4 w-4 ${saved ? 'fill-red-500 text-red-500' : ''}`} />

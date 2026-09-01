@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { Heart, CreditCard, Loader2, Check } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/providers/auth-provider';
@@ -94,27 +93,27 @@ export function DonationFlow({ campaignId, campaignTitle, fundraiserName }: Dona
 
   if (step === 'success') {
     return (
-      <div className="rounded-xl border bg-card p-6 shadow-sm text-center">
-        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
-          <Check className="h-6 w-6 text-primary" />
+      <div className="rounded-xl border border-white/[0.08] bg-card p-6 shadow-sm text-center">
+        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#0ef695]/10">
+          <Check className="h-6 w-6 text-[#0ef695]" />
         </div>
-        <h3 className="mt-4 text-lg font-semibold text-foreground">Thank You!</h3>
-        <p className="mt-2 text-sm text-muted-foreground">
+        <h3 className="mt-4 text-lg font-semibold text-white">Thank You!</h3>
+        <p className="mt-2 text-sm text-white/55">
           Your donation to &ldquo;{campaignTitle}&rdquo; has been received.
           You&apos;ll receive a confirmation email shortly.
         </p>
-        <Button variant="outline" className="mt-4" onClick={() => setStep('amount')}>
+        <button onClick={() => setStep('amount')} className="mt-4 inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/[0.04] px-5 py-2.5 text-sm font-bold text-white backdrop-blur transition hover:bg-white/10">
           Make Another Donation
-        </Button>
+        </button>
       </div>
     );
   }
 
   if (step === 'processing') {
     return (
-      <div className="rounded-xl border bg-card p-6 shadow-sm text-center">
-        <Loader2 className="mx-auto h-8 w-8 animate-spin text-primary" />
-        <p className="mt-4 text-sm text-muted-foreground">
+      <div className="rounded-xl border border-white/[0.08] bg-card p-6 shadow-sm text-center">
+        <Loader2 className="mx-auto h-8 w-8 animate-spin text-[#0ef695]" />
+        <p className="mt-4 text-sm text-white/55">
           Redirecting to Stripe Checkout...
         </p>
       </div>
@@ -122,9 +121,9 @@ export function DonationFlow({ campaignId, campaignTitle, fundraiserName }: Dona
   }
 
   return (
-    <div className="rounded-xl border bg-card p-6 shadow-sm">
-      <h3 className="text-lg font-semibold text-foreground">Support This Campaign</h3>
-      <p className="mt-1 text-sm text-muted-foreground">
+    <div className="rounded-xl border border-white/[0.08] bg-card p-6 shadow-sm">
+      <h3 className="text-lg font-semibold text-white">Support This Campaign</h3>
+      <p className="mt-1 text-sm text-white/55">
         Your donation directly supports {fundraiserName}&apos;s campaign
       </p>
 
@@ -132,20 +131,24 @@ export function DonationFlow({ campaignId, campaignTitle, fundraiserName }: Dona
         <div className="mt-6 space-y-4">
           <div className="grid grid-cols-3 gap-2">
             {presetAmounts.map((preset) => (
-              <Button
+              <button
                 key={preset}
-                variant={selectedAmount === preset ? 'default' : 'outline'}
                 onClick={() => handleAmountSelect(preset)}
+                className={`rounded-2xl py-2.5 text-sm font-bold transition-all ${
+                  selectedAmount === preset
+                    ? 'bg-[#0ef695] text-[#060e1e] shadow-lg shadow-[#0ef695]/25'
+                    : 'border border-white/10 bg-[#0a1b30] text-white hover:border-white/20 hover:bg-[#0f2240]'
+                }`}
               >
                 ${preset}
-              </Button>
+              </button>
             ))}
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="custom-amount">Custom Amount</Label>
+            <Label htmlFor="custom-amount" className="text-white/80">Custom Amount</Label>
             <div className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40">$</span>
               <Input
                 id="custom-amount"
                 type="number"
@@ -153,38 +156,38 @@ export function DonationFlow({ campaignId, campaignTitle, fundraiserName }: Dona
                 placeholder="Enter amount"
                 value={customAmount}
                 onChange={(e) => handleCustomAmountChange(e.target.value)}
-                className="pl-8"
+                className="pl-8 border-white/[0.08] bg-[#060e1e] text-white placeholder:text-white/30 focus-visible:ring-[#0ef695]/50"
               />
             </div>
           </div>
 
-          <Button
-            className="w-full"
-            size="lg"
+          <button
+            className="w-full inline-flex items-center justify-center rounded-2xl bg-[#0ef695] px-6 py-3 text-sm font-bold text-[#060e1e] shadow-lg shadow-[#0ef695]/20 transition hover:bg-[#38f9a8] disabled:opacity-40 disabled:cursor-not-allowed"
             disabled={selectedAmount < 1}
             onClick={() => setStep('details')}
           >
             <Heart className="mr-2 h-4 w-4" />
             Donate ${selectedAmount || 0}
-          </Button>
+          </button>
         </div>
       )}
 
       {step === 'details' && (
         <div className="mt-6 space-y-4">
-          <div className="rounded-lg bg-muted/50 p-3 text-center">
-            <p className="text-sm text-muted-foreground">Donation Amount</p>
-            <p className="text-2xl font-bold text-primary">${selectedAmount}</p>
+          <div className="rounded-xl bg-white/[0.03] border border-white/[0.08] p-3 text-center">
+            <p className="text-sm text-white/40">Donation Amount</p>
+            <p className="text-2xl font-bold text-[#0ef695]">${selectedAmount}</p>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="message">Message (Optional)</Label>
+            <Label htmlFor="message" className="text-white/80">Message (Optional)</Label>
             <Input
               id="message"
               placeholder="Add a message of support"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               maxLength={200}
+              className="border-white/[0.08] bg-[#060e1e] text-white placeholder:text-white/30 focus-visible:ring-[#0ef695]/50"
             />
           </div>
 
@@ -194,26 +197,25 @@ export function DonationFlow({ campaignId, campaignTitle, fundraiserName }: Dona
               id="anonymous"
               checked={anonymous}
               onChange={(e) => setAnonymous(e.target.checked)}
-              className="h-4 w-4 rounded border-gray-300"
+              className="h-4 w-4 rounded border-white/20 bg-white/5"
             />
-            <Label htmlFor="anonymous" className="text-sm">
+            <Label htmlFor="anonymous" className="text-sm text-white/70">
               Make my donation anonymous
             </Label>
           </div>
 
           <div className="flex gap-2">
-            <Button variant="outline" onClick={() => setStep('amount')}>
+            <button onClick={() => setStep('amount')} className="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/[0.04] px-5 py-2.5 text-sm font-bold text-white backdrop-blur transition hover:bg-white/10">
               Back
-            </Button>
-            <Button
-              className="flex-1"
-              size="lg"
+            </button>
+            <button
+              className="flex-1 inline-flex items-center justify-center rounded-2xl bg-[#0ef695] px-6 py-3 text-sm font-bold text-[#060e1e] shadow-lg shadow-[#0ef695]/20 transition hover:bg-[#38f9a8] disabled:opacity-40 disabled:cursor-not-allowed"
               onClick={handleProceedToCheckout}
               disabled={processing}
             >
               <CreditCard className="mr-2 h-4 w-4" />
               Proceed to Payment
-            </Button>
+            </button>
           </div>
         </div>
       )}

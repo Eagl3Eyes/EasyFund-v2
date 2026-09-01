@@ -3,7 +3,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Share2, Flag, Copy, Check, Twitter, Facebook, Link as LinkIcon, Clock, User as UserIcon } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { VerificationBadge } from '@/components/campaign/verification-badge';
@@ -140,17 +139,17 @@ export function CampaignDetailClient({ slug }: CampaignDetailClientProps) {
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-8">
-        <Skeleton className="h-8 w-32 mb-6" />
+        <Skeleton className="h-8 w-32 mb-6 bg-white/10" />
         <div className="grid gap-8 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
-            <Skeleton className="h-96 w-full rounded-xl" />
-            <Skeleton className="h-8 w-3/4" />
-            <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-4 w-2/3" />
+            <Skeleton className="h-96 w-full rounded-xl bg-white/5" />
+            <Skeleton className="h-8 w-3/4 bg-white/10" />
+            <Skeleton className="h-4 w-full bg-white/10" />
+            <Skeleton className="h-4 w-full bg-white/10" />
+            <Skeleton className="h-4 w-2/3 bg-white/10" />
           </div>
           <div className="space-y-4">
-            <Skeleton className="h-64 rounded-xl" />
+            <Skeleton className="h-64 rounded-xl bg-white/5" />
           </div>
         </div>
       </div>
@@ -160,8 +159,8 @@ export function CampaignDetailClient({ slug }: CampaignDetailClientProps) {
   if (error || !campaign) {
     return (
       <div className="container mx-auto px-4 py-8 text-center">
-        <p className="text-lg text-muted-foreground">{error || 'Campaign not found'}</p>
-        <Link href="/explore" className="mt-4 inline-flex text-primary hover:underline">
+        <p className="text-lg text-white/55">{error || 'Campaign not found'}</p>
+        <Link href="/explore" className="mt-4 inline-flex text-[#0ef695] hover:underline">
           Browse all campaigns
         </Link>
       </div>
@@ -172,7 +171,7 @@ export function CampaignDetailClient({ slug }: CampaignDetailClientProps) {
     <div className="container mx-auto px-4 py-8">
       <Link
         href="/explore"
-        className="mb-6 inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
+        className="mb-6 inline-flex items-center text-sm text-white/55 hover:text-white"
       >
         <ArrowLeft className="mr-2 h-4 w-4" />
         Back to Explore
@@ -194,52 +193,52 @@ export function CampaignDetailClient({ slug }: CampaignDetailClientProps) {
 
           <div>
             <div className="flex flex-wrap items-center gap-2">
-              <Badge variant="secondary">{campaign.category}</Badge>
+              <Badge variant="secondary" className="bg-[#071324]/80 backdrop-blur-sm text-white/80 border-white/[0.08]">{campaign.category}</Badge>
               {campaign.location && (
-                <span className="flex items-center text-sm text-muted-foreground">
+                <span className="flex items-center text-sm text-white/55">
                   {campaign.location}
                 </span>
               )}
             </div>
-            <h1 className="mt-3 text-3xl font-bold text-foreground">{campaign.title}</h1>
+            <h1 className="mt-3 text-3xl font-bold text-white">{campaign.title}</h1>
 
             <div className="mt-4 flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted text-sm font-medium">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-sm font-medium text-white">
                 {campaign.fundraiserName?.charAt(0) || 'F'}
               </div>
               <div>
-                <p className="font-medium text-foreground">{campaign.fundraiserName}</p>
+                <p className="font-medium text-white">{campaign.fundraiserName}</p>
                 <div className="flex items-center gap-1">
                   <VerificationBadge level={campaign.fundraiserVerified ? 'full' : 'none'} />
-                  <span className="text-xs text-muted-foreground">Fundraiser</span>
+                  <span className="text-xs text-white/40">Fundraiser</span>
                 </div>
               </div>
             </div>
           </div>
 
-          <Separator />
+          <Separator className="bg-white/[0.08]" />
 
           <div>
-            <h2 className="text-xl font-semibold text-foreground">About This Campaign</h2>
-            <p className="mt-4 whitespace-pre-line text-muted-foreground leading-relaxed">
+            <h2 className="text-xl font-semibold text-white">About This Campaign</h2>
+            <p className="mt-4 whitespace-pre-line text-white/55 leading-relaxed">
               {campaign.story || campaign.description}
             </p>
           </div>
 
           {campaign.milestones && campaign.milestones.length > 0 && (
             <div>
-              <h2 className="text-xl font-semibold text-foreground">Milestones</h2>
+              <h2 className="text-xl font-semibold text-white">Milestones</h2>
               <div className="mt-4 space-y-3">
                 {campaign.milestones.map((milestone, i) => (
-                  <div key={i} className="flex items-start gap-3 rounded-lg border p-4">
+                  <div key={i} className="flex items-start gap-3 rounded-lg border border-white/[0.08] p-4">
                     <div className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-medium ${
-                      milestone.reached ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
+                      milestone.reached ? 'bg-[#0ef695] text-[#060e1e]' : 'bg-white/10 text-white/50'
                     }`}>
                       {milestone.reached ? '✓' : i + 1}
                     </div>
                     <div className="flex-1">
-                      <p className="font-medium text-foreground">{milestone.label}</p>
-                      <p className="text-sm text-muted-foreground">{milestone.percentage}% of goal</p>
+                      <p className="font-medium text-white">{milestone.label}</p>
+                      <p className="text-sm text-white/55">{milestone.percentage}% of goal</p>
                     </div>
                   </div>
                 ))}
@@ -249,20 +248,20 @@ export function CampaignDetailClient({ slug }: CampaignDetailClientProps) {
 
           {updates.length > 0 && (
             <div>
-              <h2 className="text-xl font-semibold text-foreground">Campaign Updates</h2>
+              <h2 className="text-xl font-semibold text-white">Campaign Updates</h2>
               <div className="mt-4 space-y-4">
                 {updates.map((update) => (
-                  <div key={update._id} className="rounded-lg border bg-card p-5">
+                  <div key={update._id} className="rounded-lg border border-white/[0.08] bg-card p-5">
                     <div className="flex items-center justify-between">
-                      <h3 className="font-medium text-foreground">{update.title}</h3>
-                      <span className="flex items-center text-xs text-muted-foreground">
+                      <h3 className="font-medium text-white">{update.title}</h3>
+                      <span className="flex items-center text-xs text-white/40">
                         <Clock className="mr-1 h-3 w-3" />
                         {formatDate(update.createdAt)}
                       </span>
                     </div>
-                    <p className="mt-2 text-sm text-muted-foreground">{update.content}</p>
+                    <p className="mt-2 text-sm text-white/55">{update.content}</p>
                     {update.authorName && (
-                      <p className="mt-2 text-xs text-muted-foreground">Posted by {update.authorName}</p>
+                      <p className="mt-2 text-xs text-white/40">Posted by {update.authorName}</p>
                     )}
                   </div>
                 ))}
@@ -272,22 +271,22 @@ export function CampaignDetailClient({ slug }: CampaignDetailClientProps) {
 
           {supporters.length > 0 && (
             <div>
-              <h2 className="text-xl font-semibold text-foreground">Recent Supporters</h2>
+              <h2 className="text-xl font-semibold text-white">Recent Supporters</h2>
               <div className="mt-4 space-y-3">
                 {supporters.slice(0, 10).map((s) => (
-                  <div key={s._id} className="flex items-center justify-between rounded-lg border p-3">
+                  <div key={s._id} className="flex items-center justify-between rounded-lg border border-white/[0.08] p-3">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted text-xs font-medium">
-                        {s.donorName?.charAt(0) || <UserIcon className="h-4 w-4" />}
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-xs font-medium text-white">
+                        {s.donorName?.charAt(0) || <UserIcon className="h-4 w-4 text-white/50" />}
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-foreground">{s.donorName}</p>
-                        {s.message && <p className="text-xs text-muted-foreground">{s.message}</p>}
+                        <p className="text-sm font-medium text-white">{s.donorName}</p>
+                        {s.message && <p className="text-xs text-white/40">{s.message}</p>}
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="font-semibold text-primary">{formatCurrency(s.amount)}</p>
-                      <p className="text-xs text-muted-foreground">{formatDate(s.createdAt)}</p>
+                      <p className="font-semibold text-[#0ef695]">{formatCurrency(s.amount)}</p>
+                      <p className="text-xs text-white/40">{formatDate(s.createdAt)}</p>
                     </div>
                   </div>
                 ))}
@@ -295,24 +294,24 @@ export function CampaignDetailClient({ slug }: CampaignDetailClientProps) {
             </div>
           )}
 
-          <Separator />
+          <Separator className="bg-white/[0.08]" />
 
           <CommentThread campaignId={campaign._id} />
         </div>
 
         <div className="space-y-6">
-          <div className="rounded-xl border bg-card p-6 shadow-sm">
+          <div className="rounded-xl border border-white/[0.08] bg-card p-6 shadow-sm">
             <CampaignProgress raised={campaign.amountRaised} goal={campaign.goal} />
             <div className="mt-6 grid grid-cols-2 gap-4 text-center">
               <div>
-                <p className="text-2xl font-bold text-foreground">{campaign.supportersCount}</p>
-                <p className="text-sm text-muted-foreground">Supporters</p>
+                <p className="text-2xl font-bold text-white">{campaign.supportersCount}</p>
+                <p className="text-sm text-white/55">Supporters</p>
               </div>
               <div>
-                <p className="text-2xl font-bold text-foreground">
+                <p className="text-2xl font-bold text-white">
                   {getTimeRemaining(campaign.deadline)}
                 </p>
-                <p className="text-sm text-muted-foreground">Remaining</p>
+                <p className="text-sm text-white/55">Remaining</p>
               </div>
             </div>
           </div>
@@ -324,53 +323,53 @@ export function CampaignDetailClient({ slug }: CampaignDetailClientProps) {
           />
 
           <div className="relative">
-            <Button variant="outline" className="w-full" onClick={() => setShowShareMenu(!showShareMenu)}>
-              <Share2 className="mr-2 h-4 w-4" />
+            <button onClick={() => setShowShareMenu(!showShareMenu)} className="w-full inline-flex items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/[0.04] px-5 py-2.5 text-sm font-bold text-white backdrop-blur transition hover:bg-white/10">
+              <Share2 className="h-4 w-4" />
               Share Campaign
-            </Button>
+            </button>
             {showShareMenu && (
-              <div className="absolute top-full left-0 right-0 z-10 mt-2 rounded-lg border bg-card p-2 shadow-lg">
-                <button onClick={copyLink} className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-muted">
-                  {copied ? <Check className="h-4 w-4 text-green-500" /> : <LinkIcon className="h-4 w-4" />}
+              <div className="absolute top-full left-0 right-0 z-10 mt-2 rounded-xl border border-white/[0.08] bg-card p-2 shadow-lg">
+                <button onClick={copyLink} className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors">
+                  {copied ? <Check className="h-4 w-4 text-[#0ef695]" /> : <LinkIcon className="h-4 w-4" />}
                   {copied ? 'Copied!' : 'Copy Link'}
                 </button>
-                <button onClick={shareTwitter} className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-muted">
+                <button onClick={shareTwitter} className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors">
                   <Twitter className="h-4 w-4" /> Twitter
                 </button>
-                <button onClick={shareFacebook} className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-muted">
+                <button onClick={shareFacebook} className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors">
                   <Facebook className="h-4 w-4" /> Facebook
                 </button>
               </div>
             )}
           </div>
 
-          <Button variant="ghost" className="w-full text-muted-foreground" onClick={handleReport} aria-label="Report campaign">
-            <Flag className="mr-2 h-4 w-4" />
+          <button onClick={handleReport} className="w-full inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-transparent px-5 py-2.5 text-sm font-medium text-white/50 transition hover:bg-white/5 hover:text-white/70" aria-label="Report campaign">
+            <Flag className="h-4 w-4" />
             Report Campaign
-          </Button>
+          </button>
 
-          <div className="rounded-xl border bg-card p-6 shadow-sm">
-            <h3 className="font-semibold text-foreground">Campaign Details</h3>
+          <div className="rounded-xl border border-white/[0.08] bg-card p-6 shadow-sm">
+            <h3 className="font-semibold text-white">Campaign Details</h3>
             <dl className="mt-4 space-y-3">
               <div className="flex justify-between">
-                <dt className="text-sm text-muted-foreground">Goal</dt>
-                <dd className="text-sm font-medium text-foreground">{formatCurrency(campaign.goal)}</dd>
+                <dt className="text-sm text-white/55">Goal</dt>
+                <dd className="text-sm font-medium text-white">{formatCurrency(campaign.goal)}</dd>
               </div>
               <div className="flex justify-between">
-                <dt className="text-sm text-muted-foreground">Raised</dt>
-                <dd className="text-sm font-medium text-primary">{formatCurrency(campaign.amountRaised)}</dd>
+                <dt className="text-sm text-white/55">Raised</dt>
+                <dd className="text-sm font-medium text-[#0ef695]">{formatCurrency(campaign.amountRaised)}</dd>
               </div>
               <div className="flex justify-between">
-                <dt className="text-sm text-muted-foreground">Category</dt>
-                <dd className="text-sm font-medium text-foreground capitalize">{campaign.category}</dd>
+                <dt className="text-sm text-white/55">Category</dt>
+                <dd className="text-sm font-medium text-white capitalize">{campaign.category}</dd>
               </div>
               <div className="flex justify-between">
-                <dt className="text-sm text-muted-foreground">Created</dt>
-                <dd className="text-sm font-medium text-foreground">{formatDate(campaign.createdAt)}</dd>
+                <dt className="text-sm text-white/55">Created</dt>
+                <dd className="text-sm font-medium text-white">{formatDate(campaign.createdAt)}</dd>
               </div>
               <div className="flex justify-between">
-                <dt className="text-sm text-muted-foreground">Deadline</dt>
-                <dd className="text-sm font-medium text-foreground">{formatDate(campaign.deadline)}</dd>
+                <dt className="text-sm text-white/55">Deadline</dt>
+                <dd className="text-sm font-medium text-white">{formatDate(campaign.deadline)}</dd>
               </div>
             </dl>
           </div>
